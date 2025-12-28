@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design System Example</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div class="container" style="padding-top: var(--space-8); padding-bottom: var(--space-8);">
+        <header class="mb-8">
+            <h1>CSS Design System</h1>
+            <p class="text-secondary text-lg">A well-structured, scalable design system using CSS custom properties</p>
+        </header>
+        
+        <!-- Color System -->
+        <section class="demo-section">
+            <h2 class="demo-section-title">Color System</h2>
+            <div class="token-grid">
+                <div class="token-item">
+                    <div class="color-swatch" style="background-color: var(--color-primary);"></div>
+                    <div class="token-name">--color-primary</div>
+                </div>
+                <div class="token-item">
+                    <div class="color-swatch" style="background-color: var(--color-success);"></div>
+                    <div class="token-name">--color-success</div>
+                </div>
+                <div class="token-item">
+                    <div class="color-swatch" style="background-color: var(--color-error);"></div>
+                    <div class="token-name">--color-error</div>
+                </div>
+                <div class="token-item">
+                    <div class="color-swatch" style="background-color: var(--color-gray-900);"></div>
+                    <div class="token-name">--color-gray-900</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Typography -->
+        <section class="demo-section">
+            <h2 class="demo-section-title">Typography Scale</h2>
+            <div class="stack-4">
+                <div>
+                    <p class="text-4xl font-bold">Heading 4XL - 36px</p>
+                    <p class="token-name">font-size: var(--font-size-4xl)</p>
+                </div>
+                <div>
+                    <p class="text-3xl font-bold">Heading 3XL - 30px</p>
+                    <p class="token-name">font-size: var(--font-size-3xl)</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-semibold">Heading 2XL - 24px</p>
+                    <p class="token-name">font-size: var(--font-size-2xl)</p>
+                </div>
+                <div>
+                    <p class="text-base">Body text - 16px</p>
+                    <p class="token-name">font-size: var(--font-size-base)</p>
+                </div>
+                <div>
+                    <p class="text-sm text-secondary">Small text - 14px</p>
+                    <p class="token-name">font-size: var(--font-size-sm)</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Buttons -->
+        <section class="demo-section">
+            <h2 class="demo-section-title">Button Components</h2>
+            
+            <div class="stack-6">
+                <div>
+                    <h4 class="mb-4">Variants</h4>
+                    <div class="flex flex-wrap gap-4">
+                        <button class="btn btn-primary">Primary Button</button>
+                        <button class="btn btn-secondary">Secondary Button</button>
+                        <button class="btn btn-ghost">Ghost Button</button>
+                        <button class="btn btn-primary" disabled>Disabled</button>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="mb-4">Sizes</h4>
+                    <div class="flex flex-wrap items-center gap-4">
+                        <button class="btn btn-primary btn-sm">Small</button>
+                        <button class="btn btn-primary">Medium</button>
+                        <button class="btn btn-primary btn-lg">Large</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Cards -->
+        <section class="demo-section">
+            <h2 class="demo-section-title">Card Components</h2>
+            
+            <div class="grid grid-3">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="flex justify-between items-center">
+                            <h3 class="card-title">Card Title</h3>
+                            <span class="badge badge-primary">New</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-secondary">This is a card component with header, body, and footer sections. It demonstrates the modular structure of the design system.</p>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary btn-sm">Action</button>
+                        <button class="btn btn-secondary btn-sm">Cancel</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="flex justify-between items-center">
+                            <h3 class="card-title">Status Card</h3>
+                            <span class="badge badge-success">Active</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-secondary">Cards can contain different badge variants to show status or category information.</p>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-ghost btn-sm">View Details</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="flex justify-between items-center">
+                            <h3 class="card-title">Alert Card</h3>
+                            <span class="badge badge-error">Error</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-secondary">The design system includes error states and appropriate color tokens for different scenarios.</p>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary btn-sm">Resolve</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Form Elements -->
+        <section class="demo-section">
+            <h2 class="demo-section-title">Form Elements</h2>
+            
+            <div class="stack-4" style="max-width: 500px;">
+                <div>
+                    <label class="text-sm font-medium mb-2" style="display: block;">Email address</label>
+                    <input type="email" class="input" placeholder="you@example.com">
+                </div>
+                <div>
+                    <label class="text-sm font-medium mb-2" style="display: block;">Password</label>
+                    <input type="password" class="input" placeholder="••••••••">
+                </div>
+                <div>
+                    <label class="text-sm font-medium mb-2" style="display: block;">Disabled Input</label>
+                    <input type="text" class="input" placeholder="Disabled" disabled>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;">Submit Form</button>
+            </div>
+        </section>
+        
+        <!-- Spacing System -->
+        <section class="demo-section">
+            <h2 class="demo-section-title">Spacing Scale</h2>
+            <div class="stack-4">
+                <div class="flex items-center gap-4">
+                    <div style="width: var(--space-2); height: var(--space-2); background: var(--color-primary);"></div>
+                    <span class="token-name">--space-2 (8px)</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div style="width: var(--space-4); height: var(--space-4); background: var(--color-primary);"></div>
+                    <span class="token-name">--space-4 (16px)</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div style="width: var(--space-6); height: var(--space-6); background: var(--color-primary);"></div>
+                    <span class="token-name">--space-6 (24px)</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div style="width: var(--space-8); height: var(--space-8); background: var(--color-primary);"></div>
+                    <span class="token-name">--space-8 (32px)</span>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="mt-8 p-6 text-center text-secondary">
+            <p>This design system demonstrates scalable CSS architecture using custom properties, semantic tokens, and reusable components.</p>
+        </footer>
+    </div>
+</body>
+</html>

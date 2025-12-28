@@ -1,0 +1,441 @@
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f0f2f5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        /* Post Card */
+        .post {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 16px;
+        }
+
+        .post-header {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .avatar-lg {
+            width: 48px;
+            height: 48px;
+            font-size: 18px;
+        }
+
+        .post-author-info {
+            flex: 1;
+        }
+
+        .post-author-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: #050505;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .verified-badge {
+            color: #1877f2;
+            font-size: 14px;
+        }
+
+        .post-time {
+            font-size: 13px;
+            color: #65676b;
+        }
+
+        .post-menu {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #65676b;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .post-menu:hover {
+            background: #f0f2f5;
+        }
+
+        .post-content {
+            padding: 0 16px 16px;
+        }
+
+        .post-text {
+            font-size: 15px;
+            line-height: 1.5;
+            color: #050505;
+        }
+
+        .post-stats {
+            padding: 8px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+            color: #65676b;
+            border-top: 1px solid #e4e6eb;
+        }
+
+        .post-stats-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .post-stats-left:hover {
+            text-decoration: underline;
+        }
+
+        .reaction-icons {
+            display: flex;
+        }
+
+        .post-actions {
+            padding: 4px 16px 8px;
+            display: flex;
+            gap: 4px;
+            border-top: 1px solid #e4e6eb;
+        }
+
+        .post-action-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px;
+            background: none;
+            border: none;
+            color: #65676b;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .post-action-btn:hover {
+            background: #f0f2f5;
+        }
+
+        .post-action-btn.active {
+            color: #1877f2;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            padding: 16px;
+            border-top: 1px solid #e4e6eb;
+        }
+
+        .comments-header {
+            font-weight: 600;
+            font-size: 17px;
+            color: #050505;
+            margin-bottom: 16px;
+        }
+
+        .comment-input-wrapper {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .comment-input-container {
+            flex: 1;
+            position: relative;
+        }
+
+        .comment-input {
+            width: 100%;
+            padding: 10px 16px;
+            background: #f0f2f5;
+            border: none;
+            border-radius: 18px;
+            font-size: 15px;
+            font-family: inherit;
+            color: #050505;
+            resize: none;
+            outline: none;
+            min-height: 36px;
+            max-height: 200px;
+        }
+
+        .comment-input:focus {
+            background: #e4e6eb;
+        }
+
+        .comment-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .comment-btn {
+            padding: 6px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .comment-btn-primary {
+            background: #1877f2;
+            color: white;
+        }
+
+        .comment-btn-primary:hover:not(:disabled) {
+            background: #166fe5;
+        }
+
+        .comment-btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .comment-btn-secondary {
+            background: #e4e6eb;
+            color: #050505;
+        }
+
+        .comment-btn-secondary:hover {
+            background: #d8dadf;
+        }
+
+        /* Comments List */
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .comment {
+            display: flex;
+            gap: 8px;
+        }
+
+        .comment-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .comment-bubble {
+            background: #f0f2f5;
+            padding: 8px 12px;
+            border-radius: 18px;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            font-size: 13px;
+            color: #050505;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .comment-text {
+            font-size: 15px;
+            line-height: 1.4;
+            color: #050505;
+            word-wrap: break-word;
+        }
+
+        .comment-meta {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-top: 4px;
+            padding-left: 12px;
+            font-size: 13px;
+        }
+
+        .comment-action {
+            color: #65676b;
+            cursor: pointer;
+            font-weight: 600;
+            transition: text-decoration 0.2s;
+        }
+
+        .comment-action:hover {
+            text-decoration: underline;
+        }
+
+        .comment-action.liked {
+            color: #1877f2;
+        }
+
+        .comment-time {
+            color: #65676b;
+        }
+
+        .comment-likes {
+            color: #65676b;
+        }
+
+        /* Nested Replies */
+        .replies {
+            margin-left: 48px;
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .reply {
+            display: flex;
+            gap: 8px;
+        }
+
+        .reply .avatar {
+            width: 32px;
+            height: 32px;
+            font-size: 14px;
+        }
+
+        .view-more-replies {
+            margin-left: 48px;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #65676b;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            padding: 4px 0;
+        }
+
+        .view-more-replies:hover {
+            text-decoration: underline;
+        }
+
+        .reply-line {
+            width: 32px;
+            height: 2px;
+            background: #ccd0d5;
+        }
+
+        /* Reply Input */
+        .reply-input-wrapper {
+            margin-left: 48px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .reply-input-wrapper.active {
+            display: flex;
+        }
+
+        /* Load More */
+        .load-more-comments {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .load-more-btn {
+            background: none;
+            border: none;
+            color: #65676b;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 8px 16px;
+        }
+
+        .load-more-btn:hover {
+            text-decoration: underline;
+        }
+
+        /* Emoji Picker (simplified) */
+        .emoji-picker {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #ccd0d5;
+            border-radius: 8px;
+            padding: 8px;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+        }
+
+        .emoji-picker.active {
+            display: block;
+        }
+
+        .emoji-picker button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        .emoji-picker button:hover {
+            background: #f0f2f5;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0;
+            }
+
+            .post {
+                border-radius: 0;
+            }
+
+            .replies {
+                margin-left: 32px;
+            }
+
+            .reply-input-wrapper {
+                margin-left: 32px;
+            }
+
+            .view-more-replies {
+                margin-left: 32px;
+            }
+        }

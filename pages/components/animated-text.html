@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Pro - Revolutionary Innovation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #000;
+            color: #f5f5f7;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 20px 0;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #f5f5f7;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #2997ff;
+        }
+
+        /* Sections */
+        .section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 40px 80px;
+            position: relative;
+        }
+
+        .content {
+            max-width: 1000px;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            height: 100vh;
+            background: linear-gradient(180deg, #1d1d1f 0%, #000 100%);
+        }
+
+        .hero-title {
+            font-size: 96px;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+            line-height: 1.05;
+            background: linear-gradient(90deg, #fff 0%, #999 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 28px;
+            font-weight: 400;
+            color: #86868b;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #2997ff;
+            color: #fff;
+            padding: 16px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .cta-button:hover {
+            background: #1a7fd9;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(41, 151, 255, 0.3);
+        }
+
+        /* Feature Sections */
+        .feature-section {
+            background: #000;
+        }
+
+        .feature-title {
+            font-size: 72px;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+            line-height: 1.1;
+            margin-bottom: 30px;
+        }
+
+        .feature-description {
+            font-size: 24px;
+            line-height: 1.5;
+            color: #86868b;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        .highlight {
+            color: #2997ff;
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            max-width: 1200px;
+            margin: 60px auto 0;
+            text-align: left;
+        }
+
+        .column h3 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #f5f5f7;
+        }
+
+        .column p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #86868b;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(180deg, #000 0%, #1d1d1f 100%);
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 60px;
+            margin-top: 80px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 72px;
+            font-weight: 700;
+            color: #2997ff;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 20px;
+            color: #86868b;
+        }
+
+        /* Image Placeholder */
+        .image-placeholder {
+            width: 100%;
+            max-width: 900px;
+            height: 500px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            margin: 60px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Testimonial */
+        .testimonial {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .testimonial-text {
+            font-size: 24px;
+            font-style: italic;
+            line-height: 1.6;
+            color: #f5f5f7;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-author {
+            font-size: 16px;
+            color: #86868b;
+        }
+
+        /* Footer */
+        footer {
+            background: #1d1d1f;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: #86868b;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #f5f5f7;
+        }
+
+        .copyright {
+            color: #86868b;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 48px;
+            }
+
+            .hero-subtitle {
+                font-size: 20px;
+            }
+
+            .feature-title {
+                font-size: 40px;
+            }
+
+            .feature-description {
+                font-size: 18px;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .stat-number {
+                font-size: 48px;
+            }
+
+            .image-placeholder {
+                height: 300px;
+            }
+
+            .section {
+                padding: 100px 20px 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-content">
+            <div class="logo">Nexus</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#specs">Specs</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="section hero-section">
+        <div class="content">
+            <h1 class="hero-title" id="heroTitle">Nexus Pro.</h1>
+            <p class="hero-subtitle" id="heroSubtitle">The future of technology, reimagined.</p>
+            <a href="#features" class="cta-button" id="ctaButton">Discover More</a>
+        </div>
+    </section>
+
+    <!-- Feature 1 -->
+    <section class="section feature-section" id="features">
+        <div class="content">
+            <h2 class="feature-title" id="feature1Title">Power that <span class="highlight">performs</span>.</h2>
+            <p class="feature-description" id="feature1Desc">
+                Experience unprecedented performance with our revolutionary quantum processor. 
+                Engineered to handle the most demanding tasks with incredible efficiency.
+            </p>
+            <div class="image-placeholder" id="image1">Product Image</div>
+        </div>
+    </section>
+
+    <!-- Feature 2 -->
+    <section class="section feature-section">
+        <div class="content">
+            <h2 class="feature-title" id="feature2Title">Design meets <span class="highlight">innovation</span>.</h2>
+            <p class="feature-description" id="feature2Desc">
+                Every curve, every edge, every detail has been meticulously crafted. 
+                The result is a stunning device that's as beautiful as it is functional.
+            </p>
+            <div class="two-column" id="twoColumn">
+                <div class="column">
+                    <h3>Premium Materials</h3>
+                    <p>Aerospace-grade aluminum and precision-milled glass come together in perfect harmony. Built to last, designed to impress.</p>
+                </div>
+                <div class="column">
+                    <h3>Seamless Integration</h3>
+                    <p>Every component works in perfect sync. Hardware and software designed together for an unparalleled user experience.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="section stats-section" id="specs">
+        <div class="content">
+            <h2 class="feature-title" id="statsTitle">By the numbers.</h2>
+            <div class="stats-container">
+                <div class="stat">
+                    <div class="stat-number" id="stat1">0</div>
+                    <div class="stat-label">Processing Cores</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="stat2">0</div>
+                    <div class="stat-label">GB Memory</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="stat3">0</div>
+                    <div class="stat-label">Hours Battery Life</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature 3 -->
+    <section class="section feature-section">
+        <div class="content">
+            <h2 class="feature-title" id="feature3Title">Intelligence you can <span class="highlight">trust</span>.</h2>
+            <p class="feature-description" id="feature3Desc">
+                Advanced AI learns your habits and adapts to your needs. 
+                Smart automation that actually makes your life easier.
+            </p>
+            <div class="image-placeholder" id="image2">AI Interface</div>
+        </div>
+    </section>
+
+    <!-- Testimonial -->
+    <section class="section" id="reviews">
+        <div class="content">
+            <div class="testimonial" id="testimonial">
+                <p class="testimonial-text">
+                    "This is not just an upgrade—it's a complete revolution. The Nexus Pro has transformed the way I work and play. Absolutely incredible."
+                </p>
+                <p class="testimonial-author">— Sarah Johnson, Tech Innovator</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="section" style="min-height: 80vh;">
+        <div class="content">
+            <h2 class="feature-title" id="finalTitle">Ready to experience <span class="highlight">Nexus Pro</span>?</h2>
+            <p class="feature-description" id="finalDesc">
+                Join thousands of professionals who have already made the switch.
+            </p>
+            <a href="#contact" class="cta-button" id="finalCta">Pre-Order Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <ul class="footer-links">
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Support</a></li>
+                <li><a href="#">Press Kit</a></li>
+            </ul>
+            <p class="copyright">© 2025 Nexus Technologies. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- GSAP and ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero Animation (on load)
+        gsap.from("#heroTitle", {
+            duration: 1.2,
+            y: 100,
+            opacity: 0,
+            ease: "power4.out"
+        });
+
+        gsap.from("#heroSubtitle", {
+            duration: 1,
+            y: 50,
+            opacity: 0,
+            delay: 0.3,
+            ease: "power3.out"
+        });
+
+        gsap.from("#ctaButton", {
+            duration: 1,
+            y: 30,
+            opacity: 0,
+            delay: 0.6,
+            ease: "power3.out"
+        });
+
+        // Feature 1
+        gsap.from("#feature1Title", {
+            scrollTrigger: {
+                trigger: "#feature1Title",
+                start: "top 80%"
+            },
+            y: 100,
+            opacity: 0,
+            duration: 1,
+            ease: "power4.out"
+        });
+
+        gsap.from("#feature1Desc", {
+            scrollTrigger: {
+                trigger: "#feature1Desc",
+                start: "top 85%"
+            },
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            delay: 0.2,
+            ease: "power3.out"
+        });
+
+        gsap.from("#image1", {
+            scrollTrigger: {
+                trigger: "#image1",
+                start: "top 85%"
+            },
+            y: 80,
+            opacity: 0,
+            duration: 1.2,
+            delay: 0.4,
+            ease: "power3.out"
+        });
+
+        // Feature 2
+        gsap.from("#feature2Title", {
+            scrollTrigger: {
+                trigger: "#feature2Title",
+                start: "top 80%"
+            },
+            y: 100,
+            opacity: 0,
+            duration: 1,
+            ease: "power4.out"
+        });
+
+        gsap.from("#feature2Desc", {
+            scrollTrigger: {
+                trigger: "#feature2Desc",
+                start: "top 85%"
+            },
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            delay: 0.2,
+            ease: "power3.out"
+        });
+
+        gsap.from("#twoColumn .column", {
+            scrollTrigger: {
+                trigger: "#twoColumn",
+                start: "top 85%"
+            },
+            y: 60,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.2,
+            delay: 0.3,
+            ease: "power3.out"
+        });
+
+        // Stats
+        gsap.from("#statsTitle", {
+            scrollTrigger: {
+                trigger: "#statsTitle",
+                start: "top 80%"
+            },
+            y: 100,
+            opacity: 0,
+            duration: 1,
+            ease: "power4.out"
+        });
+
+        function animateCounter(id, target) {
+            gsap.from(id, {
+                scrollTrigger: {
+                    trigger: id,
+                    start: "top 80%"
+                },
+                textContent: 0,
+                duration: 2,
+                ease: "power1.inOut",
+                snap: { textContent: 1 },
+                onUpdate: function() {
+                    document.querySelector(id).textContent = Math.ceil(this.targets()[0].textContent);
+                }
+            });
+            gsap.set(id, { textContent: target });
+        }
+
+        animateCounter("#stat1", 16);
+        animateCounter("#stat2", 64);
+        animateCounter("#stat3", 22);
+
+        // Feature 3
+        gsap.from("#feature3Title", {
+            scrollTrigger: {
+                trigger: "#feature3Title",
+                start: "top 80%"
+            },
+            y: 100,
+            opacity: 0,
+            duration: 1,
+            ease: "power4.out"
+        });
+
+        gsap.from("#feature3Desc", {
+            scrollTrigger: {
+                trigger: "#feature3Desc",
+                start: "top 85%"
+            },
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            delay: 0.2,
+            ease: "power3.out"
+        });
+
+        gsap.from("#image2", {
+            scrollTrigger: {
+                trigger: "#image2",
+                start: "top 85%"
+            },
+            y: 80,
+            opacity: 0,
+            duration: 1.2,
+            delay: 0.4,
+            ease: "power3.out"
+        });
+
+        // Testimonial
+        gsap.from("#testimonial", {
+            scrollTrigger: {
+                trigger: "#testimonial",
+                start: "top 80%"
+            },
+            y: 80,
+            opacity: 0,
+            duration: 1.2,
+            ease: "power3.out"
+        });
+
+        // Final Section
+        gsap.from("#finalTitle", {
+            scrollTrigger: {
+                trigger: "#finalTitle",
+                start: "top 80%"
+            },
+            y: 100,
+            opacity: 0,
+            duration: 1,
+            ease: "power4.out"
+        });
+
+        gsap.from("#finalDesc", {
+            scrollTrigger: {
+                trigger: "#finalDesc",
+                start: "top 85%"
+            },
+            y: 50,
+            opacity: 0,
+            delay: 0.2,
+            duration: 1,
+            ease: "power3.out"
+        });
+
+        gsap.from("#finalCta", {
+            scrollTrigger: {
+                trigger: "#finalCta",
+                start: "top 85%"
+            },
+            y: 30,
+            opacity: 0,
+            delay: 0.4,
+            duration: 1,
+            ease: "power3.out"
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

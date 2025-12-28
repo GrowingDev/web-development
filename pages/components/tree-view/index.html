@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar TreeView</title>
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-title">Project Explorer</div>
+            <div class="sidebar-subtitle">Dynamic TreeView Demo</div>
+        </div>
+        <div class="sidebar-content">
+            <ul class="tree" id="treeview"></ul>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-header">
+            <h1 class="content-title">Sidebar TreeView Component</h1>
+            <p class="content-subtitle">A dynamic, expandable tree structure built with vanilla JavaScript</p>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Features</h2>
+            <div class="section-content">
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 8px 0;">✅ Dynamic tree generation from JavaScript data</li>
+                    <li style="padding: 8px 0;">✅ Expand/collapse functionality with smooth animations</li>
+                    <li style="padding: 8px 0;">✅ Custom icons and badges for nodes</li>
+                    <li style="padding: 8px 0;">✅ Active state management</li>
+                    <li style="padding: 8px 0;">✅ Nested children support (unlimited depth)</li>
+                    <li style="padding: 8px 0;">✅ Click handlers for each node</li>
+                    <li style="padding: 8px 0;">✅ Responsive design with mobile toggle</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Data Structure</h2>
+            <div class="section-content">
+                <p>The tree is built from a simple JavaScript object structure:</p>
+                <div class="code-block">
+                    <code>
+{
+  id: 'unique-id',
+  label: 'Node Label',
+  icon: '📁',
+  badge: 5,  // optional
+  children: [ /* nested nodes */ ]
+}
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">How It Works</h2>
+            <div class="section-content">
+                <p>The treeview component recursively renders nodes and their children. Each node can be expanded or collapsed, and clicking on a node updates the active state. The implementation uses vanilla JavaScript for maximum compatibility and performance.</p>
+            </div>
+        </div>
+    </main>
+
+<script src="js/tree.js"></script>
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Circle Animation Techniques</title>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: system-ui, sans-serif;
+    background: #0a0a0a;
+    color: #fff;
+    overflow-x: hidden;
+  }
+
+  .demo-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    position: relative;
+    border-bottom: 1px solid #222;
+  }
+
+  .demo-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    z-index: 10;
+  }
+
+  .demo-description {
+    font-size: 1rem;
+    opacity: 0.7;
+    margin-bottom: 2rem;
+    text-align: center;
+    max-width: 600px;
+    z-index: 10;
+  }
+
+  .demo-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: 400px;
+    border: 1px solid #333;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #111;
+  }
+
+  /* ===== TECHNIQUE 1: SVG Circle with stroke-dasharray ===== */
+  .svg-circle-demo {
+    width: 100%;
+    height: 100%;
+  }
+
+  .animated-circle-stroke {
+    fill: none;
+    stroke: #4f8cff;
+    stroke-width: 3;
+    stroke-dasharray: 1256; /* 2 * PI * r (r=200) */
+    stroke-dashoffset: 1256;
+    animation: drawCircle 3s ease-in-out infinite;
+    transform-origin: center;
+  }
+
+  @keyframes drawCircle {
+    0% { stroke-dashoffset: 1256; }
+    50% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: -1256; }
+  }
+
+  /* ===== TECHNIQUE 2: CSS Radial Gradient ===== */
+  .gradient-circle {
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      circle at center,
+      #4f8cff 0%,
+      #0b0f17 50%,
+      #0a0a0a 100%
+    );
+    background-size: 0% 0%;
+    background-position: center;
+    background-repeat: no-repeat;
+    animation: expandGradient 3s ease-in-out infinite;
+  }
+
+  @keyframes expandGradient {
+    0%, 100% { background-size: 0% 0%; }
+    50% { background-size: 200% 200%; }
+  }
+
+  /* ===== TECHNIQUE 3: Multiple Nested Circles ===== */
+  .ripple-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ripple {
+    position: absolute;
+    border: 2px solid #4f8cff;
+    border-radius: 50%;
+    opacity: 0;
+    animation: ripple 3s ease-out infinite;
+  }
+
+  .ripple:nth-child(1) { animation-delay: 0s; }
+  .ripple:nth-child(2) { animation-delay: 0.5s; }
+  .ripple:nth-child(3) { animation-delay: 1s; }
+  .ripple:nth-child(4) { animation-delay: 1.5s; }
+
+  @keyframes ripple {
+    0% {
+      width: 0;
+      height: 0;
+      opacity: 1;
+    }
+    100% {
+      width: 400px;
+      height: 400px;
+      opacity: 0;
+    }
+  }
+
+  /* ===== TECHNIQUE 4: CSS Mask with Animated Position ===== */
+  .mask-circle {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #4f8cff, #8b5cf6);
+    -webkit-mask: radial-gradient(circle at var(--x, 50%) var(--y, 50%), black 20%, transparent 20%);
+    mask: radial-gradient(circle at var(--x, 50%) var(--y, 50%), black 20%, transparent 20%);
+    animation: expandMask 3s ease-in-out infinite;
+  }
+
+  @keyframes expandMask {
+    0%, 100% {
+      -webkit-mask-size: 0% 0%;
+      mask-size: 0% 0%;
+    }
+    50% {
+      -webkit-mask-size: 300% 300%;
+      mask-size: 300% 300%;
+    }
+  }
+
+  /* ===== TECHNIQUE 5: Canvas-based Circle ===== */
+  .canvas-demo {
+    width: 100%;
+    height: 100%;
+    background: #111;
+  }
+
+  /* ===== TECHNIQUE 6: Box Shadow Rings ===== */
+  .shadow-circle {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .shadow-dot {
+    width: 20px;
+    height: 20px;
+    background: #4f8cff;
+    border-radius: 50%;
+    animation: expandShadow 3s ease-in-out infinite;
+  }
+
+  @keyframes expandShadow {
+    0%, 100% {
+      box-shadow: 
+        0 0 0 0 rgba(79, 140, 255, 0.7),
+        0 0 0 0 rgba(79, 140, 255, 0.5),
+        0 0 0 0 rgba(79, 140, 255, 0.3);
+    }
+    50% {
+      box-shadow: 
+        0 0 0 50px rgba(79, 140, 255, 0),
+        0 0 0 100px rgba(79, 140, 255, 0),
+        0 0 0 150px rgba(79, 140, 255, 0);
+    }
+  }
+
+  /* ===== TECHNIQUE 7: CSS Conic Gradient Spinner ===== */
+  .conic-circle {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .conic-spinner {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 0deg,
+      #4f8cff,
+      #8b5cf6,
+      #ec4899,
+      #4f8cff
+    );
+    animation: spin 3s linear infinite, pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(0.8) rotate(0deg); }
+    50% { transform: scale(1.2) rotate(180deg); }
+  }
+
+  /* ===== TECHNIQUE 8: Border Animation ===== */
+  .border-circle {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .animated-border {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    background: 
+      linear-gradient(#111, #111) padding-box,
+      linear-gradient(135deg, #4f8cff, #8b5cf6, #ec4899) border-box;
+    animation: rotateBorder 3s linear infinite, growBorder 2s ease-in-out infinite;
+  }
+
+  @keyframes rotateBorder {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes growBorder {
+    0%, 100% { width: 150px; height: 150px; }
+    50% { width: 250px; height: 250px; }
+  }
+
+  .code-hint {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #1a1a1a;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    color: #4f8cff;
+    max-width: 600px;
+    z-index: 10;
+  }
+</style>
+</head>
+
+<body>
+
+  <!-- TECHNIQUE 1 -->
+  <div class="demo-section">
+    <h2 class="demo-title">1. SVG Circle Drawing</h2>
+    <p class="demo-description">Uses stroke-dasharray and stroke-dashoffset to animate drawing a circle's outline</p>
+    <div class="demo-container">
+      <svg class="svg-circle-demo" viewBox="0 0 400 400">
+        <circle class="animated-circle-stroke" cx="200" cy="200" r="150" />
+      </svg>
+    </div>
+    <div class="code-hint">stroke-dasharray + stroke-dashoffset animation</div>
+  </div>
+
+  <!-- TECHNIQUE 2 -->
+  <div class="demo-section">
+    <h2 class="demo-title">2. Radial Gradient Expansion</h2>
+    <p class="demo-description">Animates background-size of a radial gradient for smooth color transitions</p>
+    <div class="demo-container">
+      <div class="gradient-circle"></div>
+    </div>
+    <div class="code-hint">background: radial-gradient() with animated background-size</div>
+  </div>
+
+  <!-- TECHNIQUE 3 -->
+  <div class="demo-section">
+    <h2 class="demo-title">3. Ripple Effect (Multiple Circles)</h2>
+    <p class="demo-description">Creates wave-like ripples using staggered animations on multiple elements</p>
+    <div class="demo-container">
+      <div class="ripple-container">
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+      </div>
+    </div>
+    <div class="code-hint">Multiple divs with animation-delay for ripple effect</div>
+  </div>
+
+  <!-- TECHNIQUE 4 -->
+  <div class="demo-section">
+    <h2 class="demo-title">4. CSS Mask Animation</h2>
+    <p class="demo-description">Uses CSS mask property to reveal content through an expanding circle</p>
+    <div class="demo-container">
+      <div class="mask-circle"></div>
+    </div>
+    <div class="code-hint">mask: radial-gradient() with animated mask-size</div>
+  </div>
+
+  <!-- TECHNIQUE 5 -->
+  <div class="demo-section">
+    <h2 class="demo-title">5. Canvas API Animation</h2>
+    <p class="demo-description">JavaScript Canvas for complex, programmatic circle animations</p>
+    <div class="demo-container">
+      <canvas id="canvasDemo" class="canvas-demo"></canvas>
+    </div>
+    <div class="code-hint">ctx.arc() with requestAnimationFrame for smooth animation</div>
+  </div>
+
+  <!-- TECHNIQUE 6 -->
+  <div class="demo-section">
+    <h2 class="demo-title">6. Box Shadow Rings</h2>
+    <p class="demo-description">Multiple expanding box-shadows create concentric circle effects</p>
+    <div class="demo-container">
+      <div class="shadow-circle">
+        <div class="shadow-dot"></div>
+      </div>
+    </div>
+    <div class="code-hint">box-shadow with multiple layers and animation</div>
+  </div>
+
+  <!-- TECHNIQUE 7 -->
+  <div class="demo-section">
+    <h2 class="demo-title">7. Conic Gradient Spinner</h2>
+    <p class="demo-description">Combines rotation and scaling with gradient for dynamic effects</p>
+    <div class="demo-container">
+      <div class="conic-circle">
+        <div class="conic-spinner"></div>
+      </div>
+    </div>
+    <div class="code-hint">conic-gradient() + rotate + scale animations</div>
+  </div>
+
+  <!-- TECHNIQUE 8 -->
+  <div class="demo-section">
+    <h2 class="demo-title">8. Animated Border Circle</h2>
+    <p class="demo-description">Gradient borders with rotation and size animation for modern effects</p>
+    <div class="demo-container">
+      <div class="border-circle">
+        <div class="animated-border"></div>
+      </div>
+    </div>
+    <div class="code-hint">Linear gradient border-box + rotation animation</div>
+  </div>
+
+<script>
+  // Canvas Animation (Technique 5)
+  const canvas = document.getElementById('canvasDemo');
+  const ctx = canvas.getContext('2d');
+  
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+  
+  let radius = 0;
+  let growing = true;
+  
+  function drawCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    
+    // Draw multiple circles with decreasing opacity
+    for (let i = 0; i < 3; i++) {
+      const r = radius - (i * 30);
+      if (r > 0) {
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, r, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(79, 140, 255, ${0.7 - i * 0.2})`;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      }
+    }
+    
+    // Animate radius
+    if (growing) {
+      radius += 2;
+      if (radius > 150) growing = false;
+    } else {
+      radius -= 2;
+      if (radius < 0) growing = true;
+    }
+    
+    requestAnimationFrame(drawCanvas);
+  }
+  
+  drawCanvas();
+</script>
+
+</body>
+</html>

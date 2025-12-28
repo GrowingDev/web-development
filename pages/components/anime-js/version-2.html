@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Apple Style – Parallax & Dark Mode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- anime.js -->
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+
+  <style>
+    /* ================= RESET ================= */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui;
+      color: #111;
+      background: #fff;
+      transition: background 0.6s ease, color 0.6s ease;
+    }
+
+    body.dark {
+      background: #000;
+      color: #fff;
+    }
+
+    /* ================= NAV ================= */
+    .nav {
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid #eee;
+      z-index: 100;
+      transition: background 0.4s ease;
+    }
+
+    body.dark .nav {
+      background: rgba(0,0,0,0.6);
+      border-color: #222;
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav a {
+      margin-left: 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      font-size: .9rem;
+    }
+
+    /* ================= HERO ================= */
+    .hero {
+      min-height: 100vh;
+      padding: 8rem 2rem;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+    }
+
+    .hero-subtitle {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      color: #555;
+    }
+
+    body.dark .hero-subtitle {
+      color: #aaa;
+    }
+
+    .hero-visual {
+      margin: 4rem auto 0;
+      max-width: 900px;
+      aspect-ratio: 16 / 9;
+      background: linear-gradient(135deg,#ddd,#bbb);
+      border-radius: 2rem;
+      will-change: transform;
+    }
+
+    /* ================= FEATURE ================= */
+    .feature {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .feature h2 {
+      font-size: clamp(2rem,5vw,3.5rem);
+    }
+
+    .feature p {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      max-width: 600px;
+    }
+
+    /* ================= SPLIT ================= */
+    .split {
+      display: flex;
+      gap: 4rem;
+      max-width: 1200px;
+      margin: 6rem auto;
+      padding: 0 2rem;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .split.reverse {
+      flex-direction: row-reverse;
+    }
+
+    .visual {
+      flex: 1;
+      aspect-ratio: 16 / 9;
+      background: #ddd;
+      border-radius: 1.5rem;
+      will-change: transform;
+    }
+
+    .text h3 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    /* ================= SPECS ================= */
+    .specs {
+      max-width: 1000px;
+      margin: 6rem auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+      gap: 2rem;
+      text-align: center;
+    }
+
+    /* ================= FOOTER ================= */
+    .footer {
+      border-top: 1px solid #eee;
+      padding: 2rem;
+      text-align: center;
+      color: #666;
+    }
+
+    body.dark .footer {
+      border-color: #222;
+      color: #888;
+    }
+
+    /* ================= ANIMATION START ================= */
+    .animate {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <span></span>
+    <nav>
+      <a href="#">Mac</a>
+      <a href="#">iPad</a>
+      <a href="#">iPhone</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <h1 class="hero-title animate">Supercharged for pros.</h1>
+  <p class="hero-subtitle animate">
+    Unreal performance. Stunning display. All-day battery life.
+  </p>
+  <div class="hero-visual parallax animate"></div>
+</section>
+
+<section class="feature">
+  <h2 class="animate">Unreal performance</h2>
+  <p class="animate">
+    Built for workflows that push hardware to the limit.
+  </p>
+</section>
+
+<section class="split">
+  <div class="text animate">
+    <h3>Next-generation chip</h3>
+    <p>Dummy text describing CPU, GPU and memory bandwidth.</p>
+  </div>
+  <div class="visual parallax animate"></div>
+</section>
+
+<section class="feature dark-trigger">
+  <h2 class="animate">Stunning display</h2>
+  <p class="animate">
+    Extreme brightness. Incredible contrast.
+  </p>
+</section>
+
+<section class="split reverse">
+  <div class="text animate">
+    <h3>Liquid Retina XDR</h3>
+    <p>Professional-grade color accuracy and HDR.</p>
+  </div>
+  <div class="visual parallax animate"></div>
+</section>
+
+<section class="specs">
+  <div class="animate"><h4>CPU</h4><p>Up to 12-core</p></div>
+  <div class="animate"><h4>GPU</h4><p>Up to 38-core</p></div>
+  <div class="animate"><h4>Memory</h4><p>Up to 128GB</p></div>
+  <div class="animate"><h4>Storage</h4><p>Up to 8TB</p></div>
+</section>
+
+<footer class="footer">© 2025 Demo Inc.</footer>
+
+<script>
+  /* ========== ENTRANCE ANIMATIONS ========== */
+  const animated = document.querySelectorAll(".animate");
+
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      anime({
+        targets: entry.target,
+        opacity: [0, 1],
+        translateY: [40, 0],
+        duration: 800,
+        easing: "easeOutCubic"
+      });
+
+      revealObserver.unobserve(entry.target);
+    });
+  }, { threshold: 0.2 });
+
+  animated.forEach(el => revealObserver.observe(el));
+
+  /* ========== PARALLAX ========== */
+  const parallaxElements = document.querySelectorAll(".parallax");
+
+  window.addEventListener("scroll", () => {
+    const scrollY = window.scrollY;
+
+    parallaxElements.forEach(el => {
+      const speed = 0.25;
+      el.style.transform = `translateY(${scrollY * speed}px)`;
+    });
+  });
+
+  /* ========== DARK / LIGHT TRANSITION ========== */
+  const darkTrigger = document.querySelector(".dark-trigger");
+
+  const themeObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      document.body.classList.toggle("dark", entry.isIntersecting);
+    });
+  }, { threshold: 0.5 });
+
+  themeObserver.observe(darkTrigger);
+</script>
+
+</body>
+</html>

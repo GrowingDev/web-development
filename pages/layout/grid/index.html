@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Grid Detaillierte Beispiele</title>
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <h1>CSS Grid - Detaillierte Beispiele</h1>
+
+    <!-- 1. Spalten-Definitionen -->
+    <div class="section">
+        <h2>1. Grid-Template-Columns (Spalten definieren)</h2>
+        
+        <div class="property-info">grid-template-columns: 100px 200px 100px; (feste Breiten)</div>
+        <div class="grid-container grid-cols-fixed">
+            <div class="grid-item">100px</div>
+            <div class="grid-item">200px</div>
+            <div class="grid-item">100px</div>
+        </div>
+
+        <div class="property-info">grid-template-columns: 1fr 2fr 1fr; (flexible Einheiten)</div>
+        <div class="grid-container grid-cols-fr">
+            <div class="grid-item">1fr</div>
+            <div class="grid-item">2fr</div>
+            <div class="grid-item">1fr</div>
+        </div>
+
+        <div class="property-info">grid-template-columns: repeat(4, 1fr); (Wiederholung)</div>
+        <div class="grid-container grid-cols-repeat">
+            <div class="grid-item">1</div>
+            <div class="grid-item">2</div>
+            <div class="grid-item">3</div>
+            <div class="grid-item">4</div>
+        </div>
+
+        <div class="property-info">grid-template-columns: auto 1fr auto; (auto-Größe)</div>
+        <div class="grid-container grid-cols-auto">
+            <div class="grid-item">Auto</div>
+            <div class="grid-item">Flexibel (1fr)</div>
+            <div class="grid-item">Auto</div>
+        </div>
+
+        <div class="property-info">grid-template-columns: repeat(3, minmax(100px, 1fr)); (min/max)</div>
+        <div class="grid-container grid-cols-minmax">
+            <div class="grid-item">Min 100px</div>
+            <div class="grid-item">Max 1fr</div>
+            <div class="grid-item">Flexibel</div>
+        </div>
+    </div>
+
+    <!-- 2. Zeilen-Definitionen -->
+    <div class="section">
+        <h2>2. Grid-Template-Rows (Zeilen definieren)</h2>
+        
+        <div class="property-info">grid-template-rows: 100px 150px 100px;</div>
+        <div class="grid-container grid-rows-fixed">
+            <div class="grid-item">100px hoch</div>
+            <div class="grid-item">150px hoch</div>
+            <div class="grid-item">100px hoch</div>
+        </div>
+    </div>
+
+    <!-- 3. Gap -->
+    <div class="section">
+        <h2>3. Gap (Abstände zwischen Items)</h2>
+        
+        <div class="property-info">gap: 20px; (einheitlicher Abstand)</div>
+        <div class="grid-container grid-cols-repeat grid-gap-uniform">
+            <div class="grid-item">1</div>
+            <div class="grid-item">2</div>
+            <div class="grid-item">3</div>
+            <div class="grid-item">4</div>
+        </div>
+
+        <div class="property-info">column-gap: 30px; row-gap: 15px; (unterschiedliche Abstände)</div>
+        <div class="grid-container grid-cols-repeat grid-gap-separate">
+            <div class="grid-item">1</div>
+            <div class="grid-item">2</div>
+            <div class="grid-item">3</div>
+            <div class="grid-item">4</div>
+        </div>
+    </div>
+
+    <!-- 4. Grid-Template-Areas -->
+    <div class="section">
+        <h2>4. Grid-Template-Areas (benannte Bereiche)</h2>
+        
+        <div class="property-info">
+            grid-template-areas:<br>
+            "header header header"<br>
+            "sidebar main aside"<br>
+            "footer footer footer";
+        </div>
+        <div class="grid-container grid-areas">
+            <div class="grid-item header">Header</div>
+            <div class="grid-item sidebar">Sidebar</div>
+            <div class="grid-item main">Main Content</div>
+            <div class="grid-item aside">Aside</div>
+            <div class="grid-item footer">Footer</div>
+        </div>
+    </div>
+
+    <!-- 5. Grid-Column und Grid-Row Spanning -->
+    <div class="section">
+        <h2>5. Grid-Column & Grid-Row (Items über mehrere Zellen)</h2>
+        
+        <div class="property-info">grid-column: span 2; grid-row: span 2; (Items spannen mehrere Zellen)</div>
+        <div class="grid-container grid-span">
+            <div class="grid-item">1</div>
+            <div class="grid-item span-col-2">Span 2 Spalten</div>
+            <div class="grid-item">2</div>
+            <div class="grid-item span-row-2">Span<br>2<br>Zeilen</div>
+            <div class="grid-item">3</div>
+            <div class="grid-item">4</div>
+            <div class="grid-item span-both">Span 2x2</div>
+            <div class="grid-item">5</div>
+            <div class="grid-item">6</div>
+        </div>
+
+        <div class="property-info">grid-column: 2 / 4; grid-row: 1 / 3; (exakte Position)</div>
+        <div class="grid-container grid-span">
+            <div class="grid-item">1</div>
+            <div class="grid-item position-exact">Von Spalte 2 bis 4<br>Von Zeile 1 bis 3</div>
+            <div class="grid-item">2</div>
+            <div class="grid-item">3</div>
+            <div class="grid-item">4</div>
+            <div class="grid-item">5</div>
+        </div>
+    </div>
+
+    <!-- 6. Justify-Items und Align-Items -->
+    <div class="section">
+        <h2>6. Justify-Items (horizontale Ausrichtung in Zellen)</h2>
+        
+        <div class="property-info">justify-items: start;</div>
+        <div class="grid-container grid-justify-start">
+            <div class="grid-item">Links</div>
+            <div class="grid-item">Links</div>
+            <div class="grid-item">Links</div>
+        </div>
+
+        <div class="property-info">justify-items: center;</div>
+        <div class="grid-container grid-justify-center">
+            <div class="grid-item">Mitte</div>
+            <div class="grid-item">Mitte</div>
+            <div class="grid-item">Mitte</div>
+        </div>
+
+        <div class="property-info">justify-items: end;</div>
+        <div class="grid-container grid-justify-end">
+            <div class="grid-item">Rechts</div>
+            <div class="grid-item">Rechts</div>
+            <div class="grid-item">Rechts</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>7. Align-Items (vertikale Ausrichtung in Zellen)</h2>
+        
+        <div class="property-info">align-items: start;</div>
+        <div class="grid-container grid-align-start">
+            <div class="grid-item">Oben</div>
+            <div class="grid-item">Oben</div>
+            <div class="grid-item">Oben</div>
+        </div>
+
+        <div class="property-info">align-items: center;</div>
+        <div class="grid-container grid-align-center">
+            <div class="grid-item">Mitte</div>
+            <div class="grid-item">Mitte</div>
+            <div class="grid-item">Mitte</div>
+        </div>
+
+        <div class="property-info">align-items: end;</div>
+        <div class="grid-container grid-align-end">
+            <div class="grid-item">Unten</div>
+            <div class="grid-item">Unten</div>
+            <div class="grid-item">Unten</div>
+        </div>
+    </div>
+
+    <!-- 8. Justify-Self und Align-Self -->
+    <div class="section">
+        <h2>8. Justify-Self & Align-Self (individuelle Item-Ausrichtung)</h2>
+        
+        <div class="property-info">Individuelle Ausrichtung einzelner Items</div>
+        <div class="grid-container grid-cols-repeat" style="grid-template-rows: 150px;">
+            <div class="grid-item justify-self-start align-self-start">Oben Links</div>
+            <div class="grid-item justify-self-center">Mitte Horizontal</div>
+            <div class="grid-item align-self-end">Unten</div>
+            <div class="grid-item justify-self-center align-self-end">Unten Mitte</div>
+        </div>
+    </div>
+
+    <!-- 9. Auto-fit und Auto-fill -->
+    <div class="section">
+        <h2>9. Auto-fit & Auto-fill (responsive Spalten)</h2>
+        
+        <div class="property-info">grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));</div>
+        <div class="grid-container grid-auto-fit">
+            <div class="grid-item">1</div>
+            <div class="grid-item">2</div>
+            <div class="grid-item">3</div>
+            <div class="grid-item">4</div>
+            <div class="grid-item">5</div>
+        </div>
+
+        <div class="property-info">grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));</div>
+        <div class="grid-container grid-auto-fill">
+            <div class="grid-item">1</div>
+            <div class="grid-item">2</div>
+            <div class="grid-item">3</div>
+        </div>
+    </div>
+
+    <!-- 10. Komplexes Dashboard -->
+    <div class="section">
+        <h2>10. Komplexes Dashboard Layout</h2>
+        
+        <div class="property-info">Kombination aus grid-template-columns, rows und areas</div>
+        <div class="grid-container dashboard">
+            <div class="grid-item nav">Navigation</div>
+            <div class="grid-item dash-header">Header</div>
+            <div class="grid-item main1">Widget 1</div>
+            <div class="grid-item main2">Widget 2</div>
+            <div class="grid-item main3">Main Content</div>
+            <div class="grid-item dash-sidebar">Sidebar</div>
+            <div class="grid-item dash-footer">Footer</div>
+        </div>
+    </div>
+
+    <!-- 11. Nested Grid -->
+    <div class="section">
+        <h2>11. Verschachteltes Grid (Nested Grid)</h2>
+        
+        <div class="property-info">Grid innerhalb eines Grid Items</div>
+        <div class="grid-container nested-parent">
+            <div class="grid-item nested-child">
+                <div class="grid-item">A1</div>
+                <div class="grid-item">A2</div>
+                <div class="grid-item">A3</div>
+                <div class="grid-item">A4</div>
+            </div>
+            <div class="grid-item nested-child">
+                <div class="grid-item">B1</div>
+                <div class="grid-item">B2</div>
+                <div class="grid-item">B3</div>
+                <div class="grid-item">B4</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

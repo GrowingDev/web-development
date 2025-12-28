@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Apple Style – Extended Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- GSAP -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+<style>
+:root { --nav-height: 72px; }
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-padding-top: var(--nav-height); }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, system-ui;
+  background:#fff;
+  color:#111;
+  transition: background .8s ease, color .8s ease;
+}
+
+body.dark { background:#000; color:#fff; }
+
+/* NAV */
+.nav {
+  position: sticky;
+  top: 0;
+  height: var(--nav-height);
+  background: rgba(255,255,255,.75);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid #eee;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+}
+
+body.dark .nav {
+  background: rgba(0,0,0,.75);
+  border-color:#222;
+}
+
+.nav-inner {
+  max-width:1200px;
+  width:100%;
+  margin:auto;
+  padding:0 2rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  padding: calc(var(--nav-height) + 6rem) 2rem 4rem;
+  text-align:center;
+}
+
+.hero h1 {
+  font-size: clamp(2.8rem,6vw,5rem);
+}
+
+.hero p {
+  margin-top:1rem;
+  font-size:1.3rem;
+  color:#666;
+}
+
+body.dark .hero p { color:#aaa; }
+
+/* FULL VISUAL */
+.full-visual {
+  margin-top:4rem;
+  height:70vh;
+  border-radius:2rem;
+  overflow:hidden;
+  position:relative;
+}
+
+.visual-inner {
+  position:absolute;
+  inset:-8%;
+  will-change:transform;
+}
+
+.visual-inner img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 30%;
+}
+
+/* FEATURES */
+.features {
+  max-width:1200px;
+  margin:8rem auto;
+  padding:0 2rem;
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+  gap:3rem;
+}
+
+.feature-card {
+  padding:2rem;
+}
+
+.feature-card h3 {
+  font-size:1.6rem;
+  margin-bottom:.5rem;
+}
+
+.feature-card p {
+  color:#555;
+}
+
+body.dark .feature-card p { color:#aaa; }
+
+/* METRICS */
+.metrics {
+  max-width:1200px;
+  margin:10rem auto;
+  padding:0 2rem;
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+  gap:3rem;
+  text-align:center;
+}
+
+.metric h4 {
+  font-size:2.5rem;
+}
+
+.metric p {
+  margin-top:.5rem;
+  color:#555;
+}
+
+body.dark .metric p { color:#aaa; }
+
+/* TECH */
+.tech {
+  display:grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap:4rem;
+  max-width:1200px;
+  margin:10rem auto;
+  padding:0 2rem;
+  align-items:center;
+}
+
+.tech h2 {
+  font-size: clamp(2.2rem,4vw,3.5rem);
+}
+
+.tech p {
+  margin-top:1rem;
+  font-size:1.1rem;
+  color:#555;
+}
+
+body.dark .tech p { color:#aaa; }
+
+/* WORKFLOW */
+.workflow {
+  max-width:900px;
+  margin:10rem auto;
+  padding:0 2rem;
+  text-align:center;
+}
+
+.workflow h2 {
+  font-size: clamp(2.2rem,4vw,3.2rem);
+}
+
+.workflow p {
+  margin-top:1rem;
+  font-size:1.1rem;
+  color:#555;
+}
+
+body.dark .workflow p { color:#aaa; }
+
+/* FOOTER */
+.footer {
+  padding:4rem 2rem;
+  text-align:center;
+  border-top:1px solid #eee;
+  color:#666;
+}
+
+body.dark .footer { border-color:#222; color:#aaa; }
+
+/* ANIMATION */
+.animate {
+  opacity:0;
+  transform:translateY(40px);
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+  .tech { grid-template-columns:1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <span></span>
+    <nav>
+      <a href="#">Product</a>
+      <a href="#">Technology</a>
+      <a href="#">Support</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <h1 class="animate">Designed for focus.</h1>
+  <p class="animate">Performance where it matters. Silence everywhere else.</p>
+
+  <div class="full-visual">
+    <div class="visual-inner parallax hero-parallax animate">
+      <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=2000&q=80" alt="">
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features light-trigger">
+  <div class="feature-card animate">
+    <h3>Performance cores</h3>
+    <p>Sustained speed for long-running workloads.</p>
+  </div>
+  <div class="feature-card animate">
+    <h3>Unified memory</h3>
+    <p>High bandwidth with minimal latency.</p>
+  </div>
+  <div class="feature-card animate">
+    <h3>Thermal efficiency</h3>
+    <p>Advanced cooling keeps noise low.</p>
+  </div>
+  <div class="feature-card animate">
+    <h3>Secure architecture</h3>
+    <p>Hardware-backed protection for data.</p>
+  </div>
+</section>
+
+<!-- METRICS -->
+<section class="metrics">
+  <div class="metric animate">
+    <h4>2×</h4>
+    <p>Faster compile times</p>
+  </div>
+  <div class="metric animate">
+    <h4>3×</h4>
+    <p>Graphics performance</p>
+  </div>
+  <div class="metric animate">
+    <h4>40%</h4>
+    <p>Lower power usage</p>
+  </div>
+</section>
+
+<!-- TECH -->
+<section class="tech dark-trigger">
+  <div>
+    <h2 class="animate">Engineered as one system.</h2>
+    <p class="animate">
+      Hardware, software, and silicon designed together to remove bottlenecks and deliver consistent performance.
+    </p>
+  </div>
+
+  <div class="full-visual">
+    <div class="visual-inner parallax animate">
+      <img src="https://images.unsplash.com/photo-1537498425277-c283d32ef9db?auto=format&fit=crop&w=1600&q=80" alt="">
+    </div>
+  </div>
+</section>
+
+<!-- WORKFLOW -->
+<section class="workflow light-trigger">
+  <h2 class="animate">Built for real workflows.</h2>
+  <p class="animate">
+    From software development to video production and 3D design,
+    the system adapts to your workflow without interruption.
+  </p>
+</section>
+
+<footer class="footer">
+  © 2025 Demo Inc.
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+const prefersReducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const navHeight = document.querySelector(".nav").offsetHeight;
+
+/* ENTRANCE */
+gsap.utils.toArray(".animate").forEach(el => {
+  gsap.to(el, {
+    opacity:1,
+    y:0,
+    duration: prefersReducedMotion ? 0 : 0.9,
+    ease:"power3.out",
+    scrollTrigger:{
+      trigger: el,
+      start:`top+=${navHeight} 80%`,
+      once:true
+    }
+  });
+});
+
+/* PARALLAX */
+if (!prefersReducedMotion) {
+  gsap.utils.toArray(".parallax").forEach(el => {
+    const strength = el.classList.contains("hero-parallax") ? 18 : 12;
+
+    gsap.fromTo(
+      el,
+      { yPercent:-strength },
+      {
+        yPercent: strength,
+        ease:"none",
+        scrollTrigger:{
+          trigger: el.closest(".full-visual"),
+          start:"top bottom",
+          end:"bottom top",
+          scrub:true
+        }
+      }
+    );
+  });
+}
+
+/* DARK / LIGHT */
+ScrollTrigger.create({
+  trigger: ".dark-trigger",
+  start:`top+=${navHeight} 50%`,
+  onEnter: () => document.body.classList.add("dark"),
+  onLeaveBack: () => document.body.classList.remove("dark")
+});
+
+ScrollTrigger.create({
+  trigger: ".light-trigger",
+  start:`top+=${navHeight} 50%`,
+  onEnter: () => document.body.classList.remove("dark"),
+  onLeaveBack: () => document.body.classList.add("dark")
+});
+</script>
+
+</body>
+</html>

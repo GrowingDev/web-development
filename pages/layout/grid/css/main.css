@@ -1,0 +1,286 @@
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .property-info {
+            background: #ecf0f1;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #34495e;
+        }
+
+        .grid-container {
+            display: grid;
+            background: #e8eaf6;
+            padding: 15px;
+            border-radius: 8px;
+            gap: 10px;
+            margin-bottom: 20px;
+            min-height: 200px;
+        }
+
+        .grid-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* 1. Spalten-Definitionen */
+        .grid-cols-fixed {
+            grid-template-columns: 100px 200px 100px;
+        }
+
+        .grid-cols-fr {
+            grid-template-columns: 1fr 2fr 1fr;
+        }
+
+        .grid-cols-repeat {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .grid-cols-auto {
+            grid-template-columns: auto 1fr auto;
+        }
+
+        .grid-cols-minmax {
+            grid-template-columns: repeat(3, minmax(100px, 1fr));
+        }
+
+        /* 2. Zeilen-Definitionen */
+        .grid-rows-fixed {
+            grid-template-rows: 100px 150px 100px;
+        }
+
+        .grid-rows-auto {
+            grid-template-rows: auto auto auto;
+        }
+
+        /* 3. Gap (Abstände) */
+        .grid-gap-uniform {
+            gap: 20px;
+        }
+
+        .grid-gap-separate {
+            column-gap: 30px;
+            row-gap: 15px;
+        }
+
+        /* 4. Grid-Template-Areas */
+        .grid-areas {
+            grid-template-columns: 1fr 2fr 1fr;
+            grid-template-rows: auto 1fr auto;
+            grid-template-areas:
+                "header header header"
+                "sidebar main aside"
+                "footer footer footer";
+            min-height: 400px;
+        }
+
+        .header { grid-area: header; background: #e91e63; }
+        .sidebar { grid-area: sidebar; background: #9c27b0; }
+        .main { grid-area: main; background: #2196f3; }
+        .aside { grid-area: aside; background: #00bcd4; }
+        .footer { grid-area: footer; background: #4caf50; }
+
+        /* 5. Grid-Column und Grid-Row */
+        .grid-span {
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, 100px);
+        }
+
+        .span-col-2 {
+            grid-column: span 2;
+        }
+
+        .span-row-2 {
+            grid-row: span 2;
+        }
+
+        .span-both {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .position-exact {
+            grid-column: 2 / 4;
+            grid-row: 1 / 3;
+        }
+
+        /* 6. Justify und Align Items */
+        .grid-justify-start {
+            grid-template-columns: repeat(3, 100px);
+            justify-items: start;
+        }
+
+        .grid-justify-center {
+            grid-template-columns: repeat(3, 100px);
+            justify-items: center;
+        }
+
+        .grid-justify-end {
+            grid-template-columns: repeat(3, 100px);
+            justify-items: end;
+        }
+
+        .grid-align-start {
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 150px;
+            align-items: start;
+        }
+
+        .grid-align-center {
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 150px;
+            align-items: center;
+        }
+
+        .grid-align-end {
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 150px;
+            align-items: end;
+        }
+
+        /* 7. Justify und Align Content */
+        .grid-justify-content {
+            grid-template-columns: repeat(3, 100px);
+            justify-content: center;
+        }
+
+        .grid-align-content {
+            grid-template-rows: repeat(2, 80px);
+            align-content: center;
+            min-height: 300px;
+        }
+
+        /* 8. Auto-fit und Auto-fill */
+        .grid-auto-fit {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        }
+
+        .grid-auto-fill {
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        }
+
+        /* 9. Dense Packing */
+        .grid-dense {
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-flow: dense;
+        }
+
+        /* 10. Komplexes Dashboard */
+        .dashboard {
+            grid-template-columns: 200px 1fr 1fr 200px;
+            grid-template-rows: 80px 1fr 1fr 60px;
+            grid-template-areas:
+                "nav header header header"
+                "nav main1 main2 sidebar"
+                "nav main3 main3 sidebar"
+                "nav footer footer footer";
+            min-height: 500px;
+            gap: 15px;
+        }
+
+        .nav { grid-area: nav; background: #37474f; }
+        .dash-header { grid-area: header; background: #546e7a; }
+        .main1 { grid-area: main1; background: #5c6bc0; }
+        .main2 { grid-area: main2; background: #7e57c2; }
+        .main3 { grid-area: main3; background: #42a5f5; }
+        .dash-sidebar { grid-area: sidebar; background: #66bb6a; }
+        .dash-footer { grid-area: footer; background: #78909c; }
+
+        /* 11. Nested Grid */
+        .nested-parent {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .nested-child {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .nested-child .grid-item {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 15px;
+            font-size: 12px;
+        }
+
+        /* Individual Item Positioning */
+        .justify-self-start {
+            justify-self: start;
+        }
+
+        .justify-self-center {
+            justify-self: center;
+        }
+
+        .align-self-start {
+            align-self: start;
+        }
+
+        .align-self-end {
+            align-self: end;
+        }
+
+        /* Responsive Anpassung */
+        @media (max-width: 768px) {
+            .grid-areas {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+                    "header"
+                    "sidebar"
+                    "main"
+                    "aside"
+                    "footer";
+            }
+
+            .dashboard {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+                    "nav"
+                    "header"
+                    "main1"
+                    "main2"
+                    "main3"
+                    "sidebar"
+                    "footer";
+            }
+        }

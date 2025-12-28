@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsives Font-System - Test</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Responsives Font-System Test</h1>
+        <p class="lead">Diese Seite demonstriert alle typografischen Elemente deines responsiven Designsystems. Ändere die Fenstergröße, um die Fluid Typography in Aktion zu sehen.</p>
+    </div>
+
+    <div class="container">
+        <h2>Überschriften Hierarchie</h2>
+        <h1>Überschrift H1 - Haupttitel</h1>
+        <h2>Überschrift H2 - Sektion</h2>
+        <h3>Überschrift H3 - Untersektion</h3>
+        <h4>Überschrift H4 - Kleinere Sektion</h4>
+        <h5>Überschrift H5 - Detail</h5>
+        <h6>Überschrift H6 - Kleinste Überschrift</h6>
+    </div>
+
+    <div class="container">
+        <h2>Textgrößen</h2>
+        <div class="font-sample">
+            <div class="sample-item">
+                <div class="sample-label">Extra Klein (xs)</div>
+                <p class="tiny">Dies ist extra kleiner Text. Ideal für Fußnoten, Metadaten oder sehr kleine Labels.</p>
+            </div>
+            <div class="sample-item">
+                <div class="sample-label">Klein (sm)</div>
+                <p class="small">Dies ist kleiner Text. Gut geeignet für sekundäre Informationen und Beschriftungen.</p>
+            </div>
+            <div class="sample-item">
+                <div class="sample-label">Normal (base)</div>
+                <p>Dies ist normaler Fließtext. Die Standard-Schriftgröße für den Hauptinhalt deiner Website.</p>
+            </div>
+            <div class="sample-item">
+                <div class="sample-label">Groß (lg)</div>
+                <p class="lead">Dies ist großer Text. Perfekt für Lead-Paragraphen und einleitende Texte, die hervorstechen sollen.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Absätze und Fließtext</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <p class="lead">Dies ist ein Lead-Paragraph mit größerer Schrift und mehr Zeilenhöhe für bessere Lesbarkeit bei wichtigen Einleitungstexten.</p>
+    </div>
+
+    <div class="container">
+        <h2>Text-Formatierung</h2>
+        <p>Dies ist <strong>fetter Text</strong> und dies ist <em>kursiver Text</em>. Du kannst auch <strong><em>beides kombinieren</em></strong>.</p>
+        <p>Dies ist <code>inline code</code> für technische Begriffe oder Code-Snippets im Fließtext.</p>
+        <p>Dies ist ein <a href="#">Textlink</a>, der interaktiv ist und eine andere Farbe hat.</p>
+        <p><small class="small">Dies ist kleiner Text für Nebensächliches.</small></p>
+        <p><span class="tiny">Dies ist extra kleiner Text für Fußnoten.</span></p>
+    </div>
+
+    <div class="container">
+        <h2>Listen</h2>
+        <h3>Ungeordnete Liste</h3>
+        <ul>
+            <li>Erster Listenpunkt mit normalem Text</li>
+            <li>Zweiter Listenpunkt mit etwas mehr Inhalt für mehrzeilige Darstellung</li>
+            <li>Dritter Listenpunkt
+                <ul>
+                    <li>Verschachtelte Liste Ebene 1</li>
+                    <li>Verschachtelte Liste Ebene 1
+                        <ul>
+                            <li>Verschachtelte Liste Ebene 2</li>
+                            <li>Verschachtelte Liste Ebene 2</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>Vierter Listenpunkt</li>
+        </ul>
+
+        <h3>Geordnete Liste</h3>
+        <ol>
+            <li>Erster Schritt im Prozess</li>
+            <li>Zweiter Schritt im Prozess</li>
+            <li>Dritter Schritt mit Unterpunkten
+                <ol>
+                    <li>Unterschritt A</li>
+                    <li>Unterschritt B</li>
+                </ol>
+            </li>
+            <li>Vierter Schritt im Prozess</li>
+        </ol>
+    </div>
+
+    <div class="container">
+        <h2>Blockquote</h2>
+        <blockquote>
+            Dies ist ein Zitat oder ein hervorgehobener Textblock. Blockquotes werden häufig verwendet, um Testimonials, wichtige Aussagen oder Zitate von anderen Quellen hervorzuheben.
+        </blockquote>
+        <p>Normaler Text nach dem Blockquote.</p>
+    </div>
+
+    <div class="container">
+        <h2>Code-Blöcke</h2>
+        <p>Für längere Code-Beispiele verwendest du <code>&lt;pre&gt;</code> Tags:</p>
+        <pre>function responsiveFont() {
+  const element = document.querySelector('.text');
+  const fontSize = window.getComputedStyle(element).fontSize;
+  console.log('Current font size:', fontSize);
+}</pre>
+        <p>Inline Code sieht so aus: <code>const variable = "value";</code></p>
+    </div>
+
+    <div class="container">
+        <h2>Font Families</h2>
+        <div class="font-sample">
+            <div class="sample-item">
+                <div class="sample-label">Sans-Serif (Standard)</div>
+                <p>The quick brown fox jumps over the lazy dog. 0123456789</p>
+                <p>Der schnelle braune Fuchs springt über den faulen Hund.</p>
+            </div>
+            <div class="sample-item">
+                <div class="sample-label">Serif</div>
+                <p class="serif">The quick brown fox jumps over the lazy dog. 0123456789</p>
+                <p class="serif">Der schnelle braune Fuchs springt über den faulen Hund.</p>
+            </div>
+            <div class="sample-item">
+                <div class="sample-label">Monospace</div>
+                <p class="mono">The quick brown fox jumps over the lazy dog. 0123456789</p>
+                <p class="mono">Der schnelle braune Fuchs springt über den faulen Hund.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Tabelle</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Element</th>
+                    <th>CSS Variable</th>
+                    <th>Min Größe</th>
+                    <th>Max Größe</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>H1</td>
+                    <td><code>--fs-h1</code></td>
+                    <td>2.25rem</td>
+                    <td>4.5rem</td>
+                </tr>
+                <tr>
+                    <td>H2</td>
+                    <td><code>--fs-h2</code></td>
+                    <td>1.875rem</td>
+                    <td>3rem</td>
+                </tr>
+                <tr>
+                    <td>H3</td>
+                    <td><code>--fs-h3</code></td>
+                    <td>1.5rem</td>
+                    <td>2.25rem</td>
+                </tr>
+                <tr>
+                    <td>Body</td>
+                    <td><code>--fs-body</code></td>
+                    <td>1rem</td>
+                    <td>1.125rem</td>
+                </tr>
+                <tr>
+                    <td>Small</td>
+                    <td><code>--fs-sm</code></td>
+                    <td>0.875rem</td>
+                    <td>1rem</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <h2>Kombiniertes Beispiel</h2>
+        <h3>Eine realistische Sektion</h3>
+        <p class="lead">Dies ist ein einleitender Absatz, der die Aufmerksamkeit des Lesers weckt und den Kontext für den folgenden Inhalt setzt.</p>
+        
+        <h4>Unterüberschrift für Details</h4>
+        <p>Hier folgt der Hauptinhalt mit normalem Fließtext. Du kannst <strong>wichtige Begriffe hervorheben</strong> und <a href="#">relevante Links</a> einfügen. Auch <code>technische Begriffe</code> lassen sich gut integrieren.</p>
+        
+        <ul>
+            <li>Wichtiger Punkt Nummer eins</li>
+            <li>Wichtiger Punkt Nummer zwei</li>
+            <li>Wichtiger Punkt Nummer drei</li>
+        </ul>
+        
+        <blockquote>
+            Ein inspirierendes Zitat oder eine wichtige Aussage, die hervorgehoben werden soll.
+        </blockquote>
+        
+        <p class="small">Kleingedruckter Text für zusätzliche Informationen oder Disclaimers.</p>
+    </div>
+
+    <div class="viewport-info">
+        Viewport: <span id="viewport-width"></span>px
+    </div>
+
+    <script>
+        // Zeige aktuelle Viewport-Breite an
+        function updateViewportInfo() {
+            document.getElementById('viewport-width').textContent = window.innerWidth;
+        }
+        
+        updateViewportInfo();
+        window.addEventListener('resize', updateViewportInfo);
+    </script>
+</body>
+</html>

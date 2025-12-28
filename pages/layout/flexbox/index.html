@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexbox Child Ausrichtung</title>
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <h1>Flexbox: Ausrichtung von Child Elements</h1>
+
+    <!-- justify-content Beispiele -->
+    <div class="section">
+        <h2>1. justify-content (Hauptachse - horizontal)</h2>
+        
+        <div class="property-info">justify-content: flex-start (Standard)</div>
+        <div class="flex-container jc-flex-start">
+            <div class="flex-item">1</div>
+            <div class="flex-item">2</div>
+            <div class="flex-item">3</div>
+        </div>
+
+        <div class="property-info">justify-content: flex-end</div>
+        <div class="flex-container jc-flex-end">
+            <div class="flex-item">1</div>
+            <div class="flex-item">2</div>
+            <div class="flex-item">3</div>
+        </div>
+
+        <div class="property-info">justify-content: center</div>
+        <div class="flex-container jc-center">
+            <div class="flex-item">1</div>
+            <div class="flex-item">2</div>
+            <div class="flex-item">3</div>
+        </div>
+
+        <div class="property-info">justify-content: space-between</div>
+        <div class="flex-container jc-space-between">
+            <div class="flex-item">1</div>
+            <div class="flex-item">2</div>
+            <div class="flex-item">3</div>
+        </div>
+
+        <div class="property-info">justify-content: space-around</div>
+        <div class="flex-container jc-space-around">
+            <div class="flex-item">1</div>
+            <div class="flex-item">2</div>
+            <div class="flex-item">3</div>
+        </div>
+
+        <div class="property-info">justify-content: space-evenly</div>
+        <div class="flex-container jc-space-evenly">
+            <div class="flex-item">1</div>
+            <div class="flex-item">2</div>
+            <div class="flex-item">3</div>
+        </div>
+    </div>
+
+    <!-- align-items Beispiele -->
+    <div class="section">
+        <h2>2. align-items (Querachse - vertikal)</h2>
+        
+        <div class="property-info">align-items: flex-start</div>
+        <div class="flex-container ai-flex-start">
+            <div class="flex-item">1</div>
+            <div class="flex-item" style="padding: 30px;">2<br>größer</div>
+            <div class="flex-item">3</div>
+        </div>
+
+        <div class="property-info">align-items: flex-end</div>
+        <div class="flex-container ai-flex-end">
+            <div class="flex-item">1</div>
+            <div class="flex-item" style="padding: 30px;">2<br>größer</div>
+            <div class="flex-item">3</div>
+        </div>
+
+        <div class="property-info">align-items: center</div>
+        <div class="flex-container ai-center">
+            <div class="flex-item">1</div>
+            <div class="flex-item" style="padding: 30px;">2<br>größer</div>
+            <div class="flex-item">3</div>
+        </div>
+
+        <div class="property-info">align-items: stretch (Standard)</div>
+        <div class="flex-container ai-stretch">
+            <div class="flex-item">1</div>
+            <div class="flex-item">2<br>gestreckt</div>
+            <div class="flex-item">3</div>
+        </div>
+
+        <div class="property-info">align-items: baseline</div>
+        <div class="flex-container ai-baseline">
+            <div class="flex-item item-small">Klein</div>
+            <div class="flex-item">Normal</div>
+            <div class="flex-item item-large">Groß</div>
+        </div>
+    </div>
+
+    <!-- align-self Beispiele -->
+    <div class="section">
+        <h2>3. align-self (individuelle Ausrichtung einzelner Items)</h2>
+        
+        <div class="property-info">Verschiedene align-self Werte auf einzelnen Items</div>
+        <div class="flex-container align-self-demo">
+            <div class="flex-item as-flex-start">flex-start</div>
+            <div class="flex-item as-center">center</div>
+            <div class="flex-item as-flex-end">flex-end</div>
+            <div class="flex-item as-stretch">stretch</div>
+        </div>
+    </div>
+
+    <!-- flex-direction Beispiele -->
+    <div class="section">
+        <h2>4. flex-direction (Richtung der Hauptachse)</h2>
+        
+        <div class="property-info">flex-direction: row (Standard)</div>
+        <div class="flex-container fd-row">
+            <div class="flex-item">1</div>
+            <div class="flex-item">2</div>
+            <div class="flex-item">3</div>
+        </div>
+
+        <div class="property-info">flex-direction: row-reverse</div>
+        <div class="flex-container fd-row-reverse">
+            <div class="flex-item">1</div>
+            <div class="flex-item">2</div>
+            <div class="flex-item">3</div>
+        </div>
+
+        <div class="property-info">flex-direction: column</div>
+        <div class="flex-container fd-column">
+            <div class="flex-item">1</div>
+            <div class="flex-item">2</div>
+            <div class="flex-item">3</div>
+        </div>
+
+        <div class="property-info">flex-direction: column-reverse</div>
+        <div class="flex-container fd-column-reverse">
+            <div class="flex-item">1</div>
+            <div class="flex-item">2</div>
+            <div class="flex-item">3</div>
+        </div>
+    </div>
+
+    <!-- flex-wrap Beispiele -->
+    <div class="section">
+        <h2>5. flex-wrap (Umbruch bei mehreren Items)</h2>
+        
+        <div class="property-info">flex-wrap: nowrap (Standard)</div>
+        <div class="flex-container fw-nowrap">
+            <div class="flex-item">1</div>
+            <div class="flex-item">2</div>
+            <div class="flex-item">3</div>
+            <div class="flex-item">4</div>
+            <div class="flex-item">5</div>
+            <div class="flex-item">6</div>
+        </div>
+
+        <div class="property-info">flex-wrap: wrap</div>
+        <div class="flex-container fw-wrap">
+            <div class="flex-item">1</div>
+            <div class="flex-item">2</div>
+            <div class="flex-item">3</div>
+            <div class="flex-item">4</div>
+            <div class="flex-item">5</div>
+            <div class="flex-item">6</div>
+        </div>
+
+        <div class="property-info">flex-wrap: wrap-reverse</div>
+        <div class="flex-container fw-wrap-reverse">
+            <div class="flex-item">1</div>
+            <div class="flex-item">2</div>
+            <div class="flex-item">3</div>
+            <div class="flex-item">4</div>
+            <div class="flex-item">5</div>
+            <div class="flex-item">6</div>
+        </div>
+    </div>
+
+    <!-- align-content Beispiele -->
+    <div class="section">
+        <h2>6. align-content (Ausrichtung mehrerer Zeilen)</h2>
+        
+        <div class="property-info">align-content: flex-start</div>
+        <div class="flex-container ac-flex-start">
+            <div class="flex-item">1</div>
+            <div class="flex-item">2</div>
+            <div class="flex-item">3</div>
+            <div class="flex-item">4</div>
+            <div class="flex-item">5</div>
+            <div class="flex-item">6</div>
+        </div>
+
+        <div class="property-info">align-content: center</div>
+        <div class="flex-container ac-center">
+            <div class="flex-item">1</div>
+            <div class="flex-item">2</div>
+            <div class="flex-item">3</div>
+            <div class="flex-item">4</div>
+            <div class="flex-item">5</div>
+            <div class="flex-item">6</div>
+        </div>
+
+        <div class="property-info">align-content: space-between</div>
+        <div class="flex-container ac-space-between">
+            <div class="flex-item">1</div>
+            <div class="flex-item">2</div>
+            <div class="flex-item">3</div>
+            <div class="flex-item">4</div>
+            <div class="flex-item">5</div>
+            <div class="flex-item">6</div>
+        </div>
+    </div>
+
+    <!-- Kombinierte Beispiele -->
+    <div class="section">
+        <h2>7. Kombinierte Ausrichtungen (häufige Anwendungsfälle)</h2>
+        
+        <div class="property-info">justify-content: center + align-items: center (perfekt zentriert)</div>
+        <div class="flex-container combined-1">
+            <div class="flex-item">Zentriert!</div>
+        </div>
+
+        <div class="property-info">flex-direction: column + justify-content: space-around + align-items: center</div>
+        <div class="flex-container combined-2">
+            <div class="flex-item">Item 1</div>
+            <div class="flex-item">Item 2</div>
+            <div class="flex-item">Item 3</div>
+        </div>
+
+        <div class="property-info">flex-wrap: wrap + justify-content: space-between + align-items: center</div>
+        <div class="flex-container combined-3">
+            <div class="flex-item">1</div>
+            <div class="flex-item">2</div>
+            <div class="flex-item">3</div>
+            <div class="flex-item">4</div>
+            <div class="flex-item">5</div>
+        </div>
+    </div>
+</body>
+</html>

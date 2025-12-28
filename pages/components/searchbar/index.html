@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Search Bar</title>
+   <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Advanced Search</h1>
+            <p>Search through our comprehensive database</p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <div class="search-wrapper">
+                <div class="search-input-group">
+                    <span class="search-icon">🔍</span>
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="searchInput"
+                        placeholder="Search for articles, tutorials, documentation..."
+                        autocomplete="off"
+                    >
+                    <button class="clear-btn" id="clearBtn">✕</button>
+                </div>
+
+                <!-- Suggestions Dropdown -->
+                <div class="suggestions-dropdown" id="suggestionsDropdown"></div>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="search-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="articles">Articles</button>
+                <button class="filter-btn" data-filter="tutorials">Tutorials</button>
+                <button class="filter-btn" data-filter="documentation">Documentation</button>
+                <button class="filter-btn" data-filter="videos">Videos</button>
+            </div>
+        </div>
+
+        <!-- Results Container -->
+        <div class="results-container">
+            <div class="results-header">
+                <div class="results-count" id="resultsCount">
+                    Showing <span class="highlight">0</span> results
+                </div>
+                <div class="sort-dropdown">
+                    <label for="sortSelect">Sort by:</label>
+                    <select id="sortSelect">
+                        <option value="relevance">Relevance</option>
+                        <option value="date">Date</option>
+                        <option value="title">Title</option>
+                        <option value="popularity">Popularity</option>
+                    </select>
+                </div>
+            </div>
+            <div class="results-list" id="resultsList"></div>
+        </div>
+    </div>
+
+  <script src="js/searchbar.js"></script>
+</body>
+</html>

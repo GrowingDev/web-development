@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elternabhängige Schriftgrößen - Demo</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        /* === ZUSÄTZLICHE DEMO STYLES === */
+        
+        .demo-section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+        
+        .demo-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2d3748;
+            border-bottom: 2px solid #cbd5e0;
+            padding-bottom: 0.5rem;
+        }
+        
+        .demo-info {
+            font-size: 0.875rem;
+            color: #718096;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+        
+        .example-box {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 6px;
+        }
+        
+        .size-label {
+            font-size: 0.75rem;
+            color: #718096;
+            font-family: monospace;
+            background: #edf2f7;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* === 1. EM EINHEITEN BEISPIEL === */
+        .parent-em {
+            font-size: 20px;
+            padding: 1.5rem;
+            background: white;
+            border: 3px solid #3182ce;
+            margin-bottom: 1rem;
+            border-radius: 6px;
+        }
+        
+        .child-em {
+            font-size: 0.8em;
+            padding: 1rem;
+            background: #e6f2ff;
+            margin: 1em 0;
+            border-left: 3px solid #3182ce;
+        }
+        
+        .grandchild-em {
+            font-size: 0.9em;
+            padding: 0.8rem;
+            background: #cce5ff;
+            margin-top: 1em;
+            border-left: 3px solid #2c5282;
+        }
+        
+        /* === 2. CONTAINER QUERIES BEISPIEL === */
+        .card-container {
+            container-type: inline-size;
+            container-name: card;
+            border: 3px solid #805ad5;
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            resize: horizontal;
+            overflow: auto;
+            min-width: 250px;
+        }
+        
+        .card__title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+        }
+        
+        .card__text {
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card__meta {
+            font-size: 0.75rem;
+            color: #718096;
+        }
+        
+        @container card (min-width: 300px) {
+            .card__title {
+                font-size: 1.25rem;
+            }
+            .card__text {
+                font-size: 1rem;
+            }
+            .card__meta {
+                font-size: 0.875rem;
+            }
+        }
+        
+        @container card (min-width: 500px) {
+            .card__title {
+                font-size: 1.75rem;
+            }
+            .card__text {
+                font-size: 1.125rem;
+            }
+            .card__meta {
+                font-size: 1rem;
+            }
+        }
+        
+        /* === 3. CSS CUSTOM PROPERTIES BEISPIEL === */
+        .parent-vars {
+            --local-font-size: 1rem;
+            padding: 1.5rem;
+            background: white;
+            border: 3px solid #38a169;
+            margin-bottom: 1rem;
+            border-radius: 6px;
+        }
+        
+        .parent-vars.size-small {
+            --local-font-size: 0.875rem;
+        }
+        
+        .parent-vars.size-normal {
+            --local-font-size: 1rem;
+        }
+        
+        .parent-vars.size-large {
+            --local-font-size: 1.25rem;
+        }
+        
+        .parent-vars.size-xlarge {
+            --local-font-size: 1.5rem;
+        }
+        
+        .child-vars {
+            font-size: var(--local-font-size);
+            padding: 1rem;
+            background: #e6ffed;
+            margin-top: 1rem;
+            border-left: 3px solid #38a169;
+        }
+        
+        /* === 4. CLAMP MIT EM BEISPIEL === */
+        .parent-clamp {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            padding: 1.5rem;
+            background: white;
+            border: 3px solid #d69e2e;
+            margin-bottom: 1rem;
+            border-radius: 6px;
+        }
+        
+        .child-clamp {
+            font-size: clamp(0.875em, 0.8em + 0.5vw, 1em);
+            padding: 1rem;
+            background: #fef5e7;
+            margin-top: 1rem;
+            border-left: 3px solid #d69e2e;
+        }
+        
+        /* === 5. KONTEXT-BASIERTE GRÖSSEN === */
+        .context-box {
+            padding: 1.5rem;
+            background: white;
+            border: 3px solid #e53e3e;
+            margin-bottom: 1rem;
+            border-radius: 6px;
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 0.5em 1em;
+            background: #3182ce;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 0.5rem;
+        }
+        
+        .header-context .button {
+            font-size: 0.875rem;
+        }
+        
+        .hero-context .button {
+            font-size: 1.25rem;
+        }
+        
+        .sidebar-context .button {
+            font-size: 0.8rem;
+        }
+        
+        /* === GRID LAYOUT FÜR VERGLEICH === */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .resize-handle {
+            background: #edf2f7;
+            padding: 0.5rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #718096;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Elternabhängige Schriftgrößen</h1>
+    <p class="lead">Diese Demo zeigt verschiedene Methoden, wie Schriftgrößen vom Elternelement abhängig gemacht werden können.</p>
+
+    <!-- EM EINHEITEN -->
+    <div class="demo-section">
+        <h2 class="demo-title">1. Mit em-Einheiten (Relativ zum Parent)</h2>
+        <p class="demo-info">em multipliziert sich bei Verschachtelung - Vorsicht bei tiefer Nesting!</p>
+        
+        <div class="parent-em">
+            <span class="size-label">Parent: 20px</span>
+            <p>Dies ist der Parent mit 20px Schriftgröße.</p>
+            
+            <div class="child-em">
+                <span class="size-label">Child: 0.8em = 16px</span>
+                <p>Dies ist das Child mit 0.8em (80% von 20px = 16px)</p>
+                
+                <div class="grandchild-em">
+                    <span class="size-label">Grandchild: 0.9em = 14.4px</span>
+                    <p>Dies ist das Grandchild mit 0.9em (90% von 16px = 14.4px)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTAINER QUERIES -->
+    <div class="demo-section">
+        <h2 class="demo-title">2. Container Queries (Modern & Empfohlen)</h2>
+        <p class="demo-info">Ziehe an der rechten unteren Ecke der Karten, um die Größe zu ändern!</p>
+        
+        <div class="comparison-grid">
+            <div class="card-container" style="width: 250px;">
+                <span class="size-label">Klein (&lt;300px)</span>
+                <h3 class="card__title">Card Title</h3>
+                <p class="card__text">Dies ist eine Card mit Container Queries. Die Schriftgröße passt sich der Card-Breite an, nicht dem Viewport!</p>
+                <p class="card__meta">Metadaten • Klein</p>
+                <div class="resize-handle">← Ziehen zum Vergrößern →</div>
+            </div>
+            
+            <div class="card-container" style="width: 400px;">
+                <span class="size-label">Mittel (300-500px)</span>
+                <h3 class="card__title">Card Title</h3>
+                <p class="card__text">Bei mittlerer Breite werden alle Textelemente etwas größer. Beobachte, wie sich Title, Text und Meta unterschiedlich skalieren.</p>
+                <p class="card__meta">Metadaten • Mittel</p>
+                <div class="resize-handle">← Ziehen zum Vergrößern →</div>
+            </div>
+            
+            <div class="card-container" style="width: 600px;">
+                <span class="size-label">Groß (>500px)</span>
+                <h3 class="card__title">Card Title</h3>
+                <p class="card__text">Bei großer Breite sind alle Texte am größten. Container Queries sind perfekt für komponentenbasiertes Design!</p>
+                <p class="card__meta">Metadaten • Groß</p>
+                <div class="resize-handle">← Ziehen zum Vergrößern →</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CSS CUSTOM PROPERTIES -->
+    <div class="demo-section">
+        <h2 class="demo-title">3. CSS Custom Properties (Flexibel & Wartbar)</h2>
+        <p class="demo-info">Der Parent definiert eine Variable, die das Child nutzt.</p>
+        
+        <div class="parent-vars size-small">
+            <span class="size-label">Parent: size-small (--local-font-size: 0.875rem)</span>
+            <p>Parent mit kleiner Schriftgröße</p>
+            <div class="child-vars">
+                <p>Child erbt die Variable vom Parent: 0.875rem</p>
+            </div>
+        </div>
+        
+        <div class="parent-vars size-normal">
+            <span class="size-label">Parent: size-normal (--local-font-size: 1rem)</span>
+            <p>Parent mit normaler Schriftgröße</p>
+            <div class="child-vars">
+                <p>Child erbt die Variable vom Parent: 1rem</p>
+            </div>
+        </div>
+        
+        <div class="parent-vars size-large">
+            <span class="size-label">Parent: size-large (--local-font-size: 1.25rem)</span>
+            <p>Parent mit großer Schriftgröße</p>
+            <div class="child-vars">
+                <p>Child erbt die Variable vom Parent: 1.25rem</p>
+            </div>
+        </div>
+        
+        <div class="parent-vars size-xlarge">
+            <span class="size-label">Parent: size-xlarge (--local-font-size: 1.5rem)</span>
+            <p>Parent mit extra großer Schriftgröße</p>
+            <div class="child-vars">
+                <p>Child erbt die Variable vom Parent: 1.5rem</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CLAMP MIT EM -->
+    <div class="demo-section">
+        <h2 class="demo-title">4. clamp() mit em (Responsive innerhalb Parent)</h2>
+        <p class="demo-info">Ändere die Fenstergröße, um die responsive Skalierung zu sehen!</p>
+        
+        <div class="parent-clamp">
+            <span class="size-label">Parent: clamp(1rem, 2vw, 1.5rem)</span>
+            <p>Der Parent skaliert basierend auf dem Viewport</p>
+            <div class="child-clamp">
+                <span class="size-label">Child: clamp(0.875em, 0.8em + 0.5vw, 1em)</span>
+                <p>Das Child skaliert relativ zum Parent UND zum Viewport - doppelt responsiv!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- KONTEXT-BASIERT -->
+    <div class="demo-section">
+        <h2 class="demo-title">5. Kontext-basierte Größen</h2>
+        <p class="demo-info">Gleiche Komponente, unterschiedliche Größen je nach Kontext.</p>
+        
+        <div class="context-box header-context">
+            <span class="size-label">Header-Kontext</span>
+            <p>Im Header sind Buttons kleiner:</p>
+            <button class="button">Header Button (0.875rem)</button>
+        </div>
+        
+        <div class="context-box hero-context">
+            <span class="size-label">Hero-Kontext</span>
+            <p>Im Hero-Bereich sind Buttons größer:</p>
+            <button class="button">Hero Button (1.25rem)</button>
+        </div>
+        
+        <div class="context-box sidebar-context">
+            <span class="size-label">Sidebar-Kontext</span>
+            <p>In der Sidebar sind Buttons kompakt:</p>
+            <button class="button">Sidebar Button (0.8rem)</button>
+        </div>
+    </div>
+
+    <!-- EMPFEHLUNG -->
+    <div class="demo-section">
+        <h2 class="demo-title">📌 Empfehlung</h2>
+        <ul>
+            <li><strong>Container Queries:</strong> Beste Wahl für moderne, komponentenbasierte Designs</li>
+            <li><strong>CSS Custom Properties:</strong> Perfekt für Theme-Varianten und Größen-Modi</li>
+            <li><strong>em-Einheiten:</strong> Gut für einfache relative Größen, aber Vorsicht bei Nesting</li>
+            <li><strong>clamp() + em:</strong> Für komplexe responsive Komponenten</li>
+            <li><strong>Kontext-basiert:</strong> Für unterschiedliches Verhalten in verschiedenen Bereichen</li>
+        </ul>
+    </div>
+
+    <div class="viewport-info">
+        Viewport: <span id="viewport-width"></span>px
+    </div>
+
+    <script>
+        function updateViewportInfo() {
+            document.getElementById('viewport-width').textContent = window.innerWidth;
+        }
+        
+        updateViewportInfo();
+        window.addEventListener('resize', updateViewportInfo);
+    </script>
+</body>
+</html>

@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Development Reference</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: rgba(44, 62, 80, 0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 30px 20px;
+            background: rgba(52, 73, 94, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-subtitle {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .nav-section {
+            margin-bottom: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left-color: #667eea;
+        }
+
+        .nav-link.active {
+            background: rgba(102, 126, 234, 0.2);
+            color: white;
+            border-left-color: #667eea;
+        }
+
+        .nav-icon {
+            font-size: 1.3rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .nav-text {
+            flex: 1;
+            font-size: 0.95rem;
+        }
+
+        .nav-count {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .nav-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 15px 20px;
+        }
+
+        /* Mobile Toggle */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 45px;
+            height: 45px;
+            background: rgba(44, 62, 80, 0.95);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            z-index: 1001;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            flex: 1;
+            margin-left: 280px;
+            padding: 40px 20px;
+            max-width: calc(100% - 280px);
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Category Sections */
+        .category-section {
+            margin-bottom: 50px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+        }
+
+        .category-info {
+            flex: 1;
+        }
+
+        .category-title {
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .category-description {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+        }
+
+        .category-count {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .card h2 {
+            color: #333;
+            margin-bottom: 12px;
+            font-size: 1.4rem;
+        }
+
+        .card p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            flex: 1;
+            font-size: 0.95rem;
+        }
+
+        .category-badge {
+            display: inline-block;
+            background: #f0f0f0;
+            color: #667eea;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        /* Specific category colors */
+        .badge-fundamentals {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .badge-layout {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .badge-typography {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .badge-components {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .badge-javascript {
+            background: #fff9c4;
+            color: #f57f17;
+        }
+
+        .links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggle {
+                display: block;
+            }
+
+            .container {
+                margin-left: 0;
+                max-width: 100%;
+                padding-top: 80px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .category-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Toggle Button -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-title">Web Dev Reference</div>
+            <div class="sidebar-subtitle">Quick Navigation</div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#fundamentals" class="nav-link" onclick="smoothScroll('fundamentals')">
+                <span class="nav-icon">🎯</span>
+                <span class="nav-text">Fundamentals</span>
+                <span class="nav-count">2</span>
+            </a>
+            <a href="#layout" class="nav-link" onclick="smoothScroll('layout')">
+                <span class="nav-icon">📐</span>
+                <span class="nav-text">CSS Layout</span>
+                <span class="nav-count">2</span>
+            </a>
+            <a href="#typography" class="nav-link" onclick="smoothScroll('typography')">
+                <span class="nav-icon">✍️</span>
+                <span class="nav-text">Typography</span>
+                <span class="nav-count">2</span>
+            </a>
+            <a href="#components" class="nav-link" onclick="smoothScroll('components')">
+                <span class="nav-icon">🧩</span>
+                <span class="nav-text">UI Components</span>
+                <span class="nav-count">2</span>
+            </a>
+            <a href="#javascript" class="nav-link" onclick="smoothScroll('javascript')">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-text">JavaScript</span>
+                <span class="nav-count">1</span>
+            </a>
+            <div class="nav-divider"></div>
+            <a href="#top" class="nav-link" onclick="smoothScroll('top')">
+                <span class="nav-icon">🔝</span>
+                <span class="nav-text">Back to Top</span>
+            </a>
+        </nav>
+    </aside>
+
+    <div class="container" id="top">
+        <header>
+            <h1>Web Development Reference</h1>
+            <p class="subtitle">A comprehensive collection of modern web development examples and techniques</p>
+        </header>
+
+        <!-- FUNDAMENTALS SECTION -->
+        <section class="category-section" id="fundamentals">
+            <div class="category-header">
+                <span class="category-icon">🎯</span>
+                <div class="category-info">
+                    <h2 class="category-title">Fundamentals</h2>
+                    <p class="category-description">Core concepts and foundational systems for web development</p>
+                </div>
+                <span class="category-count">2 Resources</span>
+            </div>
+            <div class="grid">
+                <div class="card">
+                    <span class="card-icon">🎨</span>
+                    <span class="category-badge badge-fundamentals">Design Systems</span>
+                    <h2>Design System</h2>
+                    <p>A well-structured, scalable design system using CSS custom properties, tokens, and reusable components for consistent UI development.</p>
+                    <div class="links">
+                        <a href="pages/design-system/basic/index.html" class="btn">View Example</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">📦</span>
+                    <span class="category-badge badge-fundamentals">CSS Basics</span>
+                    <h2>Basic Layout</h2>
+                    <p>Core CSS layout fundamentals including box model, positioning, display properties, and basic structure concepts.</p>
+                    <div class="links">
+                        <a href="pages/layout/basic/index.html" class="btn">View Example</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CSS LAYOUT SECTION -->
+        <section class="category-section" id="layout">
+            <div class="category-header">
+                <span class="category-icon">📐</span>
+                <div class="category-info">
+                    <h2 class="category-title">CSS Layout Techniques</h2>
+                    <p class="category-description">Modern layout systems for creating responsive and flexible designs</p>
+                </div>
+                <span class="category-count">2 Resources</span>
+            </div>
+            <div class="grid">
+                <div class="card">
+                    <span class="card-icon">📊</span>
+                    <span class="category-badge badge-layout">Modern Layout</span>
+                    <h2>CSS Flexbox</h2>
+                    <p>Flexible box layout for one-dimensional layouts with powerful alignment and distribution capabilities. Perfect for navigation bars and card layouts.</p>
+                    <div class="links">
+                        <a href="pages/layout/flexbox/index.html" class="btn">View Example</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">⚡</span>
+                    <span class="category-badge badge-layout">Modern Layout</span>
+                    <h2>CSS Grid</h2>
+                    <p>Two-dimensional grid system for complex layouts with precise control over rows and columns. Ideal for page layouts and responsive designs.</p>
+                    <div class="links">
+                        <a href="pages/layout/grid/index.html" class="btn">View Example</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TYPOGRAPHY SECTION -->
+        <section class="category-section" id="typography">
+            <div class="category-header">
+                <span class="category-icon">✍️</span>
+                <div class="category-info">
+                    <h2 class="category-title">Typography & Fonts</h2>
+                    <p class="category-description">Typography systems and font scaling techniques for readable content</p>
+                </div>
+                <span class="category-count">2 Resources</span>
+            </div>
+            <div class="grid">
+                <div class="card">
+                    <span class="card-icon">🔤</span>
+                    <span class="category-badge badge-typography">Typography</span>
+                    <h2>Responsive Font System</h2>
+                    <p>Scalable typography system using CSS custom properties, clamp(), and fluid type scaling techniques for all screen sizes.</p>
+                    <div class="links">
+                        <a href="pages/fonts/responsive-font-system/index.html" class="btn">View Example</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">👨‍👧</span>
+                    <span class="category-badge badge-typography">Typography</span>
+                    <h2>Parent-Child Font Alignment</h2>
+                    <p>Understanding parent-child relationships and how parent containers affect child element font sizing and alignment behavior.</p>
+                    <div class="links">
+                        <a href="pages/fonts/parent-element/index.html" class="btn">View Example</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- UI COMPONENTS SECTION -->
+        <section class="category-section" id="components">
+            <div class="category-header">
+                <span class="category-icon">🧩</span>
+                <div class="category-info">
+                    <h2 class="category-title">UI Components</h2>
+                    <p class="category-description">Reusable interface components and design patterns</p>
+                </div>
+                <span class="category-count">2 Resources</span>
+            </div>
+            <div class="grid">
+                <div class="card">
+                    <span class="card-icon">💬</span>
+                    <span class="category-badge badge-components">Cards</span>
+                    <h2>Social Media Cards</h2>
+                    <p>Various card designs inspired by popular social platforms including Twitter, Instagram, LinkedIn, and Facebook with interactive elements.</p>
+                    <div class="links">
+                        <a href="pages/components/social-media-card/index.html" class="btn">View Example</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🔍</span>
+                    <span class="category-badge badge-components">Search</span>
+                    <h2>Advanced Search Bar</h2>
+                    <p>Full-featured search bar with live filtering, category filters, sorting, suggestions dropdown, and responsive result display.</p>
+                    <div class="links">
+                        <a href="pages/components/searchbar/index.html" class="btn">View Example</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- JAVASCRIPT COMPONENTS SECTION -->
+        <section class="category-section" id="javascript">
+            <div class="category-header">
+                <span class="category-icon">⚙️</span>
+                <div class="category-info">
+                    <h2 class="category-title">JavaScript Components</h2>
+                    <p class="category-description">Interactive components powered by JavaScript</p>
+                </div>
+                <span class="category-count">1 Resource</span>
+            </div>
+            <div class="grid">
+                <div class="card">
+                    <span class="card-icon">🌳</span>
+                    <span class="category-badge badge-javascript">Navigation</span>
+                    <h2>Dynamic TreeView</h2>
+                    <p>Expandable tree structure with JavaScript. Features nested navigation, expand/collapse functionality, and dynamic data population.</p>
+                    <div class="links">
+                        <a href="pages/components/tree-view/index.html" class="btn">View Example</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Created as a personal web development reference • Built with HTML, CSS & JavaScript</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">Last updated: December 2024</p>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth scroll to sections
+        function smoothScroll(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else if (sectionId === 'top') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            
+            // Update active state
+            updateActiveNav(sectionId);
+            
+            // Close sidebar on mobile
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        }
+
+        // Update active navigation link
+        function updateActiveNav(sectionId) {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            const activeLink = document.querySelector(`[href="#${sectionId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+        }
+
+        // Toggle sidebar on mobile
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.querySelector('.sidebar-toggle');
+            
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(e.target) && 
+                !toggle.contains(e.target) &&
+                sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+        // Highlight active section on scroll
+        window.addEventListener('scroll', () => {
+            const sections = ['fundamentals', 'layout', 'typography', 'components', 'javascript'];
+            let currentSection = '';
+
+            sections.forEach(sectionId => {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= 150 && rect.bottom >= 150) {
+                        currentSection = sectionId;
+                    }
+                }
+            });
+
+            if (currentSection) {
+                updateActiveNav(currentSection);
+            }
+        });
+
+        // Set initial active state
+        window.addEventListener('load', () => {
+            updateActiveNav('fundamentals');
+        });
+    </script>
+</body>
+</html>
