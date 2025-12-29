@@ -1,0 +1,133 @@
+/* ================= BASE ================= */
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, system-ui;
+  background:#fff;
+  color:#111;
+  overflow-x:hidden;
+}
+
+/* ================= SECTION ================= */
+.slider-section {
+  padding: 4rem 2rem 6rem;
+}
+
+.slider-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.slider-header h2 {
+  font-size: clamp(2.4rem, 4vw, 3rem);
+}
+
+.slider-header p {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* ================= SLIDER TRACK ================= */
+.sdg-slider {
+  display: flex;
+  gap: 1.75rem;
+  overflow-x: auto;
+
+  /* IMPORTANT FIXES */
+  padding: 2rem 1rem 3rem; /* space for shadow + hover */
+  align-items: stretch;
+
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sdg-slider::-webkit-scrollbar {
+  display: none;
+}
+
+/* ================= CARD ================= */
+.sdgc {
+  flex: 0 0 280px;
+  height: 260px; /* FIXED HEIGHT */
+
+  scroll-snap-align: center;
+
+  border-radius: 20px;
+  padding: 2rem;
+
+  color: #fff;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  transition: transform .35s cubic-bezier(.4,0,.2,1);
+}
+
+/* Shadow as separate layer (Apple trick) */
+.sdgc::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow:
+    0 2px 4px rgba(0,0,0,.08),
+    0 20px 40px rgba(0,0,0,.28);
+  opacity: .85;
+  z-index: -1;
+  transition: opacity .35s ease;
+}
+
+/* Hover */
+.sdgc:hover {
+  transform: translateY(-6px);
+}
+
+.sdgc:hover::after {
+  opacity: 1;
+}
+
+/* ================= ICON ================= */
+.sdgc .icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Text */
+.sdgc span {
+  font-size: 0.85rem;
+  opacity: .85;
+}
+
+.sdgc h3 {
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+/* ================= SDG COLORS ================= */
+.g1  { background:#e5243b; }
+.g2  { background:#dda63a; }
+.g3  { background:#4c9f38; }
+.g4  { background:#c5192d; }
+.g5  { background:#ff3a21; }
+.g6  { background:#26bde2; }
+.g7  { background:#fcc30b; color:#111; }
+.g8  { background:#a21942; }
+.g9  { background:#fd6925; }
+.g10 { background:#dd1367; }
+.g11 { background:#fd9d24; }
+.g12 { background:#bf8b2e; }
+.g13 { background:#3f7e44; }
+.g14 { background:#0a97d9; }
+.g15 { background:#56c02b; }
+.g16 { background:#00689d; }
+.g17 { background:#19486a; }

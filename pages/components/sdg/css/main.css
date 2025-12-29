@@ -1,0 +1,150 @@
+      /* ================= RESET ================= */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* ================= BASE ================= */
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, system-ui;
+        background: #fff;
+        color: #111;
+      }
+
+      /* ================= SECTION ================= */
+      .section {
+        padding: 7rem 2rem;
+      }
+
+      .section-header {
+        max-width: 900px;
+        margin: 0 auto 4rem;
+        text-align: center;
+      }
+
+      .section-header h2 {
+        font-size: clamp(2.4rem, 4vw, 3.2rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+      }
+
+      .section-header p {
+        margin-top: 1rem;
+        font-size: 1.1rem;
+        color: #666;
+      }
+
+      /* ================= GRID ================= */
+      .sdg-grid {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.75rem;
+      }
+
+      /* ================= CARD ================= */
+      .sdg-item {
+        border-radius: 20px;
+        padding: 2.2rem;
+        min-height: 200px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        color: #fff;
+
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04),
+          0 10px 30px rgba(0, 0, 0, 0.18);
+
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+          box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* Apple-style hover */
+      .sdg-item:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25),
+          0 30px 60px rgba(0, 0, 0, 0.35);
+      }
+
+      /* Text */
+      .sdg-item span {
+        font-size: 0.85rem;
+        opacity: 0.85;
+      }
+
+      .sdg-item h3 {
+        font-size: 1.2rem;
+        line-height: 1.3;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+
+      /* ================= SDG COLORS ================= */
+      .sdg-1 {
+        background: #e5243b;
+      }
+      .sdg-2 {
+        background: #dda63a;
+      }
+      .sdg-3 {
+        background: #4c9f38;
+      }
+      .sdg-4 {
+        background: #c5192d;
+      }
+      .sdg-5 {
+        background: #ff3a21;
+      }
+      .sdg-6 {
+        background: #26bde2;
+      }
+      .sdg-7 {
+        background: #fcc30b;
+        color: #111;
+      }
+      .sdg-8 {
+        background: #a21942;
+      }
+      .sdg-9 {
+        background: #fd6925;
+      }
+      .sdg-10 {
+        background: #dd1367;
+      }
+      .sdg-11 {
+        background: #fd9d24;
+      }
+      .sdg-12 {
+        background: #bf8b2e;
+      }
+      .sdg-13 {
+        background: #3f7e44;
+      }
+      .sdg-14 {
+        background: #0a97d9;
+      }
+      .sdg-15 {
+        background: #56c02b;
+      }
+      .sdg-16 {
+        background: #00689d;
+      }
+      .sdg-17 {
+        background: #19486a;
+      }
+
+      /* ================= ANIMATION SAFETY ================= */
+      [data-animate] {
+        opacity: 1;
+      }
+
+      /* Reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        .sdg-item {
+          transition: none;
+        }
+      }

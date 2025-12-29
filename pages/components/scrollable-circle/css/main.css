@@ -1,0 +1,169 @@
+   * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+            background: white;
+            min-height: 300vh;
+        }
+
+        .blur-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: black;
+       
+            z-index: -1;
+        }
+
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 60px 40px;
+            text-align: center;
+            z-index: 5;
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .main-header.fade-out {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        .main-header h1 {
+            font-size: 5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            text-shadow: 0 0 40px rgba(255,255,255,0.3);
+            letter-spacing: 2px;
+        }
+
+        .main-header p {
+            font-size: 1.8rem;
+            color: rgba(255,255,255,0.85);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .content {
+            position: relative;
+            min-height: 200vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 20px;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1.2rem;
+            opacity: 0.7;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .circle-container {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .growing-circle {
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(102,126,234,0.9) 100%);
+            position: absolute;
+            bottom: 0;
+            transform: translateY(50%);
+            transition: width 0.3s ease-out, height 0.3s ease-out;
+            box-shadow: 0 0 100px rgba(255,255,255,0.5);
+        }
+
+        .text-reveal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 10;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .text-reveal.active {
+            opacity: 1;
+        }
+
+        .text-reveal h1 {
+            font-size: 4rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .text-reveal.active h1 {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.2s;
+        }
+
+        .text-reveal p {
+            font-size: 1.5rem;
+            color: #667eea;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .text-reveal.active p {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.4s;
+        }
+
+        @media (max-width: 768px) {
+            .main-header h1 {
+                font-size: 3rem;
+            }
+            .main-header p {
+                font-size: 1.3rem;
+            }
+            .text-reveal h1 {
+                font-size: 2.5rem;
+            }
+            .text-reveal p {
+                font-size: 1.2rem;
+            }
+        }
