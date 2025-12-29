@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Apple Style Orbital Animation</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display',
+          'Segoe UI', sans-serif;
+        height: 100vh;
+        background: #000000;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      .container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .orbit-center {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background: #ffffff;
+        border-radius: 50%;
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.8),
+          0 0 60px rgba(255, 255, 255, 0.4);
+        z-index: 10;
+      }
+
+      .circle {
+        position: absolute;
+        border-radius: 50%;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        z-index: 1;
+        will-change: transform;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+      }
+
+      .circle:hover {
+        transform: translate(-50%, -50%) scale(1.05);
+        box-shadow: 0 12px 40px rgba(255, 255, 255, 0.2);
+      }
+
+      .circle:active {
+        transform: translate(-50%, -50%) scale(0.98);
+      }
+
+      .circle.expanded {
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        min-width: 100vw !important;
+        min-height: 100vh !important;
+        border-radius: 0 !important;
+        z-index: 1000 !important;
+        transform: none !important;
+        will-change: auto;
+        cursor: default;
+      }
+
+      .circle.expanding {
+        pointer-events: none;
+      }
+
+      .circle.expanded .circle-icon {
+        font-size: 120px;
+      }
+
+      .circle.expanded .circle-label {
+        font-size: 48px;
+      }
+
+      .close-button {
+        display: none;
+        position: absolute;
+        top: 40px;
+        right: 40px;
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 24px;
+        color: white;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(10px);
+        transition: all 0.2s ease;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+        opacity: 0;
+      }
+
+      .close-button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.1);
+      }
+
+      .close-button:active {
+        transform: scale(0.95);
+      }
+
+      .circle.expanded .close-button {
+        display: flex;
+        animation: fadeIn 0.3s ease 0.4s forwards;
+      }
+
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+
+      .circle-icon {
+        font-size: 40px;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+      }
+
+      .circle-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.95);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        letter-spacing: 0.3px;
+      }
+
+      /* Responsive breakpoint for mobile */
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: center;
+          padding: 40px 0;
+          overflow-y: auto;
+        }
+
+        .orbit-center {
+          display: none;
+        }
+
+        .circle {
+          position: relative !important;
+          margin: 20px 0;
+          left: auto !important;
+          top: auto !important;
+          transform: none !important;
+          min-width: 340px !important;
+          min-height: 340px !important;
+          width: 340px !important;
+          height: 340px !important;
+        }
+
+        .circle:hover {
+          transform: scale(1.05) !important;
+        }
+
+        .circle:nth-child(2),
+        .circle:nth-child(3),
+        .circle:nth-child(4),
+        .circle:nth-child(5),
+        .circle:nth-child(6),
+        .circle:nth-child(7),
+        .circle:nth-child(8),
+        .circle:nth-child(9) {
+          min-width: 340px !important;
+          min-height: 340px !important;
+          width: 340px !important;
+          height: 340px !important;
+        }
+
+        .circle-icon {
+          font-size: 80px;
+        }
+
+        .circle-label {
+          font-size: 24px;
+        }
+
+        .circle.expanded .circle-icon {
+          font-size: 100px;
+        }
+
+        .circle.expanded .circle-label {
+          font-size: 36px;
+        }
+      }
+
+      .circle:nth-child(2) {
+        width: 140px;
+        height: 140px;
+        background: linear-gradient(
+          135deg,
+          rgba(0, 122, 255, 0.6),
+          rgba(10, 132, 255, 0.4)
+        );
+        box-shadow: 0 8px 32px rgba(0, 122, 255, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+
+      .circle:nth-child(3) {
+        width: 140px;
+        height: 140px;
+        background: linear-gradient(
+          135deg,
+          rgba(88, 86, 214, 0.6),
+          rgba(98, 96, 224, 0.4)
+        );
+        box-shadow: 0 8px 32px rgba(88, 86, 214, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+
+      .circle:nth-child(4) {
+        width: 140px;
+        height: 140px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 45, 85, 0.6),
+          rgba(255, 55, 95, 0.4)
+        );
+        box-shadow: 0 8px 32px rgba(255, 45, 85, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+
+      .circle:nth-child(5) {
+        width: 140px;
+        height: 140px;
+        background: linear-gradient(
+          135deg,
+          rgba(175, 82, 222, 0.6),
+          rgba(185, 92, 232, 0.4)
+        );
+        box-shadow: 0 8px 32px rgba(175, 82, 222, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+
+      .circle:nth-child(6) {
+        width: 140px;
+        height: 140px;
+        background: linear-gradient(
+          135deg,
+          rgba(52, 199, 89, 0.6),
+          rgba(62, 209, 99, 0.4)
+        );
+        box-shadow: 0 8px 32px rgba(52, 199, 89, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+
+      .circle:nth-child(7) {
+        width: 140px;
+        height: 140px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 159, 10, 0.6),
+          rgba(255, 169, 20, 0.4)
+        );
+        box-shadow: 0 8px 32px rgba(255, 159, 10, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+
+      .circle:nth-child(8) {
+        width: 140px;
+        height: 140px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 55, 95, 0.6),
+          rgba(255, 65, 105, 0.4)
+        );
+        box-shadow: 0 8px 32px rgba(255, 55, 95, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+
+      .circle:nth-child(9) {
+        width: 140px;
+        height: 140px;
+        background: linear-gradient(
+          135deg,
+          rgba(90, 200, 250, 0.6),
+          rgba(100, 210, 255, 0.4)
+        );
+        box-shadow: 0 8px 32px rgba(90, 200, 250, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="orbit-center"></div>
+      <div class="circle">
+        <div class="close-button">✕</div>
+        <div class="circle-icon">📱</div>
+        <div class="circle-label">iPhone</div>
+      </div>
+      <div class="circle">
+        <div class="close-button">✕</div>
+        <div class="circle-icon">💻</div>
+        <div class="circle-label">MacBook</div>
+      </div>
+      <div class="circle">
+        <div class="close-button">✕</div>
+        <div class="circle-icon">⌚</div>
+        <div class="circle-label">Watch</div>
+      </div>
+      <div class="circle">
+        <div class="close-button">✕</div>
+        <div class="circle-icon">🎧</div>
+        <div class="circle-label">AirPods</div>
+      </div>
+      <div class="circle">
+        <div class="close-button">✕</div>
+        <div class="circle-icon">📺</div>
+        <div class="circle-label">Apple TV</div>
+      </div>
+      <div class="circle">
+        <div class="close-button">✕</div>
+        <div class="circle-icon">🖥️</div>
+        <div class="circle-label">iMac</div>
+      </div>
+      <div class="circle">
+        <div class="close-button">✕</div>
+        <div class="circle-icon">📱</div>
+        <div class="circle-label">iPad</div>
+      </div>
+      <div class="circle">
+        <div class="close-button">✕</div>
+        <div class="circle-icon">🔊</div>
+        <div class="circle-label">HomePod</div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+      const circles = document.querySelectorAll('.circle');
+      const radius = 240;
+
+      // Check if mobile
+      const isMobile = window.innerWidth <= 768;
+
+      if (isMobile) {
+        // Mobile: Simple fade-in animation in column
+        circles.forEach((circle, index) => {
+          gsap.set(circle, {
+            opacity: 0,
+            y: 30,
+          });
+
+          gsap.to(circle, {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            delay: index * 0.1,
+            ease: 'power2.out',
+          });
+        });
+      } else {
+        // Desktop: Radial expansion animation - stay in place
+        circles.forEach((circle, index) => {
+          const startAngle = (index * 360) / circles.length;
+
+          // Calculate final position
+          const radians = (startAngle * Math.PI) / 180;
+          const finalX = Math.cos(radians) * radius;
+          const finalY = Math.sin(radians) * radius;
+
+          // Set initial position at center
+          gsap.set(circle, {
+            x: 0,
+            y: 0,
+            opacity: 0,
+            scale: 0,
+          });
+
+          // Animate from center to orbit position and stay there
+          gsap.to(circle, {
+            x: finalX,
+            y: finalY,
+            opacity: 1,
+            scale: 1,
+            duration: 1.2,
+            delay: index * 0.08,
+            ease: 'back.out(1.7)',
+          });
+        });
+      }
+
+      // Handle window resize
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          location.reload();
+        }, 250);
+      });
+
+      // Add click handlers to circles
+      let isAnimating = false;
+
+      circles.forEach((circle) => {
+        circle.addEventListener('click', (e) => {
+          if (!circle.classList.contains('expanded') && !isAnimating) {
+            isAnimating = true;
+
+            // Get current position
+            const rect = circle.getBoundingClientRect();
+            const currentWidth = rect.width;
+            const currentHeight = rect.height;
+            const currentLeft = rect.left;
+            const currentTop = rect.top;
+
+            // Add expanding class to prevent clicks during animation
+            circle.classList.add('expanding');
+
+            // Set initial state for animation
+            gsap.set(circle, {
+              position: 'fixed',
+              left: currentLeft,
+              top: currentTop,
+              width: currentWidth,
+              height: currentHeight,
+              x: 0,
+              y: 0,
+              margin: 0,
+              borderRadius: '50%',
+            });
+
+            // Add expanded class
+            circle.classList.add('expanded');
+
+            // Create timeline for synchronized animation
+            const tl = gsap.timeline({
+              onComplete: () => {
+                circle.classList.remove('expanding');
+                isAnimating = false;
+              },
+            });
+
+            // Animate to fullscreen with optimized properties
+            tl.to(
+              circle,
+              {
+                left: 0,
+                top: 0,
+                width: '100vw',
+                height: '100vh',
+                borderRadius: '0%',
+                duration: 0.6,
+                ease: 'power2.inOut',
+              },
+              0
+            );
+
+            // Animate icon and label
+            const icon = circle.querySelector('.circle-icon');
+            const label = circle.querySelector('.circle-label');
+            tl.to(
+              icon,
+              {
+                fontSize: isMobile ? '100px' : '120px',
+                duration: 0.6,
+                ease: 'power2.inOut',
+              },
+              0
+            );
+            tl.to(
+              label,
+              {
+                fontSize: isMobile ? '36px' : '48px',
+                duration: 0.6,
+                ease: 'power2.inOut',
+              },
+              0
+            );
+          }
+        });
+
+        // Close button handler
+        const closeBtn = circle.querySelector('.close-button');
+        closeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+
+          if (isAnimating) return;
+          isAnimating = true;
+
+          // Get the target position for the circle
+          const index = Array.from(circles).indexOf(circle);
+          const startAngle = (index * 360) / circles.length;
+          const radians = (startAngle * Math.PI) / 180;
+
+          let targetLeft, targetTop, targetSize;
+
+          if (isMobile) {
+            targetLeft = (window.innerWidth - 340) / 2;
+            targetTop = 40 + index * 380;
+            targetSize = '340px';
+          } else {
+            const targetX = Math.cos(radians) * radius;
+            const targetY = Math.sin(radians) * radius;
+            targetLeft = window.innerWidth / 2 + targetX - 70;
+            targetTop = window.innerHeight / 2 + targetY - 70;
+            targetSize = '140px';
+          }
+
+          // Create timeline for closing animation
+          const tl = gsap.timeline({
+            onComplete: () => {
+              circle.classList.remove('expanded');
+              // Reset to original positioning
+              if (isMobile) {
+                gsap.set(circle, {
+                  position: 'relative',
+                  left: 'auto',
+                  top: 'auto',
+                  margin: '20px 0',
+                });
+              } else {
+                const targetX = Math.cos(radians) * radius;
+                const targetY = Math.sin(radians) * radius;
+                gsap.set(circle, {
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  x: targetX,
+                  y: targetY,
+                  width: targetSize,
+                  height: targetSize,
+                });
+              }
+              isAnimating = false;
+            },
+          });
+
+          // Animate back with optimized properties
+          tl.to(
+            circle,
+            {
+              left: targetLeft,
+              top: targetTop,
+              width: targetSize,
+              height: targetSize,
+              borderRadius: '50%',
+              duration: 0.6,
+              ease: 'power2.inOut',
+            },
+            0
+          );
+
+          // Animate icon and label back
+          const icon = circle.querySelector('.circle-icon');
+          const label = circle.querySelector('.circle-label');
+          tl.to(
+            icon,
+            {
+              fontSize: isMobile ? '80px' : '40px',
+              duration: 0.6,
+              ease: 'power2.inOut',
+            },
+            0
+          );
+          tl.to(
+            label,
+            {
+              fontSize: isMobile ? '24px' : '14px',
+              duration: 0.6,
+              ease: 'power2.inOut',
+            },
+            0
+          );
+        });
+      });
+    </script>
+  </body>
+</html>
