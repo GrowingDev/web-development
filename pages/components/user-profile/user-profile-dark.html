@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - Apple TV Style</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #000000;
+            color: #f5f5f7;
+            line-height: 1.6;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-header {
+            background: rgba(29, 29, 31, 0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-radius: 28px;
+            padding: 60px 50px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
+            opacity: 0.4;
+            z-index: 0;
+        }
+
+        .profile-content {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(168, 85, 247, 0.3) 100%);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 52px;
+            flex-shrink: 0;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 42px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+            letter-spacing: -1px;
+        }
+
+        .profile-username {
+            font-size: 17px;
+            color: rgba(245, 245, 247, 0.6);
+            margin-bottom: 16px;
+        }
+
+        .profile-bio {
+            font-size: 17px;
+            color: rgba(245, 245, 247, 0.8);
+            margin-bottom: 0;
+            line-height: 1.5;
+            max-width: 700px;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 60px;
+            margin-top: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: rgba(245, 245, 247, 0.6);
+            font-weight: 400;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 12px;
+            border: none;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: scale(1.02);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .tabs-container {
+            background: rgba(29, 29, 31, 0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-radius: 20px;
+            padding: 8px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            gap: 6px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 14px;
+            border: none;
+            background: transparent;
+            color: rgba(245, 245, 247, 0.6);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .tab:hover {
+            color: rgba(245, 245, 247, 0.9);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .tab.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Achievements Grid */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .achievement-card-mini {
+            background: rgba(29, 29, 31, 0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-radius: 20px;
+            padding: 28px 24px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .achievement-card-mini:hover {
+            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .achievement-icon-mini {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 16px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(168, 85, 247, 0.3) 100%);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+        }
+
+        .achievement-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .achievement-date-mini {
+            font-size: 13px;
+            color: rgba(245, 245, 247, 0.5);
+        }
+
+        /* Activity Feed */
+        .activity-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .activity-item {
+            background: rgba(29, 29, 31, 0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-radius: 20px;
+            padding: 24px;
+            display: flex;
+            gap: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .activity-item:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateX(4px);
+        }
+
+        .activity-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(168, 85, 247, 0.3) 100%);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            font-size: 16px;
+            color: rgba(245, 245, 247, 0.9);
+            margin-bottom: 6px;
+        }
+
+        .activity-text strong {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .activity-time {
+            font-size: 14px;
+            color: rgba(245, 245, 247, 0.5);
+        }
+
+        .activity-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .activity-action {
+            font-size: 14px;
+            color: rgba(99, 102, 241, 1);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .activity-action:hover {
+            color: rgba(168, 85, 247, 1);
+        }
+
+        /* Bookmarks */
+        .bookmarks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        .bookmark-card {
+            background: rgba(29, 29, 31, 0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .bookmark-card:hover {
+            transform: scale(1.03);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .bookmark-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.4) 0%, rgba(168, 85, 247, 0.4) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 56px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bookmark-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+        }
+
+        .bookmark-content {
+            padding: 24px;
+        }
+
+        .bookmark-category {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 10px;
+            background: rgba(99, 102, 241, 0.2);
+            color: rgba(99, 102, 241, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .bookmark-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .bookmark-description {
+            font-size: 15px;
+            color: rgba(245, 245, 247, 0.7);
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .bookmark-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .bookmark-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .author-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.4) 0%, rgba(168, 85, 247, 0.4) 100%);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .author-name {
+            font-size: 14px;
+            color: rgba(245, 245, 247, 0.7);
+        }
+
+        .bookmark-time {
+            font-size: 13px;
+            color: rgba(245, 245, 247, 0.5);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: rgba(245, 245, 247, 0.5);
+        }
+
+        .empty-icon {
+            font-size: 72px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .empty-text {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: rgba(245, 245, 247, 0.7);
+        }
+
+        .empty-subtext {
+            font-size: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .profile-header {
+                padding: 40px 24px;
+            }
+
+            .profile-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 24px;
+            }
+
+            .profile-avatar {
+                width: 90px;
+                height: 90px;
+                font-size: 40px;
+            }
+
+            .profile-name {
+                font-size: 32px;
+            }
+
+            .profile-stats {
+                gap: 40px;
+                flex-wrap: wrap;
+            }
+
+            .stat-number {
+                font-size: 24px;
+            }
+
+            .profile-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .tabs-container {
+                gap: 4px;
+                padding: 6px;
+            }
+
+            .tab {
+                font-size: 13px;
+                padding: 10px 14px;
+            }
+
+            .achievements-grid,
+            .bookmarks-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-content">
+                <div class="profile-avatar">👤</div>
+                <div class="profile-info">
+                    <h1 class="profile-name">Sarah Anderson</h1>
+                    <p class="profile-username">@sarahdesigns</p>
+                    <p class="profile-bio">Product designer passionate about creating beautiful and functional experiences. Coffee enthusiast ☕ | Based in San Francisco 🌉</p>
+                </div>
+            </div>
+            
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <span class="stat-number">2,847</span>
+                    <span class="stat-label">Posts</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">12.4K</span>
+                    <span class="stat-label">Followers</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">843</span>
+                    <span class="stat-label">Following</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">48</span>
+                    <span class="stat-label">Achievements</span>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <button class="btn btn-primary">Follow</button>
+                <button class="btn btn-secondary">Message</button>
+                <button class="btn btn-secondary">Share</button>
+            </div>
+        </div>
+
+        <div class="tabs-container">
+            <button class="tab active" data-tab="achievements">🏆 Achievements</button>
+            <button class="tab" data-tab="activity">📊 Activity</button>
+            <button class="tab" data-tab="bookmarks">🔖 Bookmarks</button>
+        </div>
+
+        <!-- Achievements Tab -->
+        <div class="tab-content active" id="achievements">
+            <div class="achievements-grid">
+                <div class="achievement-card-mini">
+                    <div class="achievement-icon-mini">🎯</div>
+                    <div class="achievement-name">First Steps</div>
+                    <div class="achievement-date-mini">Dec 15, 2025</div>
+                </div>
+                <div class="achievement-card-mini">
+                    <div class="achievement-icon-mini">🚀</div>
+                    <div class="achievement-name">Quick Starter</div>
+                    <div class="achievement-date-mini">Dec 20, 2025</div>
+                </div>
+                <div class="achievement-card-mini">
+                    <div class="achievement-icon-mini">⭐</div>
+                    <div class="achievement-name">Rising Star</div>
+                    <div class="achievement-date-mini">Dec 22, 2025</div>
+                </div>
+                <div class="achievement-card-mini">
+                    <div class="achievement-icon-mini">🔥</div>
+                    <div class="achievement-name">On Fire</div>
+                    <div class="achievement-date-mini">Dec 25, 2025</div>
+                </div>
+                <div class="achievement-card-mini">
+                    <div class="achievement-icon-mini">💎</div>
+                    <div class="achievement-name">Diamond Status</div>
+                    <div class="achievement-date-mini">Dec 28, 2025</div>
+                </div>
+                <div class="achievement-card-mini">
+                    <div class="achievement-icon-mini">🏆</div>
+                    <div class="achievement-name">Champion</div>
+                    <div class="achievement-date-mini">Dec 29, 2025</div>
+                </div>
+                <div class="achievement-card-mini">
+                    <div class="achievement-icon-mini">✨</div>
+                    <div class="achievement-name">Innovator</div>
+                    <div class="achievement-date-mini">Dec 18, 2025</div>
+                </div>
+                <div class="achievement-card-mini">
+                    <div class="achievement-icon-mini">🎨</div>
+                    <div class="achievement-name">Creative Mind</div>
+                    <div class="achievement-date-mini">Dec 12, 2025</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Tab -->
+        <div class="tab-content" id="activity">
+            <div class="activity-feed">
+                <div class="activity-item">
+                    <div class="activity-icon">🏆</div>
+                    <div class="activity-content">
+                        <p class="activity-text"><strong>Sarah</strong> unlocked the <strong>Champion</strong> achievement</p>
+                        <p class="activity-time">2 hours ago</p>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">❤️</div>
+                    <div class="activity-content">
+                        <p class="activity-text"><strong>Sarah</strong> liked a post about <strong>UI Design Trends 2025</strong></p>
+                        <p class="activity-time">5 hours ago</p>
+                        <div class="activity-meta">
+                            <a href="#" class="activity-action">View post</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">💬</div>
+                    <div class="activity-content">
+                        <p class="activity-text"><strong>Sarah</strong> commented on <strong>Alex Morgan's</strong> post</p>
+                        <p class="activity-time">8 hours ago</p>
+                        <div class="activity-meta">
+                            <a href="#" class="activity-action">See comment</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">📝</div>
+                    <div class="activity-content">
+                        <p class="activity-text"><strong>Sarah</strong> published a new post: <strong>"The Future of Design Systems"</strong></p>
+                        <p class="activity-time">1 day ago</p>
+                        <div class="activity-meta">
+                            <a href="#" class="activity-action">Read post</a>
+                            <span class="activity-time">•</span>
+                            <span class="activity-time">247 likes</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">👥</div>
+                    <div class="activity-content">
+                        <p class="activity-text"><strong>Sarah</strong> started following <strong>Design Weekly</strong></p>
+                        <p class="activity-time">1 day ago</p>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">🔖</div>
+                    <div class="activity-content">
+                        <p class="activity-text"><strong>Sarah</strong> saved a post to bookmarks</p>
+                        <p class="activity-time">2 days ago</p>
+                        <div class="activity-meta">
+                            <a href="#" class="activity-action">View bookmark</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">🎯</div>
+                    <div class="activity-content">
+                        <p class="activity-text"><strong>Sarah</strong> completed 10 tasks in one day</p>
+                        <p class="activity-time">3 days ago</p>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">✨</div>
+                    <div class="activity-content">
+                        <p class="activity-text"><strong>Sarah</strong> shared a design resource</p>
+                        <p class="activity-time">3 days ago</p>
+                        <div class="activity-meta">
+                            <a href="#" class="activity-action">Check it out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bookmarks Tab -->
+        <div class="tab-content" id="bookmarks">
+            <div class="bookmarks-grid">
+                <div class="bookmark-card">
+                    <div class="bookmark-image">📱</div>
+                    <div class="bookmark-content">
+                        <span class="bookmark-category">Design</span>
+                        <h3 class="bookmark-title">The Ultimate Guide to Mobile-First Design</h3>
+                        <p class="bookmark-description">Learn how to create stunning mobile experiences that users love. Includes best practices and real-world examples.</p>
+                        <div class="bookmark-footer">
+                            <div class="bookmark-author">
+                                <div class="author-avatar">JD</div>
+                                <span class="author-name">John Doe</span>
+                            </div>
+                            <span class="bookmark-time">2 days ago</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bookmark-card">
+                    <div class="bookmark-image">🎨</div>
+                    <div class="bookmark-content">
+                        <span class="bookmark-category">Tutorial</span>
+                        <h3 class="bookmark-title">Mastering Color Theory in UI Design</h3>
+                        <p class="bookmark-description">A comprehensive guide to understanding and applying color theory to create beautiful user interfaces.</p>
+                        <div class="bookmark-footer">
+                            <div class="bookmark-author">
+                                <div class="author-avatar">EK</div>
+                                <span class="author-name">Emma Kim</span>
+                            </div>
+                            <span class="bookmark-time">5 days ago</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bookmark-card">
+                    <div class="bookmark-image">⚡</div>
+                    <div class="bookmark-content">
+                        <span class="bookmark-category">Productivity</span>
+                        <h3 class="bookmark-title">10 Tips for Faster Design Workflows</h3>
+                        <p class="bookmark-description">Speed up your design process with these proven tips and tricks from industry professionals.</p>
+                        <div class="bookmark-footer">
+                            <div class="bookmark-author">
+                                <div class="author-avatar">AM</div>
+                                <span class="author-name">Alex Morgan</span>
+                            </div>
+                            <span class="bookmark-time">1 week ago</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bookmark-card">
+                    <div class="bookmark-image">🚀</div>
+                    <div class="bookmark-content">
+                        <span class="bookmark-category">Inspiration</span>
+                        <h3 class="bookmark-title">Top Design Trends for 2025</h3>
+                        <p class="bookmark-description">Explore the latest design trends that are shaping the future of digital experiences this year.</p>
+                        <div class="bookmark-footer">
+                            <div class="bookmark-author">
+                                <div class="author-avatar">LT</div>
+                                <span class="author-name">Lisa Taylor</span>
+                            </div>
+                            <span class="bookmark-time">1 week ago</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bookmark-card">
+                    <div class="bookmark-image">💡</div>
+                    <div class="bookmark-content">
+                        <span class="bookmark-category">UX Research</span>
+                        <h3 class="bookmark-title">Understanding User Psychology</h3>
+                        <p class="bookmark-description">Deep dive into the psychology behind user behavior and how to design for human needs.</p>
+                        <div class="bookmark-footer">
+                            <div class="bookmark-author">
+                                <div class="author-avatar">MJ</div>
+                                <span class="author-name">Mike Johnson</span>
+                            </div>
+                            <span class="bookmark-time">2 weeks ago</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bookmark-card">
+                    <div class="bookmark-image">🎯</div>
+                    <div class="bookmark-content">
+                        <span class="bookmark-category">Case Study</span>
+                        <h3 class="bookmark-title">Redesigning a Banking App: A Case Study</h3>
+                        <p class="bookmark-description">How we improved user engagement by 150% through thoughtful redesign and user research.</p>
+                        <div class="bookmark-footer">
+                            <div class="bookmark-author">
+                                <div class="author-avatar">SB</div>
+                                <span class="author-name">Sarah Brown</span>
+                            </div>
+                            <span class="bookmark-time">3 weeks ago</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to clicked tab
+                tab.classList.add('active');
+
+                // Show corresponding content
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Add keyboard navigation for tabs
+        tabs.forEach((tab, index) => {
+            tab.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && index > 0) {
+                    tabs[index - 1].click();
+                    tabs[index - 1].focus();
+                } else if (e.key === 'ArrowRight' && index < tabs.length - 1) {
+                    tabs[index + 1].click();
+                    tabs[index + 1].focus();
+                }
+            });
+        });
+
+        // Smooth scroll to top when switching tabs
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

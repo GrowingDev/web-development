@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social - Modern Design</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-elevated: #141414;
+            --bg-header: rgba(0, 0, 0, 0.95);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.9);
+            --text-tertiary: rgba(255, 255, 255, 0.6);
+            --text-quaternary: rgba(255, 255, 255, 0.4);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-subtle: rgba(255, 255, 255, 0.05);
+            --hover-bg: rgba(255, 255, 255, 0.08);
+            --input-bg: rgba(255, 255, 255, 0.06);
+            --button-primary-bg: #ffffff;
+            --button-primary-text: #000000;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-elevated: 0 8px 32px rgba(0, 0, 0, 0.4);
+            
+            --color-ideas: #6366f1;
+            --color-ideas-bg: rgba(99, 102, 241, 0.15);
+            --color-critics: #f5576c;
+            --color-critics-bg: rgba(245, 87, 108, 0.15);
+            --color-news: #22c55e;
+            --color-news-bg: rgba(34, 197, 94, 0.15);
+            --color-challenges: #f97316;
+            --color-challenges-bg: rgba(249, 115, 22, 0.15);
+        }
+
+        body.light-mode {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-elevated: #ffffff;
+            --bg-header: rgba(255, 255, 255, 0.95);
+            --text-primary: #000000;
+            --text-secondary: rgba(0, 0, 0, 0.9);
+            --text-tertiary: rgba(0, 0, 0, 0.6);
+            --text-quaternary: rgba(0, 0, 0, 0.4);
+            --border-color: rgba(0, 0, 0, 0.08);
+            --border-subtle: rgba(0, 0, 0, 0.05);
+            --hover-bg: rgba(0, 0, 0, 0.05);
+            --input-bg: rgba(0, 0, 0, 0.04);
+            --button-primary-bg: #000000;
+            --button-primary-text: #ffffff;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-elevated: 0 8px 32px rgba(0, 0, 0, 0.12);
+            
+            --color-ideas: #4f46e5;
+            --color-ideas-bg: rgba(99, 102, 241, 0.1);
+            --color-critics: #dc2626;
+            --color-critics-bg: rgba(245, 87, 108, 0.1);
+            --color-news: #16a34a;
+            --color-news-bg: rgba(34, 197, 94, 0.1);
+            --color-challenges: #ea580c;
+            --color-challenges-bg: rgba(249, 115, 22, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Layout Container */
+        .app {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Component */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg-header);
+            backdrop-filter: blur(40px);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .header__container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .header__brand {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .header__search {
+            flex: 1;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 20px 10px 44px;
+            border: none;
+            background: var(--input-bg);
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-quaternary);
+        }
+
+        .search-input:focus {
+            outline: none;
+            background: var(--hover-bg);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            opacity: 0.4;
+        }
+
+        .header__actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-left: auto;
+        }
+
+        .icon-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--text-tertiary);
+            transition: all 0.3s ease;
+        }
+
+        .icon-button:hover {
+            background: var(--hover-bg);
+            color: var(--text-primary);
+        }
+
+        .icon-button--theme:hover {
+            transform: rotate(20deg);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .avatar:hover {
+            transform: scale(1.1);
+        }
+
+        /* Main Layout */
+        .main {
+            flex: 1;
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 260px;
+            padding: 32px 0 32px 24px;
+            border-right: 1px solid var(--border-subtle);
+            position: sticky;
+            top: 70px;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav__item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: var(--text-tertiary);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav__item:hover {
+            background: var(--hover-bg);
+            color: var(--text-primary);
+        }
+
+        .nav__item--active {
+            background: var(--hover-bg);
+            color: var(--text-primary);
+        }
+
+        .nav__icon {
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .nav__divider {
+            height: 1px;
+            background: var(--border-subtle);
+            margin: 16px 0;
+        }
+
+        /* Feed Container */
+        .feed {
+            flex: 1;
+            max-width: 700px;
+            padding: 32px 40px;
+            background: var(--bg-primary);
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            margin-bottom: 32px;
+        }
+
+        .filter-bar__label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .filter-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            padding: 8px 18px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .chip:hover {
+            background: var(--hover-bg);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .chip--active {
+            background: var(--button-primary-bg);
+            color: var(--button-primary-text);
+            border-color: transparent;
+        }
+
+        .chip--ideas.chip--active {
+            background: var(--color-ideas-bg);
+            color: var(--color-ideas);
+        }
+
+        .chip--critics.chip--active {
+            background: var(--color-critics-bg);
+            color: var(--color-critics);
+        }
+
+        .chip--news.chip--active {
+            background: var(--color-news-bg);
+            color: var(--color-news);
+        }
+
+        .chip--challenges.chip--active {
+            background: var(--color-challenges-bg);
+            color: var(--color-challenges);
+        }
+
+        /* Topics Horizontal Scroll */
+        .topics {
+            margin-bottom: 32px;
+        }
+
+        .topics__scroll {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+        }
+
+        .topics__scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Post Composer Card */
+        .composer {
+            background: var(--bg-elevated);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 32px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .composer__type-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding: 4px;
+            background: var(--input-bg);
+            border-radius: 12px;
+            width: fit-content;
+        }
+
+        .type-button {
+            padding: 8px 20px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .type-button:hover {
+            color: var(--text-primary);
+        }
+
+        .type-button--active {
+            background: var(--button-primary-bg);
+            color: var(--button-primary-text);
+            box-shadow: var(--shadow);
+        }
+
+        .composer__body {
+            display: flex;
+            gap: 12px;
+        }
+
+        .composer__avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            flex-shrink: 0;
+        }
+
+        .composer__input-wrapper {
+            flex: 1;
+        }
+
+        .composer__textarea {
+            width: 100%;
+            border: none;
+            resize: none;
+            font-family: inherit;
+            font-size: 15px;
+            padding: 0;
+            background: transparent;
+            min-height: 60px;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .composer__textarea::placeholder {
+            color: var(--text-quaternary);
+        }
+
+        .composer__textarea:focus {
+            outline: none;
+        }
+
+        .composer__footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .composer__tools {
+            display: flex;
+            gap: 12px;
+        }
+
+        .tool-button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            opacity: 0.4;
+            transition: all 0.3s ease;
+        }
+
+        .tool-button:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .button {
+            padding: 10px 28px;
+            background: var(--button-primary-bg);
+            color: var(--button-primary-text);
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-elevated);
+        }
+
+        /* Post Card */
+        .card {
+            background: var(--bg-elevated);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-subtle);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--border-color);
+        }
+
+        .card.hidden {
+            display: none;
+        }
+
+        .card__header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .card__avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .card__author {
+            flex: 1;
+        }
+
+        .card__name {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 2px;
+            color: var(--text-primary);
+        }
+
+        .card__time {
+            font-size: 13px;
+            color: var(--text-quaternary);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .badge--ideas {
+            background: var(--color-ideas-bg);
+            color: var(--color-ideas);
+        }
+
+        .badge--critics {
+            background: var(--color-critics-bg);
+            color: var(--color-critics);
+        }
+
+        .badge--news {
+            background: var(--color-news-bg);
+            color: var(--color-news);
+        }
+
+        .badge--challenges {
+            background: var(--color-challenges-bg);
+            color: var(--color-challenges);
+        }
+
+        .card__content {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .card__actions {
+            display: flex;
+            gap: 24px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-quaternary);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .action-button:hover {
+            color: var(--text-primary);
+        }
+
+        .action-button__icon {
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .action-button:hover .action-button__icon {
+            transform: scale(1.15);
+        }
+
+        /* Sidebar Right */
+        .sidebar-right {
+            width: 320px;
+            padding: 32px 24px 32px 32px;
+            border-left: 1px solid var(--border-subtle);
+            position: sticky;
+            top: 70px;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+        }
+
+        .widget {
+            margin-bottom: 32px;
+        }
+
+        .widget__title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .trending-item {
+            padding: 14px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .trending-item:hover {
+            padding-left: 8px;
+        }
+
+        .trending-item:last-child {
+            border-bottom: none;
+        }
+
+        .trending-item__category {
+            font-size: 11px;
+            color: var(--text-quaternary);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .trending-item__topic {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+
+        .trending-item__count {
+            font-size: 12px;
+            color: var(--text-quaternary);
+        }
+
+        .suggestion {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .suggestion:hover {
+            padding-left: 8px;
+        }
+
+        .suggestion__avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .suggestion__info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .suggestion__name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .suggestion__username {
+            font-size: 12px;
+            color: var(--text-quaternary);
+        }
+
+        .button--small {
+            padding: 6px 16px;
+            font-size: 12px;
+            border-radius: 12px;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            z-index: 1000;
+            display: none;
+            overflow-y: auto;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal--active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal__header {
+            position: sticky;
+            top: 0;
+            background: var(--bg-header);
+            backdrop-filter: blur(40px);
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .modal__title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .modal__content {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .comments {
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 32px;
+            margin-top: 32px;
+        }
+
+        .comments__title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+        }
+
+        .comment-composer {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .comment-composer__textarea {
+            width: 100%;
+            border: 1px solid var(--border-color);
+            resize: none;
+            font-family: inherit;
+            font-size: 14px;
+            padding: 12px 16px;
+            background: var(--input-bg);
+            border-radius: 12px;
+            min-height: 80px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .comment-composer__textarea::placeholder {
+            color: var(--text-quaternary);
+        }
+
+        .comment-composer__textarea:focus {
+            outline: none;
+            background: var(--hover-bg);
+            border-color: var(--border-color);
+        }
+
+        .comment {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .comment__avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .comment__body {
+            flex: 1;
+        }
+
+        .comment__header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .comment__author {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .comment__time {
+            font-size: 13px;
+            color: var(--text-quaternary);
+        }
+
+        .comment__text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .comment__actions {
+            display: flex;
+            gap: 16px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar-right {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .feed {
+                padding: 20px 16px;
+            }
+            
+            .header__container {
+                padding: 0 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Header Component -->
+        <header class="header">
+            <div class="header__container">
+                <a href="#" class="header__brand">Social</a>
+                
+                <div class="header__search">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="Search" aria-label="Search">
+                </div>
+                
+                <div class="header__actions">
+                    <button class="icon-button icon-button--theme" id="themeToggle" aria-label="Toggle theme">☀️</button>
+                    <button class="icon-button" aria-label="Notifications">🔔</button>
+                    <button class="icon-button" aria-label="Messages">✉️</button>
+                    <div class="avatar" role="button" aria-label="Profile"></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Layout -->
+        <main class="main">
+            <!-- Left Sidebar Navigation -->
+            <aside class="sidebar">
+                <nav class="nav">
+                    <a href="#" class="nav__item nav__item--active">
+                        <span class="nav__icon">🏠</span>
+                        <span>Home</span>
+                    </a>
+                    <a href="#" class="nav__item">
+                        <span class="nav__icon">🔍</span>
+                        <span>Explore</span>
+                    </a>
+                    <a href="#" class="nav__item">
+                        <span class="nav__icon">🔔</span>
+                        <span>Notifications</span>
+                    </a>
+                    <a href="#" class="nav__item">
+                        <span class="nav__icon">✉️</span>
+                        <span>Messages</span>
+                    </a>
+                    <a href="#" class="nav__item">
+                        <span class="nav__icon">🔖</span>
+                        <span>Bookmarks</span>
+                    </a>
+                    <div class="nav__divider"></div>
+                    <a href="#" class="nav__item">
+                        <span class="nav__icon">👤</span>
+                        <span>Profile</span>
+                    </a>
+                    <a href="#" class="nav__item">
+                        <span class="nav__icon">⚙️</span>
+                        <span>Settings</span>
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Feed Container -->
+            <section class="feed">
+                <!-- Filter Bar -->
+                <div class="filter-bar">
+                    <div class="filter-bar__label">Filter by Type</div>
+                    <div class="filter-chips">
+                        <button class="chip chip--active" data-filter="all">All Posts</button>
+                        <button class="chip chip--ideas" data-filter="ideas">💡 Ideas</button>
+                        <button class="chip chip--critics" data-filter="critics">🎯 Critics</button>
+                        <button class="chip chip--news" data-filter="news">📰 News</button>
+                        <button class="chip chip--challenges" data-filter="challenges">🏆 Challenges</button>
+                    </div>
+                </div>
+
+                <!-- Topics Horizontal Scroll -->
+                <div class="topics">
+                    <div class="topics__scroll">
+                        <button class="chip chip--active">For You</button>
+                        <button class="chip">Technology</button>
+                        <button class="chip">Design</button>
+                        <button class="chip">Photography</button>
+                        <button class="chip">Travel</button>
+                        <button class="chip">Food & Drink</button>
+                        <button class="chip">Fitness</button>
+                        <button class="chip">Music</button>
+                        <button class="chip">Business</button>
+                    </div>
+                </div>
+
+                <!-- Post Composer -->
+                <article class="composer">
+                    <div class="composer__type-selector">
+                        <button class="type-button type-button--active" data-type="ideas">
+                            <span>💡</span>
+                            <span>Ideas</span>
+                        </button>
+                        <button class="type-button" data-type="critics">
+                            <span>🎯</span>
+                            <span>Critics</span>
+                        </button>
+                        <button class="type-button" data-type="news">
+                            <span>📰</span>
+                            <span>News</span>
+                        </button>
+                        <button class="type-button" data-type="challenges">
+                            <span>🏆</span>
+                            <span>Challenges</span>
+                        </button>
+                    </div>
+
+                    <div class="composer__body">
+                        <div class="composer__avatar"></div>
+                        <div class="composer__input-wrapper">
+                            <textarea class="composer__textarea" placeholder="Share your ideas..." rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="composer__footer">
+                        <div class="composer__tools">
+                            <button class="tool-button" aria-label="Add photo">📷</button>
+                            <button class="tool-button" aria-label="Add video">🎥</button>
+                            <button class="tool-button" aria-label="Add poll">📊</button>
+                            <button class="tool-button" aria-label="Add emoji">😊</button>
+                        </div>
+                        <button class="button">Post</button>
+                    </div>
+                </article>
+
+                <!-- Posts Feed -->
+                <article class="card" data-post-id="1" data-post-type="ideas">
+                    <div class="card__header">
+                        <div class="card__avatar" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);"></div>
+                        <div class="card__author">
+                            <div class="card__name">Sarah Chen</div>
+                            <div class="card__time">2h ago</div>
+                        </div>
+                        <span class="badge badge--ideas">💡 Ideas</span>
+                        <button class="icon-button" aria-label="More options">⋯</button>
+                    </div>
+                    <div class="card__content">
+                        Just finished an amazing hike in the mountains! The view from the top was absolutely breathtaking. There's something special about disconnecting from technology and reconnecting with nature. 🏔️
+                    </div>
+                    <div class="card__actions">
+                        <button class="action-button">
+                            <span class="action-button__icon">❤️</span>
+                            <span>124</span>
+                        </button>
+                        <button class="action-button comment-trigger" data-post-id="1">
+                            <span class="action-button__icon">💬</span>
+                            <span>23</span>
+                        </button>
+                        <button class="action-button">
+                            <span class="action-button__icon">🔄</span>
+                            <span>12</span>
+                        </button>
+                        <button class="action-button">
+                            <span class="action-button__icon">📤</span>
+                        </button>
+                    </div>
+                </article>
+
+                <article class="card" data-post-id="2" data-post-type="news">
+                    <div class="card__header">
+                        <div class="card__avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                        <div class="card__author">
+                            <div class="card__name">Marcus Rodriguez</div>
+                            <div class="card__time">5h ago</div>
+                        </div>
+                        <span class="badge badge--news">📰 News</span>
+                        <button class="icon-button" aria-label="More options">⋯</button>
+                    </div>
+                    <div class="card__content">
+                        Excited to announce that I've just launched my new portfolio website! It's been months of hard work and I'm really proud of how it turned out. Check it out and let me know what you think! 🚀
+                    </div>
+                    <div class="card__actions">
+                        <button class="action-button">
+                            <span class="action-button__icon">❤️</span>
+                            <span>89</span>
+                        </button>
+                        <button class="action-button comment-trigger" data-post-id="2">
+                            <span class="action-button__icon">💬</span>
+                            <span>15</span>
+                        </button>
+                        <button class="action-button">
+                            <span class="action-button__icon">🔄</span>
+                            <span>8</span>
+                        </button>
+                        <button class="action-button">
+                            <span class="action-button__icon">📤</span>
+                        </button>
+                    </div>
+                </article>
+
+                <article class="card" data-post-id="3" data-post-type="critics">
+                    <div class="card__header">
+                        <div class="card__avatar" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);"></div>
+                        <div class="card__author">
+                            <div class="card__name">Emma Thompson</div>
+                            <div class="card__time">8h ago</div>
+                        </div>
+                        <span class="badge badge--critics">🎯 Critics</span>
+                        <button class="icon-button" aria-label="More options">⋯</button>
+                    </div>
+                    <div class="card__content">
+                        Coffee and coding on this beautiful morning ☕️ Working on a new feature that I think you all will love. Sometimes the best ideas come when you least expect them!
+                    </div>
+                    <div class="card__actions">
+                        <button class="action-button">
+                            <span class="action-button__icon">❤️</span>
+                            <span>156</span>
+                        </button>
+                        <button class="action-button comment-trigger" data-post-id="3">
+                            <span class="action-button__icon">💬</span>
+                            <span>31</span>
+                        </button>
+                        <button class="action-button">
+                            <span class="action-button__icon">🔄</span>
+                            <span>19</span>
+                        </button>
+                        <button class="action-button">
+                            <span class="action-button__icon">📤</span>
+                        </button>
+                    </div>
+                </article>
+
+                <article class="card" data-post-id="4" data-post-type="challenges">
+                    <div class="card__header">
+                        <div class="card__avatar" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
+                        <div class="card__author">
+                            <div class="card__name">David Park</div>
+                            <div class="card__time">12h ago</div>
+                        </div>
+                        <span class="badge badge--challenges">🏆 Challenges</span>
+                        <button class="icon-button" aria-label="More options">⋯</button>
+                    </div>
+                    <div class="card__content">
+                        Just wrapped up an incredible photography session at sunset. The golden hour never disappoints! Can't wait to edit these shots and share them with you all. 📸✨
+                    </div>
+                    <div class="card__actions">
+                        <button class="action-button">
+                            <span class="action-button__icon">❤️</span>
+                            <span>203</span>
+                        </button>
+                        <button class="action-button comment-trigger" data-post-id="4">
+                            <span class="action-button__icon">💬</span>
+                            <span>42</span>
+                        </button>
+                        <button class="action-button">
+                            <span class="action-button__icon">🔄</span>
+                            <span>28</span>
+                        </button>
+                        <button class="action-button">
+                            <span class="action-button__icon">📤</span>
+                        </button>
+                    </div>
+                </article>
+
+                <article class="card" data-post-id="5" data-post-type="ideas">
+                    <div class="card__header">
+                        <div class="card__avatar" style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);"></div>
+                        <div class="card__author">
+                            <div class="card__name">Alex Rivera</div>
+                            <div class="card__time">14h ago</div>
+                        </div>
+                        <span class="badge badge--ideas">💡 Ideas</span>
+                        <button class="icon-button" aria-label="More options">⋯</button>
+                    </div>
+                    <div class="card__content">
+                        What if we could redesign the entire workspace experience to be more collaborative and less stressful? Thinking about creating spaces that inspire creativity rather than drain energy.
+                    </div>
+                    <div class="card__actions">
+                        <button class="action-button">
+                            <span class="action-button__icon">❤️</span>
+                            <span>78</span>
+                        </button>
+                        <button class="action-button comment-trigger" data-post-id="5">
+                            <span class="action-button__icon">💬</span>
+                            <span>18</span>
+                        </button>
+                        <button class="action-button">
+                            <span class="action-button__icon">🔄</span>
+                            <span>9</span>
+                        </button>
+                        <button class="action-button">
+                            <span class="action-button__icon">📤</span>
+                        </button>
+                    </div>
+                </article>
+
+                <article class="card" data-post-id="6" data-post-type="news">
+                    <div class="card__header">
+                        <div class="card__avatar" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);"></div>
+                        <div class="card__author">
+                            <div class="card__name">Nina Patel</div>
+                            <div class="card__time">16h ago</div>
+                        </div>
+                        <span class="badge badge--news">📰 News</span>
+                        <button class="icon-button" aria-label="More options">⋯</button>
+                    </div>
+                    <div class="card__content">
+                        Breaking: Our team just won the design award for best mobile app experience! So grateful for everyone who supported us on this journey. 🏆✨
+                    </div>
+                    <div class="card__actions">
+                        <button class="action-button">
+                            <span class="action-button__icon">❤️</span>
+                            <span>312</span>
+                        </button>
+                        <button class="action-button comment-trigger" data-post-id="6">
+                            <span class="action-button__icon">💬</span>
+                            <span>54</span>
+                        </button>
+                        <button class="action-button">
+                            <span class="action-button__icon">🔄</span>
+                            <span>43</span>
+                        </button>
+                        <button class="action-button">
+                            <span class="action-button__icon">📤</span>
+                        </button>
+                    </div>
+                </article>
+            </section>
+
+            <!-- Right Sidebar -->
+            <aside class="sidebar-right">
+                <!-- Trending Widget -->
+                <div class="widget">
+                    <h2 class="widget__title">Trending</h2>
+                    <div class="trending-item">
+                        <div class="trending-item__category">Technology</div>
+                        <div class="trending-item__topic">#WWDC2025</div>
+                        <div class="trending-item__count">15.2K posts</div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-item__category">Sports</div>
+                        <div class="trending-item__topic">#Champions</div>
+                        <div class="trending-item__count">8.7K posts</div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-item__category">Entertainment</div>
+                        <div class="trending-item__topic">#NewRelease</div>
+                        <div class="trending-item__count">12.3K posts</div>
+                    </div>
+                </div>
+
+                <!-- Suggestions Widget -->
+                <div class="widget">
+                    <h2 class="widget__title">Suggested for you</h2>
+                    <div class="suggestion">
+                        <div class="suggestion__avatar" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);"></div>
+                        <div class="suggestion__info">
+                            <div class="suggestion__name">Alex Rivera</div>
+                            <div class="suggestion__username">@alexrivera</div>
+                        </div>
+                        <button class="button button--small">Follow</button>
+                    </div>
+                    <div class="suggestion">
+                        <div class="suggestion__avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                        <div class="suggestion__info">
+                            <div class="suggestion__name">Jordan Lee</div>
+                            <div class="suggestion__username">@jordanlee</div>
+                        </div>
+                        <button class="button button--small">Follow</button>
+                    </div>
+                    <div class="suggestion">
+                        <div class="suggestion__avatar" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);"></div>
+                        <div class="suggestion__info">
+                            <div class="suggestion__name">Taylor Swift</div>
+                            <div class="suggestion__username">@taylorswift</div>
+                        </div>
+                        <button class="button button--small">Follow</button>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- Post Modal -->
+    <div class="modal" id="postModal">
+        <div class="modal__header">
+            <button class="icon-button" id="closeModal" aria-label="Close">←</button>
+            <h1 class="modal__title">Post</h1>
+        </div>
+        <div class="modal__content">
+            <div id="modalPost"></div>
+
+            <section class="comments">
+                <h2 class="comments__title">Comments</h2>
+                
+                <div class="comment-composer">
+                    <div class="composer__avatar"></div>
+                    <div style="flex: 1;">
+                        <textarea class="comment-composer__textarea" placeholder="Add a comment..." rows="3"></textarea>
+                        <div style="display: flex; justify-content: flex-end; margin-top: 12px;">
+                            <button class="button">Comment</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="commentsList"></div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            body.classList.add('light-mode');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            const currentTheme = body.classList.contains('light-mode') ? 'light' : 'dark';
+            localStorage.setItem('theme', currentTheme);
+        });
+
+        // Post Type Selector
+        const typeButtons = document.querySelectorAll('.type-button');
+        const composerTextarea = document.querySelector('.composer__textarea');
+        
+        const placeholders = {
+            ideas: "Share your ideas...",
+            critics: "Share your critique or review...",
+            news: "Share your news or announcement...",
+            challenges: "Create a challenge..."
+        };
+
+        typeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                typeButtons.forEach(btn => btn.classList.remove('type-button--active'));
+                button.classList.add('type-button--active');
+                composerTextarea.placeholder = placeholders[button.dataset.type];
+            });
+        });
+
+        // Filter Functionality
+        const filterChips = document.querySelectorAll('.filter-bar .chip');
+        const posts = document.querySelectorAll('.card');
+
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                filterChips.forEach(c => c.classList.remove('chip--active'));
+                chip.classList.add('chip--active');
+                
+                const filter = chip.dataset.filter;
+                
+                posts.forEach(post => {
+                    const postType = post.dataset.postType;
+                    if (filter === 'all' || postType === filter) {
+                        post.classList.remove('hidden');
+                    } else {
+                        post.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // Topics Functionality
+        const topicChips = document.querySelectorAll('.topics__scroll .chip');
+        topicChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                topicChips.forEach(c => c.classList.remove('chip--active'));
+                chip.classList.add('chip--active');
+            });
+        });
+
+        // Comments Data
+        const commentsData = {
+            1: [
+                { author: 'Alex Rivera', time: '1h', text: 'Wow, that sounds amazing! Which mountain did you hike?', avatar: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)' },
+                { author: 'Jordan Lee', time: '45m', text: 'I love hiking too! The disconnection from technology is so refreshing.', avatar: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+                { author: 'Taylor Kim', time: '30m', text: 'Beautiful! Would love to see some photos 📸', avatar: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' }
+            ],
+            2: [
+                { author: 'Emma Watson', time: '3h', text: 'Congratulations! Just checked it out, looks fantastic! 🎉', avatar: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
+                { author: 'David Chen', time: '2h', text: 'Really impressed with the design. What tech stack did you use?', avatar: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)' }
+            ],
+            3: [
+                { author: 'Sophia Martinez', time: '6h', text: 'Coffee and code is the perfect combo! ☕️💻', avatar: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+                { author: 'Michael Brown', time: '5h', text: 'Can\'t wait to see what you\'re working on!', avatar: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' }
+            ],
+            4: [
+                { author: 'Chris Johnson', time: '10h', text: 'Golden hour is pure magic! What camera do you use?', avatar: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)' },
+                { author: 'Nina Patel', time: '9h', text: 'As a fellow photographer, I completely agree! 📸✨', avatar: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }
+            ],
+            5: [
+                { author: 'Jessica Wong', time: '12h', text: 'This is such an interesting perspective! I\'ve been thinking about this too.', avatar: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)' }
+            ],
+            6: [
+                { author: 'Amanda Lee', time: '14h', text: 'Congratulations to the whole team! Well deserved! 🎊', avatar: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
+                { author: 'Kevin Zhang', time: '13h', text: 'Amazing work! The app deserves this recognition.', avatar: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }
+            ]
+        };
+
+        // Modal Functionality
+        const postModal = document.getElementById('postModal');
+        const modalPost = document.getElementById('modalPost');
+        const commentsList = document.getElementById('commentsList');
+        const closeModalBtn = document.getElementById('closeModal');
+        const commentTriggers = document.querySelectorAll('.comment-trigger');
+
+        commentTriggers.forEach(trigger => {
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const postId = trigger.dataset.postId;
+                openPostModal(postId);
+            });
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            postModal.classList.remove('modal--active');
+            document.body.style.overflow = '';
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && postModal.classList.contains('modal--active')) {
+                postModal.classList.remove('modal--active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        function openPostModal(postId) {
+            const post = document.querySelector(`[data-post-id="${postId}"]`);
+            if (!post) return;
+
+            const postClone = post.cloneNode(true);
+            postClone.classList.add('card');
+            postClone.removeAttribute('data-post-id');
+            
+            const commentBtn = postClone.querySelector('.comment-trigger');
+            if (commentBtn) commentBtn.remove();
+
+            modalPost.innerHTML = '';
+            modalPost.appendChild(postClone);
+
+            loadComments(postId);
+
+            postModal.classList.add('modal--active');
+            document.body.style.overflow = 'hidden';
+            postModal.scrollTop = 0;
+        }
+
+        function loadComments(postId) {
+            const comments = commentsData[postId] || [];
+            commentsList.innerHTML = '';
+
+            comments.forEach(comment => {
+                const commentEl = document.createElement('div');
+                commentEl.className = 'comment';
+                commentEl.innerHTML = `
+                    <div class="comment__avatar" style="background: ${comment.avatar};"></div>
+                    <div class="comment__body">
+                        <div class="comment__header">
+                            <span class="comment__author">${comment.author}</span>
+                            <span class="comment__time">${comment.time}</span>
+                        </div>
+                        <div class="comment__text">${comment.text}</div>
+                        <div class="comment__actions">
+                            <button class="action-button">
+                                <span class="action-button__icon">❤️</span>
+                                <span>Like</span>
+                            </button>
+                            <button class="action-button">
+                                <span class="action-button__icon">💬</span>
+                                <span>Reply</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                commentsList.appendChild(commentEl);
+            });
+        }
+    </script>
+</body>
+</html>

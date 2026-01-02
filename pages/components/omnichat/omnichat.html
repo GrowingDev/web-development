@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniChat - Multi-LLM & Team Collaboration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            background: #f5f7fa;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: #2c3e50;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #34495e;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            background: #1a252f;
+            border-bottom: 1px solid #34495e;
+        }
+
+        .sidebar-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            font-size: 12px;
+            color: #95a5a6;
+        }
+
+        .chat-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+
+        .chat-category {
+            margin-bottom: 20px;
+        }
+
+        .category-title {
+            padding: 10px 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #95a5a6;
+            letter-spacing: 0.5px;
+        }
+
+        .chat-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .chat-item.active {
+            background: #3498db;
+        }
+
+        .chat-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .llm-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .team-icon {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .chat-info {
+            flex: 1;
+        }
+
+        .chat-name {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .chat-status {
+            font-size: 11px;
+            color: #95a5a6;
+            margin-top: 2px;
+        }
+
+        .status-online {
+            color: #2ecc71;
+        }
+
+        /* Main Chat Area */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+
+        .chat-header {
+            padding: 20px;
+            background: white;
+            border-bottom: 1px solid #e1e8ed;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chat-header-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .chat-header-subtitle {
+            font-size: 13px;
+            color: #7f8c8d;
+            margin-top: 2px;
+        }
+
+        .chat-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border: 1px solid #e1e8ed;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #f8f9fa;
+            border-color: #3498db;
+            color: #3498db;
+        }
+
+        /* Messages Area */
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 12px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .message-content {
+            flex: 1;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .message-sender {
+            font-weight: 600;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .message-time {
+            font-size: 12px;
+            color: #95a5a6;
+        }
+
+        .message-text {
+            background: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            line-height: 1.5;
+            color: #2c3e50;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .message.user .message-text {
+            background: #3498db;
+            color: white;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message.user .message-header {
+            flex-direction: row-reverse;
+        }
+
+        /* Input Area */
+        .input-area {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e1e8ed;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .input-container {
+            flex: 1;
+            position: relative;
+        }
+
+        .message-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: none;
+            min-height: 48px;
+            max-height: 120px;
+            transition: border-color 0.2s;
+        }
+
+        .message-input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .send-btn {
+            padding: 12px 24px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.2s;
+            height: 48px;
+        }
+
+        .send-btn:hover {
+            background: #2980b9;
+        }
+
+        .send-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        /* Model Selector */
+        .model-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .model-tag {
+            padding: 6px 12px;
+            background: #ecf0f1;
+            border-radius: 16px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .model-tag:hover {
+            background: #d5dbdb;
+        }
+
+        .model-tag.active {
+            background: #3498db;
+            color: white;
+            border-color: #2980b9;
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: none;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 8px;
+            width: fit-content;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .typing-indicator.active {
+            display: block;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #95a5a6;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #7f8c8d;
+        }
+
+        .welcome-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .welcome-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .welcome-subtitle {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1>OmniChat</h1>
+                <p>Multi-LLM & Team Chat</p>
+            </div>
+            
+            <div class="chat-list">
+                <!-- AI Models -->
+                <div class="chat-category">
+                    <div class="category-title">AI Assistants</div>
+                    <div class="chat-item" data-chat="claude" data-type="llm">
+                        <div class="chat-icon llm-icon">CL</div>
+                        <div class="chat-info">
+                            <div class="chat-name">Claude</div>
+                            <div class="chat-status">Anthropic</div>
+                        </div>
+                    </div>
+                    <div class="chat-item" data-chat="gpt4" data-type="llm">
+                        <div class="chat-icon llm-icon">GP</div>
+                        <div class="chat-info">
+                            <div class="chat-name">GPT-4</div>
+                            <div class="chat-status">OpenAI</div>
+                        </div>
+                    </div>
+                    <div class="chat-item" data-chat="gemini" data-type="llm">
+                        <div class="chat-icon llm-icon">GM</div>
+                        <div class="chat-info">
+                            <div class="chat-name">Gemini</div>
+                            <div class="chat-status">Google</div>
+                        </div>
+                    </div>
+                    <div class="chat-item" data-chat="llama" data-type="llm">
+                        <div class="chat-icon llm-icon">LL</div>
+                        <div class="chat-info">
+                            <div class="chat-name">Llama</div>
+                            <div class="chat-status">Meta</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Members -->
+                <div class="chat-category">
+                    <div class="category-title">Team Members</div>
+                    <div class="chat-item" data-chat="sarah" data-type="team">
+                        <div class="chat-icon team-icon">SM</div>
+                        <div class="chat-info">
+                            <div class="chat-name">Sarah Martinez</div>
+                            <div class="chat-status status-online">● Online</div>
+                        </div>
+                    </div>
+                    <div class="chat-item" data-chat="john" data-type="team">
+                        <div class="chat-icon team-icon">JD</div>
+                        <div class="chat-info">
+                            <div class="chat-name">John Davis</div>
+                            <div class="chat-status status-online">● Online</div>
+                        </div>
+                    </div>
+                    <div class="chat-item" data-chat="emily" data-type="team">
+                        <div class="chat-icon team-icon">EC</div>
+                        <div class="chat-info">
+                            <div class="chat-name">Emily Chen</div>
+                            <div class="chat-status">Away</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Chat Area -->
+        <div class="chat-area">
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <div class="chat-icon llm-icon" id="currentChatIcon">💬</div>
+                    <div>
+                        <div class="chat-header-title" id="chatTitle">Welcome to OmniChat</div>
+                        <div class="chat-header-subtitle" id="chatSubtitle">Select a chat to begin</div>
+                    </div>
+                </div>
+                <div class="chat-actions">
+                    <button class="action-btn" onclick="clearChat()">Clear Chat</button>
+                    <button class="action-btn" onclick="exportChat()">Export</button>
+                </div>
+            </div>
+
+            <div class="messages" id="messagesContainer">
+                <div class="welcome-screen">
+                    <div class="welcome-icon">💬</div>
+                    <div class="welcome-title">Welcome to OmniChat</div>
+                    <div class="welcome-subtitle">Select an AI assistant or team member to start chatting</div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <div class="model-selector" id="modelSelector" style="display: none;">
+                    <div class="model-tag active" data-model="claude">Claude</div>
+                    <div class="model-tag" data-model="gpt4">GPT-4</div>
+                    <div class="model-tag" data-model="gemini">Gemini</div>
+                    <div class="model-tag" data-model="llama">Llama</div>
+                </div>
+                <div class="input-wrapper">
+                    <div class="input-container">
+                        <textarea 
+                            class="message-input" 
+                            id="messageInput" 
+                            placeholder="Type your message..."
+                            rows="1"
+                        ></textarea>
+                    </div>
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentChat = null;
+        let currentChatType = null;
+        let selectedModel = 'claude';
+        let chatHistories = {};
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            setupEventListeners();
+            autoResizeTextarea();
+        });
+
+        function setupEventListeners() {
+            // Chat item clicks
+            document.querySelectorAll('.chat-item').forEach(item => {
+                item.addEventListener('click', () => selectChat(item));
+            });
+
+            // Model selector clicks
+            document.querySelectorAll('.model-tag').forEach(tag => {
+                tag.addEventListener('click', () => selectModel(tag));
+            });
+
+            // Enter key to send
+            document.getElementById('messageInput').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+        }
+
+        function selectChat(item) {
+            // Update active state
+            document.querySelectorAll('.chat-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+
+            currentChat = item.dataset.chat;
+            currentChatType = item.dataset.type;
+
+            // Update header
+            const name = item.querySelector('.chat-name').textContent;
+            const subtitle = item.querySelector('.chat-status').textContent;
+            document.getElementById('chatTitle').textContent = name;
+            document.getElementById('chatSubtitle').textContent = subtitle;
+
+            // Update icon
+            const icon = item.querySelector('.chat-icon').cloneNode(true);
+            document.getElementById('currentChatIcon').replaceWith(icon);
+            icon.id = 'currentChatIcon';
+
+            // Show/hide model selector
+            const modelSelector = document.getElementById('modelSelector');
+            if (currentChatType === 'llm') {
+                modelSelector.style.display = 'flex';
+            } else {
+                modelSelector.style.display = 'none';
+            }
+
+            // Load chat history
+            loadChatHistory();
+        }
+
+        function selectModel(tag) {
+            document.querySelectorAll('.model-tag').forEach(t => t.classList.remove('active'));
+            tag.classList.add('active');
+            selectedModel = tag.dataset.model;
+        }
+
+        function loadChatHistory() {
+            const messagesContainer = document.getElementById('messagesContainer');
+            messagesContainer.innerHTML = '';
+
+            if (!chatHistories[currentChat]) {
+                chatHistories[currentChat] = [];
+            }
+
+            chatHistories[currentChat].forEach(msg => {
+                addMessageToUI(msg.sender, msg.text, msg.isUser, msg.avatar);
+            });
+
+            if (chatHistories[currentChat].length === 0) {
+                addWelcomeMessage();
+            }
+        }
+
+        function addWelcomeMessage() {
+            const messagesContainer = document.getElementById('messagesContainer');
+            const chatName = document.getElementById('chatTitle').textContent;
+            
+            if (currentChatType === 'llm') {
+                addMessageToUI(
+                    chatName,
+                    `Hello! I'm ${chatName}. How can I assist you today?`,
+                    false,
+                    getAvatarForChat(currentChat)
+                );
+            } else {
+                addMessageToUI(
+                    chatName,
+                    `Hey! This is ${chatName}. What's up?`,
+                    false,
+                    getAvatarForChat(currentChat)
+                );
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+
+            if (!text || !currentChat) return;
+
+            // Add user message
+            addMessageToUI('You', text, true, 'YO');
+            saveToChatHistory('You', text, true, 'YO');
+
+            // Clear input
+            input.value = '';
+            input.style.height = 'auto';
+
+            // Simulate response
+            simulateResponse(text);
+        }
+
+        function simulateResponse(userMessage) {
+            const messagesContainer = document.getElementById('messagesContainer');
+            
+            // Add typing indicator
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message';
+            typingDiv.innerHTML = `
+                <div class="message-avatar ${currentChatType === 'llm' ? 'llm-icon' : 'team-icon'}">
+                    ${getAvatarForChat(currentChat)}
+                </div>
+                <div class="message-content">
+                    <div class="typing-indicator active">
+                        <div class="typing-dots">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // Simulate response delay
+            setTimeout(() => {
+                typingDiv.remove();
+                
+                const response = generateResponse(userMessage);
+                const senderName = document.getElementById('chatTitle').textContent;
+                
+                addMessageToUI(senderName, response, false, getAvatarForChat(currentChat));
+                saveToChatHistory(senderName, response, false, getAvatarForChat(currentChat));
+            }, 1500 + Math.random() * 1000);
+        }
+
+        function generateResponse(message) {
+            if (currentChatType === 'llm') {
+                const responses = {
+                    'claude': [
+                        "I'd be happy to help you with that. Based on your question, here's what I think...",
+                        "That's an interesting question. Let me break this down for you...",
+                        "I understand what you're asking. Here's a comprehensive answer..."
+                    ],
+                    'gpt4': [
+                        "Great question! Here's what I can tell you about that...",
+                        "I can help with that. Let me provide you with some insights...",
+                        "Based on my training, here's what I know about this topic..."
+                    ],
+                    'gemini': [
+                        "Thanks for asking! I've analyzed your question and here's my response...",
+                        "I can assist with that. Here are my thoughts on the matter...",
+                        "That's a good question. Let me share what I know..."
+                    ],
+                    'llama': [
+                        "I'm here to help! Based on your question, I'd say...",
+                        "Interesting! Here's my take on that...",
+                        "Sure, I can help with that. Here's what I think..."
+                    ]
+                };
+                
+                const modelResponses = responses[selectedModel] || responses['claude'];
+                return modelResponses[Math.floor(Math.random() * modelResponses.length)];
+            } else {
+                const teamResponses = [
+                    "Thanks for reaching out! I'll look into that and get back to you.",
+                    "Good point! Let me check on that and circle back with you.",
+                    "I agree! Let's discuss this further in our next meeting.",
+                    "That makes sense. I'll work on that and update you soon.",
+                    "Great idea! Let's collaborate on this together."
+                ];
+                return teamResponses[Math.floor(Math.random() * teamResponses.length)];
+            }
+        }
+
+        function addMessageToUI(sender, text, isUser, avatar) {
+            const messagesContainer = document.getElementById('messagesContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : ''}`;
+            
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const avatarClass = isUser ? 'user' : (currentChatType === 'llm' ? 'llm-icon' : 'team-icon');
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar ${avatarClass}">${avatar}</div>
+                <div class="message-content">
+                    <div class="message-header">
+                        <span class="message-sender">${sender}</span>
+                        <span class="message-time">${time}</span>
+                    </div>
+                    <div class="message-text">${text}</div>
+                </div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function saveToChatHistory(sender, text, isUser, avatar) {
+            if (!chatHistories[currentChat]) {
+                chatHistories[currentChat] = [];
+            }
+            chatHistories[currentChat].push({ sender, text, isUser, avatar });
+        }
+
+        function getAvatarForChat(chatId) {
+            const avatars = {
+                'claude': 'CL',
+                'gpt4': 'GP',
+                'gemini': 'GM',
+                'llama': 'LL',
+                'sarah': 'SM',
+                'john': 'JD',
+                'emily': 'EC'
+            };
+            return avatars[chatId] || '??';
+        }
+
+        function autoResizeTextarea() {
+            const textarea = document.getElementById('messageInput');
+            textarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+            });
+        }
+
+        function clearChat() {
+            if (currentChat && confirm('Are you sure you want to clear this chat?')) {
+                chatHistories[currentChat] = [];
+                loadChatHistory();
+            }
+        }
+
+        function exportChat() {
+            if (!currentChat) return;
+            
+            const chatData = {
+                chat: currentChat,
+                type: currentChatType,
+                messages: chatHistories[currentChat] || [],
+                exported: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(chatData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${currentChat}-chat-export.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Us - Signup & Onboarding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@300;600;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #151b3d;
+            --accent-coral: #ff6b6b;
+            --accent-mint: #4ecdc4;
+            --accent-yellow: #ffe66d;
+            --text-primary: #f8f9fa;
+            --text-secondary: #a8b2d1;
+            --card-bg: rgba(21, 27, 61, 0.6);
+            --border-color: rgba(78, 205, 196, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 107, 107, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(78, 205, 196, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 230, 109, 0.1) 0%, transparent 50%);
+            animation: backgroundShift 20s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Progress indicator */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--bg-secondary);
+            z-index: 100;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-coral), var(--accent-mint));
+            width: 33.33%;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            font-family: 'Fraunces', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-coral), var(--accent-mint), var(--accent-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .tagline {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        /* Steps container */
+        .steps-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .step.active {
+            background: rgba(78, 205, 196, 0.15);
+            border-color: var(--accent-mint);
+            box-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
+        }
+
+        .step.completed {
+            background: rgba(78, 205, 196, 0.1);
+            border-color: var(--accent-mint);
+        }
+
+        .step-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-number {
+            background: var(--accent-mint);
+            color: var(--bg-primary);
+        }
+
+        .step.completed .step-number {
+            background: var(--accent-mint);
+            color: var(--bg-primary);
+        }
+
+        .step-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Card */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 3rem;
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+            animation: fadeInScale 0.5s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .step-title {
+            font-family: 'Fraunces', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .step-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        /* Form elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent-mint);
+            box-shadow: 0 0 0 4px rgba(78, 205, 196, 0.1);
+        }
+
+        input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.5;
+        }
+
+        /* Role selection */
+        .roles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .role-card {
+            position: relative;
+            padding: 1.5rem 1rem;
+            background: var(--bg-secondary);
+            border: 2px solid transparent;
+            border-radius: 16px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .role-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(78, 205, 196, 0.3);
+        }
+
+        .role-card input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .role-card input[type="radio"]:checked + .role-content {
+            color: var(--accent-mint);
+        }
+
+        .role-card input[type="radio"]:checked ~ .role-checkmark {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .role-card.selected {
+            background: rgba(78, 205, 196, 0.1);
+            border-color: var(--accent-mint);
+            box-shadow: 0 8px 24px rgba(78, 205, 196, 0.2);
+        }
+
+        .role-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .role-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .role-description {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .role-checkmark {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 24px;
+            height: 24px;
+            background: var(--accent-mint);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.3s ease;
+        }
+
+        .role-checkmark::after {
+            content: '✓';
+            color: var(--bg-primary);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        /* Preferences */
+        .preferences-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .preference-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .preference-item:hover {
+            background: rgba(21, 27, 61, 0.8);
+        }
+
+        .preference-label {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .preference-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .preference-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Toggle switch */
+        .toggle {
+            position: relative;
+            width: 52px;
+            height: 28px;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            border-radius: 34px;
+            transition: 0.3s;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background: var(--text-secondary);
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .toggle input:checked + .toggle-slider {
+            background: var(--accent-mint);
+        }
+
+        .toggle input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+            background: white;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-coral), var(--accent-mint));
+            color: white;
+            box-shadow: 0 4px 16px rgba(78, 205, 196, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(78, 205, 196, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-mint);
+            background: rgba(21, 27, 61, 0.8);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Success state */
+        .success-animation {
+            text-align: center;
+            animation: successPulse 1s ease-out;
+        }
+
+        @keyframes successPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: rotate 0.6s ease-out;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(-180deg) scale(0); }
+            to { transform: rotate(0) scale(1); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .card {
+                padding: 2rem 1.5rem;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            .step-title {
+                font-size: 1.5rem;
+            }
+
+            .steps-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .step {
+                justify-content: center;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .roles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column-reverse;
+            }
+
+            .step-label {
+                display: none;
+            }
+
+            .step {
+                padding: 0.75rem;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .roles-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo">Nexus</div>
+            <div class="tagline">Join thousands building the future</div>
+        </div>
+
+        <div class="steps-container">
+            <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-label">Account</div>
+            </div>
+            <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-label">Your Role</div>
+            </div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-label">Preferences</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <!-- Step 1: Account Creation -->
+            <div class="step-content active" id="step1">
+                <h2 class="step-title">Create your account</h2>
+                <p class="step-subtitle">Get started in less than a minute</p>
+
+                <form id="signupForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" placeholder="John" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" placeholder="Doe" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="john@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="At least 8 characters" required>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">Continue</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 2: Role Selection -->
+            <div class="step-content" id="step2">
+                <h2 class="step-title">What describes you best?</h2>
+                <p class="step-subtitle">This helps us personalize your experience</p>
+
+                <div class="roles-grid">
+                    <div class="role-card" onclick="selectRole(this, 'developer')">
+                        <input type="radio" name="role" value="developer" id="role-developer">
+                        <div class="role-content">
+                            <span class="role-icon">👨‍💻</span>
+                            <div class="role-name">Developer</div>
+                            <div class="role-description">Build and ship code</div>
+                        </div>
+                        <div class="role-checkmark"></div>
+                    </div>
+
+                    <div class="role-card" onclick="selectRole(this, 'designer')">
+                        <input type="radio" name="role" value="designer" id="role-designer">
+                        <div class="role-content">
+                            <span class="role-icon">🎨</span>
+                            <div class="role-name">Designer</div>
+                            <div class="role-description">Create beautiful experiences</div>
+                        </div>
+                        <div class="role-checkmark"></div>
+                    </div>
+
+                    <div class="role-card" onclick="selectRole(this, 'manager')">
+                        <input type="radio" name="role" value="manager" id="role-manager">
+                        <div class="role-content">
+                            <span class="role-icon">📊</span>
+                            <div class="role-name">Manager</div>
+                            <div class="role-description">Lead teams to success</div>
+                        </div>
+                        <div class="role-checkmark"></div>
+                    </div>
+
+                    <div class="role-card" onclick="selectRole(this, 'marketing')">
+                        <input type="radio" name="role" value="marketing" id="role-marketing">
+                        <div class="role-content">
+                            <span class="role-icon">📱</span>
+                            <div class="role-name">Marketing</div>
+                            <div class="role-description">Grow your audience</div>
+                        </div>
+                        <div class="role-checkmark"></div>
+                    </div>
+
+                    <div class="role-card" onclick="selectRole(this, 'student')">
+                        <input type="radio" name="role" value="student" id="role-student">
+                        <div class="role-content">
+                            <span class="role-icon">🎓</span>
+                            <div class="role-name">Student</div>
+                            <div class="role-description">Learn and explore</div>
+                        </div>
+                        <div class="role-checkmark"></div>
+                    </div>
+
+                    <div class="role-card" onclick="selectRole(this, 'other')">
+                        <input type="radio" name="role" value="other" id="role-other">
+                        <div class="role-content">
+                            <span class="role-icon">✨</span>
+                            <div class="role-name">Other</div>
+                            <div class="role-description">Something else</div>
+                        </div>
+                        <div class="role-checkmark"></div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()">Back</button>
+                    <button type="button" class="btn btn-primary" id="roleNextBtn" onclick="nextStep()" disabled>Continue</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Preferences -->
+            <div class="step-content" id="step3">
+                <h2 class="step-title">Customize your experience</h2>
+                <p class="step-subtitle">You can always change these later</p>
+
+                <div class="preferences-grid">
+                    <div class="preference-item">
+                        <div class="preference-label">
+                            <div class="preference-title">Email notifications</div>
+                            <div class="preference-desc">Receive updates about your account</div>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="preference-item">
+                        <div class="preference-label">
+                            <div class="preference-title">Product updates</div>
+                            <div class="preference-desc">Get notified about new features</div>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="preference-item">
+                        <div class="preference-label">
+                            <div class="preference-title">Weekly digest</div>
+                            <div class="preference-desc">Summary of your activity and insights</div>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="preference-item">
+                        <div class="preference-label">
+                            <div class="preference-title">Marketing emails</div>
+                            <div class="preference-desc">Tips, offers, and recommendations</div>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()">Back</button>
+                    <button type="button" class="btn btn-primary" onclick="completeOnboarding()">Complete Setup</button>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div class="step-content" id="success">
+                <div class="success-animation">
+                    <div class="success-icon">🎉</div>
+                    <h2 class="step-title">Welcome aboard!</h2>
+                    <p class="step-subtitle">Your account has been created successfully. Let's get started!</p>
+                    <div class="button-group">
+                        <button type="button" class="btn btn-primary" onclick="window.location.href='dashboard.html'">Go to Dashboard</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let selectedRole = null;
+
+        function updateProgress() {
+            const progress = (currentStep / 3) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function updateSteps() {
+            document.querySelectorAll('.step').forEach((step, index) => {
+                const stepNumber = index + 1;
+                step.classList.remove('active', 'completed');
+                
+                if (stepNumber < currentStep) {
+                    step.classList.add('completed');
+                } else if (stepNumber === currentStep) {
+                    step.classList.add('active');
+                }
+            });
+
+            document.querySelectorAll('.step-content').forEach((content, index) => {
+                content.classList.remove('active');
+                if (index + 1 === currentStep) {
+                    content.classList.add('active');
+                }
+            });
+
+            updateProgress();
+        }
+
+        function nextStep() {
+            if (currentStep === 1) {
+                const form = document.getElementById('signupForm');
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+            }
+
+            if (currentStep === 2 && !selectedRole) {
+                return;
+            }
+
+            if (currentStep < 3) {
+                currentStep++;
+                updateSteps();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateSteps();
+            }
+        }
+
+        function selectRole(card, role) {
+            document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            document.getElementById('role-' + role).checked = true;
+            selectedRole = role;
+            document.getElementById('roleNextBtn').disabled = false;
+        }
+
+        function completeOnboarding() {
+            // Here you would typically send data to your backend
+            document.getElementById('step3').classList.remove('active');
+            document.getElementById('success').classList.add('active');
+            
+            // Update progress to 100%
+            document.getElementById('progressFill').style.width = '100%';
+            
+            // Update all steps to completed
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active');
+                step.classList.add('completed');
+            });
+        }
+
+        // Initialize
+        updateSteps();
+
+        // Add enter key support for form
+        document.getElementById('signupForm').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                nextStep();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline Builder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            background: #f5f5f7;
+            color: #1d1d1f;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar-header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            color: #1d1d1f;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-header p {
+            font-size: 13px;
+            color: #86868b;
+            font-weight: 400;
+        }
+
+        .pipeline-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .pipeline-item {
+            padding: 14px 16px;
+            margin-bottom: 6px;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1.5px solid transparent;
+        }
+
+        .pipeline-item:hover {
+            background: rgba(0, 0, 0, 0.04);
+            transform: translateX(2px);
+        }
+
+        .pipeline-item.active {
+            background: #007aff;
+            color: white;
+            border-color: #007aff;
+        }
+
+        .pipeline-item-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .pipeline-item.active .pipeline-item-name {
+            color: white;
+        }
+
+        .pipeline-item-steps {
+            font-size: 12px;
+            color: #86868b;
+        }
+
+        .pipeline-item.active .pipeline-item-steps {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .new-pipeline-btn {
+            margin: 12px;
+            padding: 14px;
+            background: linear-gradient(180deg, #007aff 0%, #0051d5 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+
+        .new-pipeline-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
+        }
+
+        .new-pipeline-btn:active {
+            transform: translateY(0);
+        }
+
+        .import-btn {
+            background: linear-gradient(180deg, #5856d6 0%, #3634a3 100%);
+            box-shadow: 0 4px 12px rgba(88, 86, 214, 0.3);
+            margin-top: 8px;
+        }
+
+        .import-btn:hover {
+            box-shadow: 0 6px 16px rgba(88, 86, 214, 0.4);
+        }
+
+        /* Main Area */
+        .main-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #f5f5f7;
+        }
+
+        .header {
+            padding: 24px 32px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            color: #1d1d1f;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .header-btn {
+            padding: 8px 18px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+            color: #1d1d1f;
+        }
+
+        .header-btn:hover {
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.15);
+        }
+
+        .header-btn.primary {
+            background: linear-gradient(180deg, #34c759 0%, #248a3d 100%);
+            color: white;
+            border: none;
+            box-shadow: 0 2px 8px rgba(52, 199, 89, 0.3);
+        }
+
+        .header-btn.primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(52, 199, 89, 0.4);
+        }
+
+        /* Content Area */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px;
+        }
+
+        /* Pipeline Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: -1px;
+            color: #1d1d1f;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #86868b;
+            font-weight: 500;
+        }
+
+        /* Pipeline Node */
+        .pipeline-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            max-width: 900px;
+        }
+
+        .pipeline-node {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.2s;
+        }
+
+        .pipeline-node:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .node-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .node-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 17px;
+            color: #1d1d1f;
+        }
+
+        .node-badge {
+            padding: 6px 14px;
+            background: linear-gradient(135deg, #007aff 0%, #5856d6 100%);
+            color: white;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .node-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .node-btn {
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1d1d1f;
+            font-weight: 600;
+        }
+
+        .node-btn:hover {
+            background: rgba(0, 0, 0, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .node-btn.danger:hover {
+            background: #ff3b30;
+            color: white;
+            border-color: #ff3b30;
+        }
+
+        .node-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .node-field {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .node-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .node-select {
+            padding: 12px 14px;
+            border: 1.5px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            font-size: 15px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            color: #1d1d1f;
+        }
+
+        .node-select:focus {
+            outline: none;
+            border-color: #007aff;
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+        }
+
+        .node-textarea {
+            padding: 12px 14px;
+            border: 1.5px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            resize: vertical;
+            min-height: 100px;
+            transition: all 0.2s;
+            line-height: 1.6;
+            background: white;
+        }
+
+        .node-textarea:focus {
+            outline: none;
+            border-color: #007aff;
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+        }
+
+        .node-hint {
+            font-size: 12px;
+            color: #86868b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Pipeline Connector */
+        .pipeline-connector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 48px;
+            position: relative;
+        }
+
+        .connector-line {
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(to bottom, #007aff, #5856d6);
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .connector-arrow {
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 10px solid #5856d6;
+        }
+
+        .add-node-btn {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 36px;
+            height: 36px;
+            background: white;
+            border: 2px solid #007aff;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #007aff;
+            font-size: 20px;
+            font-weight: 600;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
+        }
+
+        .add-node-btn:hover {
+            background: #007aff;
+            color: white;
+            transform: translate(-50%, -50%) scale(1.15);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
+        }
+
+        /* Test Panel */
+        .test-panel {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            margin-top: 32px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .test-header {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 20px;
+            letter-spacing: -0.3px;
+        }
+
+        .test-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            font-size: 15px;
+            margin-bottom: 16px;
+            resize: vertical;
+            min-height: 80px;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .test-input:focus {
+            outline: none;
+            border-color: #007aff;
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+        }
+
+        .run-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(180deg, #34c759 0%, #248a3d 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3);
+        }
+
+        .run-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(52, 199, 89, 0.4);
+        }
+
+        .run-btn:active {
+            transform: translateY(0);
+        }
+
+        .test-results {
+            margin-top: 24px;
+            display: none;
+        }
+
+        .test-results.active {
+            display: block;
+        }
+
+        .result-step {
+            margin-bottom: 16px;
+            padding: 18px;
+            background: rgba(0, 122, 255, 0.05);
+            border-radius: 10px;
+            border-left: 4px solid #007aff;
+        }
+
+        .result-step-title {
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .result-step-content {
+            color: #424245;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 540px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        .modal-body {
+            margin-bottom: 24px;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+
+        .modal-btn.primary {
+            background: linear-gradient(180deg, #007aff 0%, #0051d5 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+
+        .modal-btn.primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
+        }
+
+        .modal-btn.secondary {
+            background: rgba(0, 0, 0, 0.04);
+            color: #1d1d1f;
+        }
+
+        .modal-btn.secondary:hover {
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        /* Template Grid */
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .template-card {
+            padding: 18px;
+            border: 1.5px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .template-card:hover {
+            border-color: #007aff;
+            background: rgba(0, 122, 255, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.15);
+        }
+
+        .template-name {
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 6px;
+            font-size: 15px;
+        }
+
+        .template-desc {
+            font-size: 12px;
+            color: #86868b;
+            line-height: 1.4;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1d1d1f;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #007aff;
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 120px;
+            font-family: 'SF Mono', Monaco, monospace;
+            transition: all 0.2s;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: #007aff;
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+        }
+
+        /* File Upload */
+        .file-upload {
+            border: 2px dashed rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .file-upload:hover {
+            border-color: #007aff;
+            background: rgba(0, 122, 255, 0.05);
+        }
+
+        .file-upload-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .file-upload-text {
+            color: #86868b;
+            font-size: 14px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px) saturate(180%);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            display: none;
+            align-items: center;
+            gap: 12px;
+            z-index: 1001;
+            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+        }
+
+        .toast.active {
+            display: flex;
+        }
+
+        .toast.success {
+            background: rgba(52, 199, 89, 0.95);
+        }
+
+        .toast.error {
+            background: rgba(255, 59, 48, 0.95);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            font-size: 72px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .empty-subtitle {
+            font-size: 15px;
+            color: #86868b;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1>Pipelines</h1>
+                <p>AI Workflow Builder</p>
+            </div>
+            
+            <div class="pipeline-list" id="pipelineList"></div>
+            
+            <button class="new-pipeline-btn" onclick="createNewPipeline()">+ New Pipeline</button>
+            <button class="new-pipeline-btn import-btn" onclick="showImportModal()">📥 Import</button>
+        </div>
+
+        <!-- Main Area -->
+        <div class="main-area">
+            <div class="header">
+                <div class="header-title" id="headerTitle">Select a pipeline</div>
+                <div class="header-actions">
+                    <button class="header-btn" onclick="savePipeline()">Save</button>
+                    <button class="header-btn" onclick="duplicatePipeline()">Duplicate</button>
+                    <button class="header-btn" onclick="exportPipeline()">Export</button>
+                    <button class="header-btn" onclick="deletePipeline()">Delete</button>
+                    <button class="header-btn primary" onclick="runPipeline()">▶ Run</button>
+                </div>
+            </div>
+
+            <div class="content" id="contentArea">
+                <div class="empty-state">
+                    <div class="empty-icon">⚙️</div>
+                    <div class="empty-title">No Pipeline Selected</div>
+                    <div class="empty-subtitle">Create a new pipeline or select one from the sidebar</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div class="modal" id="importModal">
+        <div class="modal-content">
+            <div class="modal-header">Import Pipeline</div>
+            <div class="modal-body">
+                <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+                    <div class="file-upload-icon">📁</div>
+                    <div class="file-upload-text">Click to select a JSON file</div>
+                </div>
+                <input type="file" id="fileInput" class="file-input" accept=".json" onchange="handleFileImport(event)">
+                <div style="margin-top: 24px;">
+                    <div class="form-label">Or paste JSON:</div>
+                    <textarea class="form-textarea" id="jsonInput" placeholder='{"name": "My Pipeline", "nodes": [...]}'></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn secondary" onclick="closeModal('importModal')">Cancel</button>
+                <button class="modal-btn primary" onclick="importFromJSON()">Import</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template Modal -->
+    <div class="modal" id="templateModal">
+        <div class="modal-content">
+            <div class="modal-header">Choose Node Template</div>
+            <div class="modal-body">
+                <div class="template-grid">
+                    <div class="template-card" onclick="addNodeFromTemplate('creative')">
+                        <div class="template-name">🎨 Creative Writer</div>
+                        <div class="template-desc">Makes content engaging and creative</div>
+                    </div>
+                    <div class="template-card" onclick="addNodeFromTemplate('editor')">
+                        <div class="template-name">✏️ Editor</div>
+                        <div class="template-desc">Improves grammar and clarity</div>
+                    </div>
+                    <div class="template-card" onclick="addNodeFromTemplate('technical')">
+                        <div class="template-name">🔬 Technical Writer</div>
+                        <div class="template-desc">Adds technical details</div>
+                    </div>
+                    <div class="template-card" onclick="addNodeFromTemplate('summarizer')">
+                        <div class="template-name">📝 Summarizer</div>
+                        <div class="template-desc">Creates concise summaries</div>
+                    </div>
+                    <div class="template-card" onclick="addNodeFromTemplate('translator')">
+                        <div class="template-name">🌍 Translator</div>
+                        <div class="template-desc">Translates languages</div>
+                    </div>
+                    <div class="template-card" onclick="addNodeFromTemplate('analyzer')">
+                        <div class="template-name">📊 Analyzer</div>
+                        <div class="template-desc">Provides insights</div>
+                    </div>
+                    <div class="template-card" onclick="addNodeFromTemplate('coder')">
+                        <div class="template-name">💻 Code Generator</div>
+                        <div class="template-desc">Generates code</div>
+                    </div>
+                    <div class="template-card" onclick="addNodeFromTemplate('custom')">
+                        <div class="template-name">⚙️ Custom</div>
+                        <div class="template-desc">Blank node</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn secondary" onclick="closeModal('templateModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script>
+        let pipelines = {};
+        let currentPipeline = null;
+        let pipelineCounter = 0;
+        let nodeCounter = 0;
+        let currentNodeIndex = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createSamplePipeline();
+        });
+
+        // Toast Notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.className = `toast ${type} active`;
+            
+            setTimeout(() => {
+                toast.classList.remove('active');
+            }, 3000);
+        }
+
+        // Modal Functions
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Pipeline Management
+        function createSamplePipeline() {
+            const pipeline = {
+                id: `pipeline_${++pipelineCounter}`,
+                name: 'Content Enhancement',
+                description: 'Multi-stage content refinement',
+                created: new Date().toISOString(),
+                modified: new Date().toISOString(),
+                nodes: [
+                    {
+                        id: `node_${++nodeCounter}`,
+                        model: 'claude',
+                        prompt: 'You are a creative writer. Take the input and make it more engaging and creative while maintaining the core message.'
+                    },
+                    {
+                        id: `node_${++nodeCounter}`,
+                        model: 'gpt4',
+                        prompt: 'You are an expert editor. Review the content and improve grammar, clarity, and flow.'
+                    },
+                    {
+                        id: `node_${++nodeCounter}`,
+                        model: 'gemini',
+                        prompt: 'You are a technical writer. Add relevant technical details and ensure accuracy.'
+                    }
+                ]
+            };
+            pipelines[pipeline.id] = pipeline;
+            addPipelineToList(pipeline);
+        }
+
+        function createNewPipeline() {
+            const pipeline = {
+                id: `pipeline_${++pipelineCounter}`,
+                name: `Pipeline ${pipelineCounter}`,
+                description: '',
+                created: new Date().toISOString(),
+                modified: new Date().toISOString(),
+                nodes: [
+                    {
+                        id: `node_${++nodeCounter}`,
+                        model: 'claude',
+                        prompt: 'You are a helpful assistant. Process the input thoughtfully.'
+                    }
+                ]
+            };
+            pipelines[pipeline.id] = pipeline;
+            addPipelineToList(pipeline);
+            selectPipeline(pipeline.id);
+            showToast('Pipeline created');
+        }
+
+        function addPipelineToList(pipeline) {
+            const pipelineList = document.getElementById('pipelineList');
+            const item = document.createElement('div');
+            item.className = 'pipeline-item';
+            item.dataset.pipelineId = pipeline.id;
+            item.innerHTML = `
+                <div class="pipeline-item-name">${pipeline.name}</div>
+                <div class="pipeline-item-steps">${pipeline.nodes.length} steps</div>
+            `;
+            item.onclick = () => selectPipeline(pipeline.id);
+            pipelineList.appendChild(item);
+        }
+
+        function selectPipeline(pipelineId) {
+            currentPipeline = pipelineId;
+            const pipeline = pipelines[pipelineId];
+
+            // Update active state
+            document.querySelectorAll('.pipeline-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`[data-pipeline-id="${pipelineId}"]`).classList.add('active');
+
+            // Update header
+            document.getElementById('headerTitle').textContent = pipeline.name;
+
+            // Render pipeline
+            renderPipeline(pipeline);
+        }
+
+        function renderPipeline(pipeline) {
+            const contentArea = document.getElementById('contentArea');
+            const uniqueModels = new Set(pipeline.nodes.map(n => n.model)).size;
+            
+            contentArea.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">${pipeline.nodes.length}</div>
+                        <div class="stat-label">Steps</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${uniqueModels}</div>
+                        <div class="stat-label">Models</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${new Date(pipeline.modified).toLocaleDateString()}</div>
+                        <div class="stat-label">Modified</div>
+                    </div>
+                </div>
+                <div class="pipeline-flow">
+                    ${pipeline.nodes.map((node, index) => renderNode(node, index, pipeline.nodes.length)).join('')}
+                </div>
+                <div class="test-panel">
+                    <div class="test-header">🧪 Test Pipeline</div>
+                    <textarea class="test-input" id="testInput" placeholder="Enter test input..."></textarea>
+                    <button class="run-btn" onclick="runPipeline()">▶ Run Pipeline</button>
+                    <div class="test-results" id="testResults"></div>
+                </div>
+            `;
+        }
+
+        function renderNode(node, index, totalNodes) {
+            const connector = index < totalNodes - 1 ? `
+                <div class="pipeline-connector">
+                    <div class="connector-line">
+                        <div class="connector-arrow"></div>
+                    </div>
+                    <button class="add-node-btn" onclick="addNodeAfter(${index})">+</button>
+                </div>
+            ` : '';
+
+            return `
+                <div class="pipeline-node">
+                    <div class="node-header">
+                        <div class="node-title">
+                            <span>Step ${index + 1}</span>
+                            <span class="node-badge">${getModelName(node.model)}</span>
+                        </div>
+                        <div class="node-actions">
+                            ${index > 0 ? `<button class="node-btn" onclick="moveNodeUp(${index})">↑</button>` : ''}
+                            ${index < totalNodes - 1 ? `<button class="node-btn" onclick="moveNodeDown(${index})">↓</button>` : ''}
+                            <button class="node-btn danger" onclick="deleteNode(${index})">×</button>
+                        </div>
+                    </div>
+                    <div class="node-content">
+                        <div class="node-field">
+                            <label class="node-label">Model</label>
+                            <select class="node-select" onchange="updateNodeModel(${index}, this.value)">
+                                <option value="claude" ${node.model === 'claude' ? 'selected' : ''}>Claude</option>
+                                <option value="gpt4" ${node.model === 'gpt4' ? 'selected' : ''}>GPT-4</option>
+                                <option value="gemini" ${node.model === 'gemini' ? 'selected' : ''}>Gemini</option>
+                                <option value="llama" ${node.model === 'llama' ? 'selected' : ''}>Llama</option>
+                            </select>
+                        </div>
+                        <div class="node-field">
+                            <label class="node-label">System Prompt</label>
+                            <textarea class="node-textarea" onblur="updateNodePrompt(${index}, this.value)" placeholder="Define instructions...">${node.prompt || ''}</textarea>
+                            <div class="node-hint">💡 Previous output is appended automatically</div>
+                        </div>
+                    </div>
+                </div>
+                ${connector}
+            `;
+        }
+
+        function getModelName(model) {
+            const names = { claude: 'Claude', gpt4: 'GPT-4', gemini: 'Gemini', llama: 'Llama' };
+            return names[model] || model;
+        }
+
+        // Node Operations
+        function addNodeAfter(index) {
+            if (!currentPipeline) {
+                showToast('No pipeline selected', 'error');
+                return;
+            }
+            currentNodeIndex = index;
+            showModal('templateModal');
+        }
+
+        function deleteNode(index) {
+            if (!currentPipeline) {
+                showToast('No pipeline selected', 'error');
+                return;
+            }
+            
+            const pipeline = pipelines[currentPipeline];
+            if (pipeline.nodes.length <= 1) {
+                showToast('Pipeline must have at least one node', 'error');
+                return;
+            }
+            
+            if (confirm('Delete this node?')) {
+                pipeline.nodes.splice(index, 1);
+                pipeline.modified = new Date().toISOString();
+                renderPipeline(pipeline);
+                updatePipelineList();
+                showToast('Node deleted');
+            }
+        }
+
+        function moveNodeUp(index) {
+            if (!currentPipeline) return;
+            
+            const pipeline = pipelines[currentPipeline];
+            if (index > 0) {
+                [pipeline.nodes[index], pipeline.nodes[index - 1]] = 
+                [pipeline.nodes[index - 1], pipeline.nodes[index]];
+                pipeline.modified = new Date().toISOString();
+                renderPipeline(pipeline);
+                showToast('Node moved up');
+            }
+        }
+
+        function moveNodeDown(index) {
+            if (!currentPipeline) return;
+            
+            const pipeline = pipelines[currentPipeline];
+            if (index < pipeline.nodes.length - 1) {
+                [pipeline.nodes[index], pipeline.nodes[index + 1]] = 
+                [pipeline.nodes[index + 1], pipeline.nodes[index]];
+                pipeline.modified = new Date().toISOString();
+                renderPipeline(pipeline);
+                showToast('Node moved down');
+            }
+        }
+
+        function updateNodeModel(index, model) {
+            if (!currentPipeline) return;
+            
+            const pipeline = pipelines[currentPipeline];
+            pipeline.nodes[index].model = model;
+            pipeline.modified = new Date().toISOString();
+            renderPipeline(pipeline);
+            showToast('Model updated');
+        }
+
+        function updateNodePrompt(index, prompt) {
+            if (!currentPipeline) return;
+            
+            const pipeline = pipelines[currentPipeline];
+            pipeline.nodes[index].prompt = prompt;
+            pipeline.modified = new Date().toISOString();
+        }
+
+        function updatePipelineList() {
+            if (!currentPipeline) return;
+            const pipeline = pipelines[currentPipeline];
+            const item = document.querySelector(`[data-pipeline-id="${currentPipeline}"]`);
+            if (item) {
+                item.querySelector('.pipeline-item-steps').textContent = `${pipeline.nodes.length} steps`;
+            }
+        }
+
+        // Template Functions
+        function addNodeFromTemplate(template) {
+            if (!currentPipeline) {
+                closeModal('templateModal');
+                showToast('No pipeline selected', 'error');
+                return;
+            }
+
+            const templates = {
+                creative: { model: 'claude', prompt: 'You are a creative writer. Transform input into engaging, creative content.' },
+                editor: { model: 'gpt4', prompt: 'You are an expert editor. Improve grammar, clarity, and flow.' },
+                technical: { model: 'gemini', prompt: 'You are a technical writer. Add technical details and ensure accuracy.' },
+                summarizer: { model: 'claude', prompt: 'You are a summarizer. Create concise summaries capturing key points.' },
+                translator: { model: 'gpt4', prompt: 'You are a translator. Translate while maintaining tone and style.' },
+                analyzer: { model: 'gemini', prompt: 'You are an analyst. Provide insights and identify patterns.' },
+                coder: { model: 'claude', prompt: 'You are a code generator. Create clean, documented code.' },
+                custom: { model: 'claude', prompt: 'You are a helpful assistant. Process input thoughtfully.' }
+            };
+
+            const config = templates[template];
+            const pipeline = pipelines[currentPipeline];
+            
+            const newNode = {
+                id: `node_${++nodeCounter}`,
+                model: config.model,
+                prompt: config.prompt
+            };
+
+            if (currentNodeIndex !== null && currentNodeIndex >= 0) {
+                pipeline.nodes.splice(currentNodeIndex + 1, 0, newNode);
+            } else {
+                pipeline.nodes.push(newNode);
+            }
+
+            pipeline.modified = new Date().toISOString();
+            renderPipeline(pipeline);
+            updatePipelineList();
+            closeModal('templateModal');
+            showToast(`${template.charAt(0).toUpperCase() + template.slice(1)} node added`);
+            currentNodeIndex = null;
+        }
+
+        // Pipeline Actions
+        function savePipeline() {
+            if (!currentPipeline) {
+                showToast('No pipeline selected', 'error');
+                return;
+            }
+            pipelines[currentPipeline].modified = new Date().toISOString();
+            showToast('Pipeline saved');
+        }
+
+        function duplicatePipeline() {
+            if (!currentPipeline) {
+                showToast('No pipeline selected', 'error');
+                return;
+            }
+
+            const original = pipelines[currentPipeline];
+            const pipeline = {
+                id: `pipeline_${++pipelineCounter}`,
+                name: `${original.name} Copy`,
+                description: original.description,
+                created: new Date().toISOString(),
+                modified: new Date().toISOString(),
+                nodes: JSON.parse(JSON.stringify(original.nodes)).map(node => ({
+                    ...node,
+                    id: `node_${++nodeCounter}`
+                }))
+            };
+            pipelines[pipeline.id] = pipeline;
+            addPipelineToList(pipeline);
+            selectPipeline(pipeline.id);
+            showToast('Pipeline duplicated');
+        }
+
+        function deletePipeline() {
+            if (!currentPipeline) {
+                showToast('No pipeline selected', 'error');
+                return;
+            }
+            
+            if (confirm('Delete this pipeline permanently?')) {
+                const item = document.querySelector(`[data-pipeline-id="${currentPipeline}"]`);
+                item.remove();
+                delete pipelines[currentPipeline];
+                currentPipeline = null;
+                document.getElementById('contentArea').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">⚙️</div>
+                        <div class="empty-title">No Pipeline Selected</div>
+                        <div class="empty-subtitle">Create a new pipeline or select one from the sidebar</div>
+                    </div>
+                `;
+                document.getElementById('headerTitle').textContent = 'Select a pipeline';
+                showToast('Pipeline deleted');
+            }
+        }
+
+        function exportPipeline() {
+            if (!currentPipeline) {
+                showToast('No pipeline selected', 'error');
+                return;
+            }
+
+            const pipeline = pipelines[currentPipeline];
+            const exportData = {
+                name: pipeline.name,
+                description: pipeline.description,
+                nodes: pipeline.nodes.map(({model, prompt}) => ({model, prompt})),
+                exportedAt: new Date().toISOString()
+            };
+
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${pipeline.name.replace(/\s+/g, '-').toLowerCase()}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+            showToast('Pipeline exported');
+        }
+
+        // Import Functions
+        function showImportModal() {
+            showModal('importModal');
+        }
+
+        function handleFileImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('jsonInput').value = e.target.result;
+            };
+            reader.readAsText(file);
+        }
+
+        function importFromJSON() {
+            const jsonInput = document.getElementById('jsonInput').value.trim();
+            if (!jsonInput) {
+                showToast('Please provide JSON data', 'error');
+                return;
+            }
+
+            try {
+                const data = JSON.parse(jsonInput);
+                
+                if (!data.name || !data.nodes || !Array.isArray(data.nodes)) {
+                    throw new Error('Invalid pipeline structure');
+                }
+
+                const pipeline = {
+                    id: `pipeline_${++pipelineCounter}`,
+                    name: data.name,
+                    description: data.description || '',
+                    created: new Date().toISOString(),
+                    modified: new Date().toISOString(),
+                    nodes: data.nodes.map(node => ({
+                        id: `node_${++nodeCounter}`,
+                        model: node.model || 'claude',
+                        prompt: node.prompt || ''
+                    }))
+                };
+
+                pipelines[pipeline.id] = pipeline;
+                addPipelineToList(pipeline);
+                selectPipeline(pipeline.id);
+                
+                closeModal('importModal');
+                document.getElementById('jsonInput').value = '';
+                document.getElementById('fileInput').value = '';
+                showToast('Pipeline imported');
+            } catch (error) {
+                showToast('Invalid JSON: ' + error.message, 'error');
+            }
+        }
+
+        // Run Pipeline
+        function runPipeline() {
+            if (!currentPipeline) {
+                showToast('No pipeline selected', 'error');
+                return;
+            }
+
+            const pipeline = pipelines[currentPipeline];
+            const input = document.getElementById('testInput').value.trim();
+            
+            if (!input) {
+                showToast('Please enter test input', 'error');
+                return;
+            }
+
+            const resultsContainer = document.getElementById('testResults');
+            resultsContainer.innerHTML = '<div style="text-align: center; padding: 20px; color: #86868b;">⚙️ Processing...</div>';
+            resultsContainer.classList.add('active');
+
+            let currentInput = input;
+            let results = [];
+
+            const executeNode = (index) => {
+                if (index >= pipeline.nodes.length) {
+                    showToast('Pipeline completed');
+                    return;
+                }
+
+                const node = pipeline.nodes[index];
+                
+                setTimeout(() => {
+                    const response = simulateLLMResponse(node.model, currentInput);
+                    results.push({
+                        step: index + 1,
+                        model: getModelName(node.model),
+                        output: response
+                    });
+                    currentInput = response;
+                    displayResults(results);
+                    executeNode(index + 1);
+                }, 1500);
+            };
+
+            executeNode(0);
+        }
+
+        function simulateLLMResponse(model, input) {
+            const responses = {
+                claude: `Enhanced by Claude: "${input}" - refined with attention to detail and clarity.`,
+                gpt4: `Optimized by GPT-4: The content has been restructured for better flow.`,
+                gemini: `Analyzed by Gemini: Added technical precision and relevant context.`,
+                llama: `Processed by Llama: Transformed into a more polished output.`
+            };
+            return responses[model] || `Processed: ${input}`;
+        }
+
+        function displayResults(results) {
+            const container = document.getElementById('testResults');
+            container.innerHTML = results.map(result => `
+                <div class="result-step">
+                    <div class="result-step-title">Step ${result.step}: ${result.model}</div>
+                    <div class="result-step-content">${result.output}</div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

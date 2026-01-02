@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 40px;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 21px;
+            color: #86868b;
+            font-weight: 400;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-bottom: 60px;
+            padding: 30px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 42px;
+            font-weight: 700;
+            color: #1d1d1f;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #86868b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            margin-top: 50px;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .achievement-card {
+            background: white;
+            border-radius: 18px;
+            padding: 28px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .achievement-card.locked {
+            opacity: 0.5;
+            background: #fafafa;
+        }
+
+        .achievement-card.locked:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .achievement-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            position: relative;
+        }
+
+        .achievement-card.unlocked .achievement-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .achievement-card.locked .achievement-icon {
+            background: #e5e5e7;
+            filter: grayscale(100%);
+        }
+
+        .badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .achievement-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .achievement-description {
+            font-size: 14px;
+            color: #86868b;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .achievement-progress {
+            margin-top: 16px;
+        }
+
+        .progress-label {
+            font-size: 13px;
+            color: #86868b;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e5e5e7;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 3px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .achievement-date {
+            font-size: 12px;
+            color: #86868b;
+            text-align: center;
+            margin-top: 12px;
+            font-style: italic;
+        }
+
+        .lock-icon {
+            font-size: 24px;
+            opacity: 0.3;
+        }
+
+        .search-filter-section {
+            margin-bottom: 40px;
+            background: white;
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-bar {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            font-size: 16px;
+            border: 2px solid #e5e5e7;
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #86868b;
+        }
+
+        .filter-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .filter-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-chip {
+            padding: 8px 18px;
+            border-radius: 20px;
+            background: #f5f5f7;
+            border: 2px solid transparent;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1d1d1f;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .filter-chip:hover {
+            background: #e8e8ed;
+        }
+
+        .filter-chip.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .category-badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .category-productivity {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .category-social {
+            background: #fce4ec;
+            color: #c2185b;
+        }
+
+        .category-milestones {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .category-special {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .category-streaks {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #86868b;
+        }
+
+        .no-results-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .no-results-text {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            .stats-bar {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .achievements-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-chips {
+                gap: 8px;
+            }
+
+            .filter-chip {
+                font-size: 13px;
+                padding: 6px 14px;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .achievement-card {
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+        }
+
+        .achievement-card:nth-child(1) { animation-delay: 0.05s; }
+        .achievement-card:nth-child(2) { animation-delay: 0.1s; }
+        .achievement-card:nth-child(3) { animation-delay: 0.15s; }
+        .achievement-card:nth-child(4) { animation-delay: 0.2s; }
+        .achievement-card:nth-child(5) { animation-delay: 0.25s; }
+        .achievement-card:nth-child(6) { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Achievements</h1>
+            <p class="subtitle">Your journey of accomplishments</p>
+        </header>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number">12</span>
+                <span class="stat-label">Unlocked</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">18</span>
+                <span class="stat-label">Total</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">67%</span>
+                <span class="stat-label">Completion</span>
+            </div>
+        </div>
+
+        <div class="search-filter-section">
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput"
+                    placeholder="Search achievements..."
+                    autocomplete="off"
+                >
+            </div>
+            
+            <label class="filter-label">Filter by Category</label>
+            <div class="filter-chips">
+                <div class="filter-chip active" data-category="all">All</div>
+                <div class="filter-chip" data-category="productivity">Productivity</div>
+                <div class="filter-chip" data-category="milestones">Milestones</div>
+                <div class="filter-chip" data-category="social">Social</div>
+                <div class="filter-chip" data-category="streaks">Streaks</div>
+                <div class="filter-chip" data-category="special">Special</div>
+            </div>
+        </div>
+
+        <div id="noResults" class="no-results hidden">
+            <div class="no-results-icon">🔍</div>
+            <p class="no-results-text">No achievements found</p>
+        </div>
+
+        <h2 class="section-title">Unlocked Achievements</h2>
+        <div class="achievements-grid">
+            <div class="achievement-card unlocked" data-category="productivity">
+                <span class="badge">New</span>
+                <span class="category-badge category-productivity">Productivity</span>
+                <div class="achievement-icon">🎯</div>
+                <h3 class="achievement-title">First Steps</h3>
+                <p class="achievement-description">Complete your first task</p>
+                <p class="achievement-date">Unlocked on Dec 15, 2025</p>
+            </div>
+
+            <div class="achievement-card unlocked" data-category="productivity">
+                <span class="category-badge category-productivity">Productivity</span>
+                <div class="achievement-icon">🚀</div>
+                <h3 class="achievement-title">Quick Starter</h3>
+                <p class="achievement-description">Complete 10 tasks in one day</p>
+                <p class="achievement-date">Unlocked on Dec 20, 2025</p>
+            </div>
+
+            <div class="achievement-card unlocked" data-category="milestones">
+                <span class="category-badge category-milestones">Milestones</span>
+                <div class="achievement-icon">⭐</div>
+                <h3 class="achievement-title">Rising Star</h3>
+                <p class="achievement-description">Earn 100 points</p>
+                <p class="achievement-date">Unlocked on Dec 22, 2025</p>
+            </div>
+
+            <div class="achievement-card unlocked" data-category="streaks">
+                <span class="category-badge category-streaks">Streaks</span>
+                <div class="achievement-icon">🔥</div>
+                <h3 class="achievement-title">On Fire</h3>
+                <p class="achievement-description">Maintain a 7-day streak</p>
+                <p class="achievement-date">Unlocked on Dec 25, 2025</p>
+            </div>
+
+            <div class="achievement-card unlocked" data-category="milestones">
+                <span class="category-badge category-milestones">Milestones</span>
+                <div class="achievement-icon">💎</div>
+                <h3 class="achievement-title">Diamond Status</h3>
+                <p class="achievement-description">Complete 50 tasks</p>
+                <p class="achievement-date">Unlocked on Dec 28, 2025</p>
+            </div>
+
+            <div class="achievement-card unlocked" data-category="special">
+                <span class="category-badge category-special">Special</span>
+                <div class="achievement-icon">🏆</div>
+                <h3 class="achievement-title">Champion</h3>
+                <p class="achievement-description">Reach the top 10 leaderboard</p>
+                <p class="achievement-date">Unlocked on Dec 29, 2025</p>
+            </div>
+        </div>
+
+        <h2 class="section-title">Locked Achievements</h2>
+        <div class="achievements-grid">
+            <div class="achievement-card locked" data-category="milestones">
+                <span class="category-badge category-milestones">Milestones</span>
+                <div class="achievement-icon">
+                    <span class="lock-icon">🔒</span>
+                </div>
+                <h3 class="achievement-title">Century Club</h3>
+                <p class="achievement-description">Complete 100 tasks</p>
+                <div class="achievement-progress">
+                    <div class="progress-label">
+                        <span>Progress</span>
+                        <span>50/100</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 50%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="achievement-card locked" data-category="streaks">
+                <span class="category-badge category-streaks">Streaks</span>
+                <div class="achievement-icon">
+                    <span class="lock-icon">🔒</span>
+                </div>
+                <h3 class="achievement-title">Marathon Runner</h3>
+                <p class="achievement-description">Maintain a 30-day streak</p>
+                <div class="achievement-progress">
+                    <div class="progress-label">
+                        <span>Progress</span>
+                        <span>7/30 days</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 23%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="achievement-card locked" data-category="social">
+                <span class="category-badge category-social">Social</span>
+                <div class="achievement-icon">
+                    <span class="lock-icon">🔒</span>
+                </div>
+                <h3 class="achievement-title">Social Butterfly</h3>
+                <p class="achievement-description">Invite 5 friends</p>
+                <div class="achievement-progress">
+                    <div class="progress-label">
+                        <span>Progress</span>
+                        <span>2/5</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 40%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="achievement-card locked" data-category="productivity">
+                <span class="category-badge category-productivity">Productivity</span>
+                <div class="achievement-icon">
+                    <span class="lock-icon">🔒</span>
+                </div>
+                <h3 class="achievement-title">Perfectionist</h3>
+                <p class="achievement-description">Complete 20 tasks with 100% accuracy</p>
+                <div class="achievement-progress">
+                    <div class="progress-label">
+                        <span>Progress</span>
+                        <span>8/20</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 40%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="achievement-card locked" data-category="special">
+                <span class="category-badge category-special">Special</span>
+                <div class="achievement-icon">
+                    <span class="lock-icon">🔒</span>
+                </div>
+                <h3 class="achievement-title">Night Owl</h3>
+                <p class="achievement-description">Complete 10 tasks after midnight</p>
+                <div class="achievement-progress">
+                    <div class="progress-label">
+                        <span>Progress</span>
+                        <span>3/10</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 30%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="achievement-card locked" data-category="special">
+                <span class="category-badge category-special">Special</span>
+                <div class="achievement-icon">
+                    <span class="lock-icon">🔒</span>
+                </div>
+                <h3 class="achievement-title">Legend</h3>
+                <p class="achievement-description">Unlock all other achievements</p>
+                <div class="achievement-progress">
+                    <div class="progress-label">
+                        <span>Progress</span>
+                        <span>12/17</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 70%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get elements
+        const searchInput = document.getElementById('searchInput');
+        const filterChips = document.querySelectorAll('.filter-chip');
+        const achievementCards = document.querySelectorAll('.achievement-card');
+        const noResults = document.getElementById('noResults');
+        const sectionTitles = document.querySelectorAll('.section-title');
+
+        let currentCategory = 'all';
+        let currentSearch = '';
+
+        // Filter function
+        function filterAchievements() {
+            let visibleCount = 0;
+
+            achievementCards.forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
+                const title = card.querySelector('.achievement-title').textContent.toLowerCase();
+                const description = card.querySelector('.achievement-description').textContent.toLowerCase();
+                
+                const matchesCategory = currentCategory === 'all' || cardCategory === currentCategory;
+                const matchesSearch = currentSearch === '' || 
+                                     title.includes(currentSearch) || 
+                                     description.includes(currentSearch);
+
+                if (matchesCategory && matchesSearch) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // Show/hide section titles based on visible cards
+            sectionTitles.forEach(title => {
+                const grid = title.nextElementSibling;
+                const visibleCards = grid.querySelectorAll('.achievement-card:not(.hidden)');
+                
+                if (visibleCards.length === 0) {
+                    title.classList.add('hidden');
+                    grid.classList.add('hidden');
+                } else {
+                    title.classList.remove('hidden');
+                    grid.classList.remove('hidden');
+                }
+            });
+
+            // Show/hide no results message
+            if (visibleCount === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+        }
+
+        // Search input handler
+        searchInput.addEventListener('input', (e) => {
+            currentSearch = e.target.value.toLowerCase();
+            filterAchievements();
+        });
+
+        // Category filter handler
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                // Remove active class from all chips
+                filterChips.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked chip
+                chip.classList.add('active');
+                
+                // Update current category
+                currentCategory = chip.getAttribute('data-category');
+                
+                // Filter achievements
+                filterAchievements();
+            });
+        });
+
+        // Add keyboard navigation for filter chips
+        filterChips.forEach((chip, index) => {
+            chip.setAttribute('tabindex', '0');
+            chip.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    chip.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
